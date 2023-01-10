@@ -16,8 +16,8 @@ namespace ZCC.Server
     {
         [FunctionName("CompetitionInfo")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "Competition/{action}/{id?}")] HttpRequest req,
-           string action, string id, ILogger log)
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "Competition/{action}/{userid?}/{competitionID?}")] HttpRequest req,
+           string action,string userid ,string competitionID, ILogger log)
         {
 
 
@@ -35,7 +35,10 @@ namespace ZCC.Server
                     break;
                 case "Update":
                     break;
-               
+                        case "GetTask":
+                    return new OkObjectResult(MainManager.Instance.taskManager.getAllCompetitiomTask(userid,competitionID));
+
+
 
 
                 case "GetCategories":

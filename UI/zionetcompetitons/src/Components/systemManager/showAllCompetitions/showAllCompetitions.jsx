@@ -43,6 +43,8 @@ export const ShowAllCompetitions = () => {
         </thead>
         <tbody>
           {competitions.map((c) => {
+            c.End = c.End.replace("T", " ");
+            c.Start = c.Start.replace("T", " ");
             return (
               <tr key={c.id}>
                 <td>{c.Name}</td>

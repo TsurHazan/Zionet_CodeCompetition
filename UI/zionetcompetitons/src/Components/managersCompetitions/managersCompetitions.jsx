@@ -36,7 +36,6 @@ export const ManagersCompetitions = () => {
       const all = await checkUserCompetitions(user.sub);
       console.log("user.sub", user.sub);
       console.log(all);
-      console.log(all.data);
       const data = Object.values(all.data);
       console.log(data);
       setAllCompetitions(data);
@@ -56,6 +55,8 @@ export const ManagersCompetitions = () => {
         </thead>
         <tbody>
           {allCompetitions.map((competition) => {
+            competition.start = competition.start.replace("T", " ");
+
             return (
               <tr key={competition.id}>
                 <td>

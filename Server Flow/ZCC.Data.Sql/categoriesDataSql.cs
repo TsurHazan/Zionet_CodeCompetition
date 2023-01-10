@@ -10,6 +10,9 @@ namespace ZCC.Data.Sql
 {
     public class categoriesDataSql
     {
+        private static SqlServerQuery.miisiksFunc func { get; set; }
+
+
         public static Dictionary<int, Models.Categories> catObj=new Dictionary<int, Models.Categories>() ;
         public static Dictionary<int, Models.Categories> SetDataToDictionary(SqlDataReader reader)
         {
@@ -28,7 +31,7 @@ namespace ZCC.Data.Sql
         public static Dictionary<int, Models.Categories> GetCategoriesFromDB()
         {
             string sqlQuery = "SELECT * FROM Categories";
-            SqlServerQuery.miisiksFunc func = SetDataToDictionary;
+            func = SetDataToDictionary;
              Dictionary<int, Models.Categories> ret = (Dictionary<int, Models.Categories>)DAL.SqlServerQuery.getValueFromDB(sqlQuery, func);
             return ret;
         }

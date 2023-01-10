@@ -34,7 +34,7 @@ export const UsersNavBar = () => {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="#features">Manage</Nav.Link>
+            <Nav.Link href="/Management">Management</Nav.Link>
             <Nav.Link href="#pricing">Participate</Nav.Link>
             <Nav.Link href="#pricing">Settings</Nav.Link>
           </Nav>

@@ -13,3 +13,10 @@ export const getUserCompetitionManagement = async (userID, competitionID) => {
   console.log(reqGet, reqGet.data);
   return reqGet;
 };
+
+export const getCompetitionTask = async (userID, competitionID) => {
+  let reqUrl = `http://localhost:7175/api/competition/GetTask/${userID}/${competitionID}`;
+  let reqGet = await axios.get(reqUrl);
+  console.log(reqGet, reqGet.data);
+  return reqGet;
+};
