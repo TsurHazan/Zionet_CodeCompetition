@@ -3,8 +3,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { Col, InputGroup, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
-import { bgMode } from "../../bgModeContext";
-import { getUserCompetitionManagement } from "../../Middlewares/competitions.js/competitions";
+import { bgMode } from "../../../bgModeContext";
+import { getUserCompetitionManagement } from "../../../Middlewares/competitions.js/competitions";
 
 export const EditCompetition = () => {
   let { id } = useParams();
@@ -37,27 +37,11 @@ export const EditCompetition = () => {
   useEffect(() => {
     const getAllCompetitionDetailsFromDB = async () => {
       const ans = await getUserCompetitionManagement(user.sub, id);
-      console.log(ans);
-      // const data = Object.values(ans.data);
-      // console.log(data);
       setCompetition(ans.data);
       HandleDate();
     };
     getAllCompetitionDetailsFromDB();
   }, []);
-
-  /*
-  const [inputs, setInputs] = useState({
-    Start: this.toISOString().substring(0, 16),
-    Name: "new Competition",
-    End: this.toISOString().substring(0, 16),
-    Numberofteams: "3",
-    hashcode: "noHash",
-    maxactivetasks: "3",
-  });
-  */
-
-  console.log(competition);
 
   return (
     <div className="allcompetitionPage">

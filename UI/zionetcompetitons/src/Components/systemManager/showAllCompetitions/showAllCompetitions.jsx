@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { getAllCompetitions } from "../../../Middlewares/systemManager/systemManager.js";
 import { useAuth0 } from "@auth0/auth0-react";
 import { LoadingMagnifyingGlass } from "../../exports.js";
-import { EditCompetition_SM } from "../systemManagerExports.js";
+import { StatusCompetition } from "../systemManagerExports.js";
 import { editCompetition } from "../editCompetition_context.js";
 import { Link } from "react-router-dom";
 
@@ -23,6 +23,7 @@ export const ShowAllCompetitions = () => {
     };
     getCompetitions();
   }, [user]);
+
   if (loading) {
     return <LoadingMagnifyingGlass />;
   } else {
@@ -49,8 +50,8 @@ export const ShowAllCompetitions = () => {
                 <td>{c.numOfTeams}</td>
                 <td>{c.maxActiveTasks}</td>
                 <td>{c.hashcode}</td>
-                <td>{c.Start}</td>
-                <td>{c.End}</td>
+                <td>{c.Start.replace("T", " ")}</td>
+                <td>{c.End.replace("T", " ")}</td>
                 <td>{c.status}</td>
                 <td>
                   <Link
@@ -64,7 +65,10 @@ export const ShowAllCompetitions = () => {
                   </Link>
                 </td>
                 <td>
-                  <button className="btn btn-success">Enable</button>
+                  <StatusCompetition
+                    competitionStatus={c.status}
+                    competitionID={c.id}
+                  />
                 </td>
               </tr>
             );

@@ -17,6 +17,12 @@ namespace ZCC.Data.Sql
         private static string query;
         static Dictionary<int, Models.Competition> DiCompetitions = new Dictionary<int, Competition>();
 
+        // --------------------- Change Competition Status  ---------------------
+        public void ChangeCompetitionStatus(int competitionID,string newStatus)
+        {
+            SqlServerQuery.runCommand($"update [Competitions] set [status] = '{newStatus}' where [id] = {competitionID}");
+        }
+
 
         // --------------------- Remove user from being manager in a specific Competition  ---------------------
         public void RemoveCompetitionManager(int competitionID)
@@ -28,7 +34,7 @@ namespace ZCC.Data.Sql
         // --------------------- Update specific Competition row ---------------------
         public bool UpdateCompetition(Competition competition)
         {
-            string query = $"Update [Competitions] set [Start] = '{competition.Start.ToString("yyyy-MM-dd HH:mm:ss").Replace("/", "-")}',[End] = '{competition.End.ToString("yyyy-MM-dd HH:mm:ss").Replace("/", "-")}',[numOfTeams]={competition.numOfTeams},[status]='{competition.status}',[Name]='{competition.Name}',[hashcode]='{competition.hashcode}',[max active Tasks]={competition.maxActiveTasks} where [id] = {competition.id}";
+            string query = $"Update [Competitions] set [Start] = '{competition.Start.ToString("yyyy-MM-dd HH:mm:ss").Replace("/", "-")}',[End] = '{competition.End.ToString("yyyy-MM-dd HH:mm:ss").Replace("/", "-")}',[numOfTeams]={competition.numOfTeams},[status]='In Preparation',[Name]='{competition.Name}',[hashcode]='{competition.hashcode}',[max active Tasks]={competition.maxActiveTasks} where [id] = {competition.id}";
             bool? completed = (bool?)DAL.SqlServerQuery.getSingleValueFromDB(query);
             if (completed == null) { return false; }
             return (bool)completed;
@@ -62,7 +68,7 @@ namespace ZCC.Data.Sql
         public static Dictionary<int, Models.Competition> GetAllCompetitions()
         {
             func = _GetAllCompetitions;
-            query = "SELECT * FROM Competitions WHERE id != 1";
+            query = "SELECT * FROM [Competitions] WHERE [id] != 1 and [status] not like 'Deleted' ";
             Dictionary<int, Models.Competition> allCompetitions = (Dictionary<int, Models.Competition>)SqlServerQuery.getValueFromDB(query, func);
             return allCompetitions;
         }
@@ -76,15 +82,27 @@ namespace ZCC.Data.Sql
             
         }
 
-        // --------------------- set a competition managers ---------------------
+        // --------------------- set a competition managers *if user is not related to the competition then add him as manager ---------------------
 
         public static void SetManagers(User[] users,int competitionID)
         {
             foreach (User user in users)
             {
-                string query = $"insert into [Users competitions] values ('{user.user_id}',1,1,{competitionID})";
+                string query = $"IF exists(select * from [Users competitions] where ([UserID] =  '{user.user_id}' and [Competition ID] = {competitionID}))\r\nbegin\r\nupdate [Users competitions] set [Admin] = 1 where [UserID] = '{user.user_id}' and [Competition ID] = {competitionID}\r\nend\r\nELSE\r\nbegin\r\ninsert into [Users competitions] values ('{user.user_id}',1,1,{competitionID})\r\nend";
                 SqlServerQuery.runCommand(query);
-            }         
+            }
+
+
+            /*
+             IF exists(select * from [Users competitions] where ([UserID] =  '{user.user_id}' and [Competition ID] = {competitionID}))
+              begin
+                update [Users competitions] set [Admin] = 1 where [UserID] = '{user.user_id}' and [Competition ID] = {competitionID}
+              end
+            ELSE
+              begin
+               insert into [Users competitions] values ('{user.user_id}',1,1,{competitionID})
+              end
+             */
         }
 
         // --------------------- ??? ---------------------

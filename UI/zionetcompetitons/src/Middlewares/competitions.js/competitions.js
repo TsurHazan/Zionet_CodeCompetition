@@ -7,9 +7,7 @@ export const enableCompetition = async (userID, competitionID) => {
 };
 
 export const getUserCompetitionManagement = async (userID, competitionID) => {
-  console.log("userID and competitionID", userID, competitionID);
   let reqUrl = `http://localhost:7175/api/UsersCompetitions/GetCompetition/${userID}/${competitionID}`;
   let reqGet = await axios.get(reqUrl);
-  console.log(reqGet, reqGet.data);
   return reqGet;
 };

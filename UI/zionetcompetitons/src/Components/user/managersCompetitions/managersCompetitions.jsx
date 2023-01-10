@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { bgMode } from "../../bgModeContext.js";
-import { checkUserCompetitions } from "../../Middlewares/users/users.js";
+import { bgMode } from "../../../bgModeContext.js";
+import { checkUserCompetitions } from "../../../Middlewares/users/users.js";
 import { Link } from "react-router-dom";
 
 export const ManagersCompetitions = () => {
@@ -34,11 +34,7 @@ export const ManagersCompetitions = () => {
   useEffect(() => {
     const getAllUserCompetitions = async () => {
       const all = await checkUserCompetitions(user.sub);
-      console.log("user.sub", user.sub);
-      console.log(all);
-      console.log(all.data);
       const data = Object.values(all.data);
-      console.log(data);
       setAllCompetitions(data);
     };
     getAllUserCompetitions();

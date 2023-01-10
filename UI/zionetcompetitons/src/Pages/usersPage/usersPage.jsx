@@ -1,11 +1,13 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { bgMode } from "../../bgModeContext";
 import { UsersNavBar } from "../../Components/user/userExports.js";
-import { ManagersCompetitions } from "../../Components/managersCompetitions/managersCompetitions";
-import { Route, Routes, useParams } from "react-router-dom";
+import {
+  ManagersCompetitions,
+  EditCompetition,
+} from "../../Components/user/userExports";
+import { Route, Routes } from "react-router-dom";
 import "../../Styles/user.css";
-import { EditCompetition } from "../../Components/editCompetition/editCompetition";
 
 export const UsersPage = () => {
   const { bgState, setBgState } = useContext(bgMode);

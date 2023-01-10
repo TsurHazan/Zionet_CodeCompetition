@@ -6,6 +6,7 @@ import { bgMode } from "../../../bgModeContext.js";
 import { updateCurrentCompetition } from "../../../Middlewares/systemManager/systemManager.js";
 import { LoadingMagnifyingGlass } from "../../exports.js";
 import { editCompetition } from "../editCompetition_context.js";
+import { DeleteCompetition } from "../deleteCompetition/deleteCompetition.jsx";
 
 export const EditCompetition_SM = () => {
   const { user } = useAuth0();
@@ -28,7 +29,7 @@ export const EditCompetition_SM = () => {
   const [ManagersArr, setManagersArr] = useState([]);
   const [items, setItems] = useState(ManagersArr);
 
-  //get data from form
+  //get data from labels
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -45,7 +46,7 @@ export const EditCompetition_SM = () => {
   };
 
   //add user to ManagersArr state array
-  const chooseManager = (user) => {
+  const chooseManager = (user, index) => {
     if (ManagersArr.includes(user)) {
       const newItems = ManagersArr.filter((i) => i !== user);
       setManagersArr(newItems);
@@ -64,7 +65,6 @@ export const EditCompetition_SM = () => {
       setAllUsers(data);
     };
     getAllUsersFromDB();
-    console.log(competitionToEdit);
   }, [bgState]);
 
   if (loading) {
@@ -72,7 +72,7 @@ export const EditCompetition_SM = () => {
   } else {
     return (
       <>
-        <div className="EditCompetition_SM">
+        <Grid xs={6}>
           <button
             className="btn btn-success"
             onClick={() => {
@@ -83,6 +83,7 @@ export const EditCompetition_SM = () => {
                 inputsfixed.End = inputsfixed.End.replace(/[a-zA-Z]/g, " ");
                 setInputs(inputsfixed);
                 const trya = { ["Competition"]: inputs, ManagersArr };
+                window.location.href = "/";
                 await updateCurrentCompetition(user.sub, trya, inputs.id);
               };
               handleSubmit();
@@ -90,7 +91,9 @@ export const EditCompetition_SM = () => {
           >
             Update
           </button>
+        </Grid>
 
+        <div className="EditCompetition_SM">
           <Grid
             container
             rowSpacing={1}
@@ -152,8 +155,8 @@ export const EditCompetition_SM = () => {
                   <button
                     key={user.Email + index.toString()}
                     onClick={() => {
-                      chooseManager(user);
-                      toggleItem(index);
+                      chooseManager(user, index);
+                      // toggleItem(index);
                     }}
                     className={`btn ${bgState} ${items[index]}`}
                   >
@@ -179,6 +182,12 @@ export const EditCompetition_SM = () => {
                 );
               })}
             </label>
+          </Grid>
+          <Grid xs={6}>
+            <DeleteCompetition
+              competitionID={inputs.id}
+              competitionName={inputs.Name}
+            />
           </Grid>
         </div>
       </>

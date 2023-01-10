@@ -20,7 +20,7 @@ namespace ZCC.Server
     {
         [FunctionName("SystemManager")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "put", "get", "post", Route = "systemManager/{action}/{userid}/{competitionID?}")] HttpRequest req, string action, string userid,
+            [HttpTrigger(AuthorizationLevel.Function, "put", "get", "post", Route = "systemManager/{action}/{userid}/{competitionID?}/")] HttpRequest req, string action, string userid,
             string competitionID, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
@@ -71,6 +71,11 @@ namespace ZCC.Server
                     users = null;
                     newComp = null;
                     return new OkObjectResult(completed);
+                
+                case "changeCompetitionStatus":
+                    body = await new StreamReader(req.Body).ReadToEndAsync();
+                    MainManager.Instance.competitionsManager.ChangeCompetitionStatus(competitionID, body);
+                    return new OkObjectResult(200);
             }
             return new OkObjectResult("null");
         }
