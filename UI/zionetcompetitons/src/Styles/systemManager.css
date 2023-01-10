@@ -1,0 +1,63 @@
+.newCompetitionDiv {
+  text-align: center;
+}
+.systemDash {
+  margin: 20px auto 0 auto;
+  justify-content: center;
+  border: 3px solid;
+  border-radius: 5px;
+}
+.usersGrid {
+  display: grid;
+  grid-template-rows: auto auto auto auto;
+  grid-template-columns: auto auto;
+  gap: 5px;
+  padding: 20px;
+  overflow-y: auto;
+  margin-top: 20px;
+  border: 5px solid;
+}
+
+.allUsersLabel {
+  padding: 20px;
+  width: 100%;
+  height: 60vh;
+  display: grid;
+  grid-template-rows: auto auto auto auto;
+  grid-template-columns: auto auto auto auto;
+  gap: 5px;
+  overflow-y: auto;
+}
+.allUsersLabel p {
+  border: 2px solid;
+  border-radius: 5px;
+}
+.highlight {
+  background-color: #3c79f5 !important;
+}
+.createCompetition {
+  height: 70vh;
+  overflow: visible;
+}
+.allCompetitions {
+  margin: 20px auto 0 auto;
+  justify-content: center;
+}
+
+.allCompetitions tr {
+  border-bottom: 1px solid #ddd;
+}
+
+.allCompetitions th {
+  font-weight: bold;
+}
+.allCompetitions td,
+th {
+  padding: 10px;
+  text-align: center;
+}
+.EditCompetition_SM {
+  margin: 0 auto;
+  justify-content: center;
+  width: 1200px;
+}

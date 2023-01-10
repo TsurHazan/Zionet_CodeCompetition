@@ -1,0 +1,10 @@
+td,
+th {
+  padding: 7px;
+}
+
+.competitionEdit {
+  width: 33%;
+  display: flex;
+  flex-direction: column;
+}
