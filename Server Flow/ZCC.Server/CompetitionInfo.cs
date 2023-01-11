@@ -35,14 +35,12 @@ namespace ZCC.Server
                     break;
                 case "Update":
                     break;
-                        case "GetTask":
+                case "GetTask":
                     return new OkObjectResult(MainManager.Instance.taskManager.getAllCompetitiomTask(userid,competitionID));
-
-
-
 
                 case "GetCategories":
                     return new OkObjectResult(MainManager.Instance.categoriesManager.allCategories());
+
                 default:
                     break;
             }

@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 
 import { bgMode } from "../../bgModeContext";
 import {
+  getCategories,
   getCompetitionTask,
   getUserCompetitionManagement,
 } from "../../Middlewares/competitions.js/competitions";
@@ -16,6 +17,7 @@ export const EditCompetition = () => {
 
   const [competition, setCompetition] = useState({});
   const [allTask, setAllTask] = useState({});
+  const [allCategories, setCategories] = useState({});
 
   /*
   const handleChange = (event) => {
@@ -45,6 +47,13 @@ export const EditCompetition = () => {
     console.log(data);
     //setAllTask(data);
   };
+  const getallCategories = async () => {
+    const all = await getCategories();
+    console.log(all);
+    const data = Object.values(all.data);
+    console.log(data);
+    //setAllTask(data);
+  };
   const getAllCompetitionDetailsFromDB = async () => {
     const ans = await getUserCompetitionManagement(user.sub, id);
     console.log(ans);
@@ -56,6 +65,7 @@ export const EditCompetition = () => {
   useEffect(async () => {
     await getAllCompetitionDetailsFromDB();
     await getAllCompetitionTask();
+    await getallCategories();
   }, []);
 
   /*
