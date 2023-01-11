@@ -91,18 +91,6 @@ namespace ZCC.Data.Sql
                 string query = $"IF exists(select * from [Users competitions] where ([UserID] =  '{user.user_id}' and [Competition ID] = {competitionID}))\r\nbegin\r\nupdate [Users competitions] set [Admin] = 1 where [UserID] = '{user.user_id}' and [Competition ID] = {competitionID}\r\nend\r\nELSE\r\nbegin\r\ninsert into [Users competitions] values ('{user.user_id}',1,1,{competitionID})\r\nend";
                 SqlServerQuery.runCommand(query);
             }
-
-
-            /*
-             IF exists(select * from [Users competitions] where ([UserID] =  '{user.user_id}' and [Competition ID] = {competitionID}))
-              begin
-                update [Users competitions] set [Admin] = 1 where [UserID] = '{user.user_id}' and [Competition ID] = {competitionID}
-              end
-            ELSE
-              begin
-               insert into [Users competitions] values ('{user.user_id}',1,1,{competitionID})
-              end
-             */
         }
 
         // --------------------- ??? ---------------------

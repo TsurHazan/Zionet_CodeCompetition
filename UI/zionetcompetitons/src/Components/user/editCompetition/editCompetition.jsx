@@ -26,6 +26,11 @@ export const EditCompetition = () => {
     HandleDate();
   };
 
+  const handleStatusChange = (event) => {
+    const updated = competition;
+    updated.status = event.target.value;
+    setCompetition(updated);
+  };
   const HandleDate = () => {
     setCompetition((values) => ({
       ...values,
@@ -43,52 +48,55 @@ export const EditCompetition = () => {
     getAllCompetitionDetailsFromDB();
   }, []);
 
+  //<input type="text" id="status" value={competition.status} />
   return (
-    <div className="allcompetitionPage">
-      <div className="competitionEdit">
-        <label htmlFor="name">Name </label>
+    <div className="competitionEdit">
+      <label htmlFor="name">
+        Name
+        <br />
         <input type="text" id="name" defaultValue={competition.name} />
+      </label>
 
-        <label htmlFor="status">Status </label>
-        <input type="text" id="status" value={competition.status} />
+      <label htmlFor="status">
+        Status
+        <br />
+        <select defaultValue={competition.status} onChange={handleStatusChange}>
+          <option value="Running">Running</option>
+          <option value="Finished">Finished</option>
+          <option value="In Preparation">In Preparation</option>
+        </select>
+      </label>
 
-        <>
-          <label htmlFor="numOfTeams">Teams number </label>
-          <input type="text" id="numOfTeams" value={competition.numOfTeams} />
-        </>
-        <>
-          <label htmlFor="start">Start </label>
-          <input
-            type="datetime-local"
-            id="start"
-            defaultValue={competition.start}
-          />
-        </>
-        <>
-          <label htmlFor="end">End </label>
-          <input
-            type="datetime-local"
-            id="end"
-            defaultValue={competition.end}
-          />
-        </>
-        <>
-          <label htmlFor="hashcode">Hash Code </label>
-          <input
-            type="text"
-            id="hashcode"
-            defaultValue={competition.hashcode}
-          />
-        </>
-        <>
-          <label htmlFor="maxActiveTasks">Max Active Tasks </label>
-          <input
-            type="number"
-            id="maxActiveTasks"
-            defaultValue={competition.maxActiveTasks}
-          />
-        </>
-      </div>
+      <label htmlFor="start">
+        Start
+        <br />
+        <input
+          type="datetime-local"
+          id="start"
+          defaultValue={competition.start}
+        />
+      </label>
+
+      <label htmlFor="end">
+        End <br />
+        <input type="datetime-local" id="end" defaultValue={competition.end} />
+      </label>
+
+      <label htmlFor="hashcode">
+        Hash Code
+        <br />
+        <input type="text" id="hashcode" defaultValue={competition.hashcode} />
+      </label>
+
+      <label htmlFor="maxActiveTasks">
+        Max Active Tasks
+        <br />
+        <input
+          type="number"
+          id="maxActiveTasks"
+          defaultValue={competition.maxActiveTasks}
+        />
+      </label>
     </div>
   );
 };

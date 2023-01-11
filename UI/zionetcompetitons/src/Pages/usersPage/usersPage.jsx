@@ -6,6 +6,7 @@ import {
   ManagersCompetitions,
   EditCompetition,
 } from "../../Components/user/userExports";
+import { EditCompetitionPage } from "../exportPages.js";
 import { Route, Routes } from "react-router-dom";
 import "../../Styles/user.css";
 
@@ -20,7 +21,7 @@ export const UsersPage = () => {
       <Routes>
         <Route path="/" element={<ManagersCompetitions />} />
         <Route path="/Management" element={<ManagersCompetitions />} />
-        <Route path="/Management/:id" element={<EditCompetition />} />
+        <Route path="/Management/:id" element={<EditCompetitionPage />} />
       </Routes>
     </div>
   );
