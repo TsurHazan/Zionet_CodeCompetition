@@ -11,6 +11,8 @@ namespace ZCC.Data.Sql
 {
     public class taskDataSql
     {
+        private static SqlServerQuery.miisiksFunc func { get; set; }
+
 
         public static Dictionary<int, Models.Task> taskDic = new Dictionary<int, Models.Task>();
         public static Dictionary<int, Models.Task> SetDataToDictionary(SqlDataReader reader)
@@ -36,10 +38,10 @@ namespace ZCC.Data.Sql
             return taskDic;
         }
 
-        public static Dictionary<int, Models.Task> GetCategoriesFromDB()
+        public static Dictionary<int, Models.Task> GetAllCompetitionTaskFromDB(string userID,string competitionID)
         {
-            string sqlQuery = "SELECT * FROM Categories";
-            SqlServerQuery.miisiksFunc func = SetDataToDictionary;
+            string sqlQuery = $"SELECT * FROM Tasks where CompetitionID = ( SELECT [Competition ID] FROM [Users competitions]  where UserID = '{userID}' and [Competition ID] = {competitionID} and Admin = 1)";
+             func = SetDataToDictionary;
             Dictionary<int, Models.Task> ret = (Dictionary<int, Models.Task>)DAL.SqlServerQuery.getValueFromDB(sqlQuery, func);
             return ret;
         }

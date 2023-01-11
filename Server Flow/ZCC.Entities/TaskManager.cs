@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZCC.Data.Sql;
 
 namespace ZCC.Entities
 {
     public class TaskManager
     {
-        public Dictionary<int,Task> getAllCompetitiomTask(string competitionID)
+        public Dictionary<int, Models.Task> getAllCompetitiomTask(string userId,string competitionID)
         {
-            return null;
+            return (Dictionary<int, Models.Task>)taskDataSql.GetAllCompetitionTaskFromDB(userId, competitionID);
         }
     }
 }

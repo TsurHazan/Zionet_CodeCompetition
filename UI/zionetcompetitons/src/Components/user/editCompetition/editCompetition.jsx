@@ -1,10 +1,13 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React, { useContext, useEffect, useState } from "react";
-import { Col, InputGroup, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
 import { bgMode } from "../../../bgModeContext";
-import { getUserCompetitionManagement } from "../../../Middlewares/competitions.js/competitions";
+import {
+  getCategories,
+  getCompetitionTask,
+  getUserCompetitionManagement,
+} from "../../../Middlewares/competitions.js/competitions";
 
 export const EditCompetition = () => {
   let { id } = useParams();
@@ -12,6 +15,8 @@ export const EditCompetition = () => {
   const { bgState } = useContext(bgMode);
 
   const [competition, setCompetition] = useState({});
+  const [allTask, setAllTask] = useState({});
+  const [allCategories, setCategories] = useState({});
 
   /*
   const handleChange = (event) => {
@@ -39,13 +44,35 @@ export const EditCompetition = () => {
     }));
   };
 
+  const getAllCompetitionTask = async () => {
+    const all = await getCompetitionTask(user.sub, id);
+    console.log(all);
+    const data = Object.values(all.data);
+    console.log(data);
+    //setAllTask(data);
+  };
+  const getallCategories = async () => {
+    const all = await getCategories();
+    console.log(all);
+    const data = Object.values(all.data);
+    console.log(data);
+    //setAllTask(data);
+  };
+  const getAllCompetitionDetailsFromDB = async () => {
+    const ans = await getUserCompetitionManagement(user.sub, id);
+    console.log(ans);
+    // const data = Object.values(ans.data);
+    // console.log(data);
+    setCompetition(ans.data);
+    HandleDate();
+  };
   useEffect(() => {
-    const getAllCompetitionDetailsFromDB = async () => {
-      const ans = await getUserCompetitionManagement(user.sub, id);
-      setCompetition(ans.data);
-      HandleDate();
+    const initUseEffect = async () => {
+      await getAllCompetitionDetailsFromDB();
+      await getAllCompetitionTask();
+      await getallCategories();
     };
-    getAllCompetitionDetailsFromDB();
+    initUseEffect();
   }, []);
 
   //<input type="text" id="status" value={competition.status} />
