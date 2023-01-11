@@ -5,6 +5,8 @@ import Navbar from "react-bootstrap/Navbar";
 import "../../../Styles/navbar.css";
 import { bgMode } from "../../../bgModeContext";
 import { LogoutButton } from "../../exports.js";
+import Brightness5Icon from "@mui/icons-material/Brightness5";
+import ModeNightIcon from "@mui/icons-material/ModeNight";
 
 export const UsersNavBar = () => {
   const { bgState, setBgState } = useContext(bgMode);
@@ -46,7 +48,7 @@ export const UsersNavBar = () => {
                 changeBG();
               }}
             >
-              {`${bgState} mode`}
+              {bgState === "light" ? <Brightness5Icon /> : <ModeNightIcon />}
             </Nav.Item>
             <Nav.Item>
               <LogoutButton />

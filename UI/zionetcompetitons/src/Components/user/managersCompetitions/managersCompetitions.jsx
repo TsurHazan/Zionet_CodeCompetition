@@ -42,7 +42,8 @@ export const ManagersCompetitions = () => {
 
   return (
     <div>
-      <table>
+      <h1>Welcome {user.name}</h1>
+      <table className="allCompetitions">
         <thead>
           <tr>
             <th>Name</th>
@@ -59,7 +60,7 @@ export const ManagersCompetitions = () => {
                     {competition.name}
                   </Link>
                 </td>
-                <td>{competition.start}</td>
+                <td>{competition.start.replace("T", " ")}</td>
                 <td>{competition.status}</td>
               </tr>
             );

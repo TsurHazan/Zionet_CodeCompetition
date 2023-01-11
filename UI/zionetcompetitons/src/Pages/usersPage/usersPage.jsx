@@ -14,10 +14,11 @@ export const UsersPage = () => {
   const { user } = useAuth0();
 
   return (
-    <div className={bgState}>
+    <div className={`${bgState} dashboard`}>
       <UsersNavBar />
-      <h1>Welcome {user.name}</h1>
+
       <Routes>
+        <Route path="/" element={<ManagersCompetitions />} />
         <Route path="/Management" element={<ManagersCompetitions />} />
         <Route path="/Management/:id" element={<EditCompetition />} />
       </Routes>
