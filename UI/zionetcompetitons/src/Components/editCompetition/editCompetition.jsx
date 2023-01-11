@@ -3,8 +3,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { Col, InputGroup, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
-import { bgMode } from "../../../bgModeContext";
-import { getUserCompetitionManagement } from "../../../Middlewares/competitions.js/competitions";
+import { bgMode } from "../../bgModeContext";
+import { getUserCompetitionManagement } from "../../Middlewares/competitions.js/competitions";
 
 export const EditCompetition = () => {
   let { id } = useParams();
