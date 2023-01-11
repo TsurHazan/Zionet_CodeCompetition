@@ -36,3 +36,12 @@ export const updateCurrentCompetition = async (
   reqURL = `http://localhost:7175/api/systemManager/updateCurrentCompetition/${systemManagerID}/${competitionID}`;
   return await axios.post(reqURL, competitionObj);
 };
+
+export const changeCompetitionStatus = async (
+  newstatus,
+  competitionID,
+  systemManagerID
+) => {
+  reqURL = `http://localhost:7175/api/systemManager/changeCompetitionStatus/${systemManagerID}/${competitionID}`;
+  await axios.post(reqURL, newstatus);
+};

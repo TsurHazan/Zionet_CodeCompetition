@@ -17,10 +17,7 @@ export const getAllUsers = async (userID) => {
 //Welcome! we registered you in our system.. Good luck!
 
 export const checkUserCompetitions = async (userID) => {
-  console.log(userID);
   let reqUrl = `http://localhost:7175/api/UsersCompetitions/GetAllCompetition/${userID}`;
-  console.log(reqUrl);
   let reqGet = await axios.get(reqUrl);
-  console.log(reqGet, reqGet.data);
   return reqGet;
 };

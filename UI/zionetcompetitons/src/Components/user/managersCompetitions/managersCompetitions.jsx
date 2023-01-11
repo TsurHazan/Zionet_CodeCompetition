@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { bgMode } from "../../bgModeContext.js";
-import { checkUserCompetitions } from "../../Middlewares/users/users.js";
+import { bgMode } from "../../../bgModeContext.js";
+import { checkUserCompetitions } from "../../../Middlewares/users/users.js";
 import { Link } from "react-router-dom";
 
 export const ManagersCompetitions = () => {
@@ -34,10 +34,7 @@ export const ManagersCompetitions = () => {
   useEffect(() => {
     const getAllUserCompetitions = async () => {
       const all = await checkUserCompetitions(user.sub);
-      console.log("user.sub", user.sub);
-      console.log(all);
       const data = Object.values(all.data);
-      console.log(data);
       setAllCompetitions(data);
     };
     getAllUserCompetitions();
@@ -45,7 +42,8 @@ export const ManagersCompetitions = () => {
 
   return (
     <div>
-      <table>
+      <h1>Welcome {user.name}</h1>
+      <table className="allCompetitions">
         <thead>
           <tr>
             <th>Name</th>
@@ -55,8 +53,6 @@ export const ManagersCompetitions = () => {
         </thead>
         <tbody>
           {allCompetitions.map((competition) => {
-            competition.start = competition.start.replace("T", " ");
-
             return (
               <tr key={competition.id}>
                 <td>
@@ -64,7 +60,7 @@ export const ManagersCompetitions = () => {
                     {competition.name}
                   </Link>
                 </td>
-                <td>{competition.start}</td>
+                <td>{competition.start.replace("T", " ")}</td>
                 <td>{competition.status}</td>
               </tr>
             );

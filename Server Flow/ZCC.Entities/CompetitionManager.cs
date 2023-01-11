@@ -12,6 +12,11 @@ namespace ZCC.Entities
     {
         private competitionDataSql competitionDataSql = new competitionDataSql();
 
+        // --------------------- Change Competition Status ---------------------
+        public void ChangeCompetitionStatus(string competitionID, string newStatus)
+        {
+            competitionDataSql.ChangeCompetitionStatus(int.Parse(competitionID), newStatus);
+        }
 
         // ---------------------  remove all of the current managers from managing this competition ---------------------
         public void RemoveCompetitionManagers(string competitionID)
@@ -48,7 +53,7 @@ namespace ZCC.Entities
         {
             return competitionDataSql.GetUserCompetitionsFromDB(id);
         }
-        public Models.Competition UserCompetitionManaget(string id, string competitionidID)
+        public Models.Competition UserCompetitionManager(string id, string competitionidID)
         {
             return competitionDataSql.GetCompetitionByIdFromDB(id, competitionidID);
         }

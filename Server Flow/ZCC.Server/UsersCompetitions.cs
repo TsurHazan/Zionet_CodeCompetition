@@ -56,7 +56,7 @@ namespace ZCC.Server
                     return new OkObjectResult(MainManager.Instance.competitionsManager.allUserCompetitions(userid));
                 case "GetCompetition":
 
-                    return new OkObjectResult(MainManager.Instance.competitionsManager.UserCompetitionManaget(userid,competitionID));
+                    return new OkObjectResult(MainManager.Instance.competitionsManager.UserCompetitionManager(userid,competitionID));
 
                  
                 default:

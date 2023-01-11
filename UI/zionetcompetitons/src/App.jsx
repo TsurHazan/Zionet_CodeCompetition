@@ -22,7 +22,6 @@ export const App = () => {
     const checkDB = async () => {
       let msg = await checkIfUserInDB(user.sub, user.given_name);
       const userComp = await checkUserCompetitions(user.sub);
-      console.log(userComp);
       // alert(msg);
     };
     checkDB();
