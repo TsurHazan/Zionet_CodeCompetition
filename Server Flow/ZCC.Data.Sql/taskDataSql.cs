@@ -40,7 +40,7 @@ namespace ZCC.Data.Sql
 
         public static Dictionary<int, Models.Task> GetAllCompetitionTaskFromDB(string userID,string competitionID)
         {
-            string sqlQuery = $"SELECT * FROM Tasks where CompetitionID = ( SELECT [Competition ID] FROM [Users competitions]  where UserID = '{userID}' and [Competition ID] = {competitionID})";
+            string sqlQuery = $"SELECT * FROM Tasks where CompetitionID = ( SELECT [Competition ID] FROM [Users competitions]  where UserID = '{userID}' and [Competition ID] = {competitionID} and Admin = 1)";
              func = SetDataToDictionary;
             Dictionary<int, Models.Task> ret = (Dictionary<int, Models.Task>)DAL.SqlServerQuery.getValueFromDB(sqlQuery, func);
             return ret;
