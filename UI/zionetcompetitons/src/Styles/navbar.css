@@ -1,6 +1,12 @@
 a img {
   margin-right: 5px;
 }
-.sanav {
-  text-align: center;
+.siteNavBar {
+  padding: 0 !important;
+  max-width: 1400px;
+  width: 100% !important;
+}
+.siteNavBar a {
+  padding: 0 !important;
+  margin: 0 20px 0 0;
 }

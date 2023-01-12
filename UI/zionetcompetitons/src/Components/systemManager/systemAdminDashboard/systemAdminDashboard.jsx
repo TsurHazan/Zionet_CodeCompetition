@@ -32,7 +32,6 @@ export const SystemAdminDashboard = () => {
       className={`systemDash ${bgState}`}
       sx={{
         bgcolor: "background.paper",
-        width: 1300,
         position: "relative",
         minHeight: 600,
       }}

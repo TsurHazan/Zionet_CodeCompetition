@@ -22,7 +22,7 @@ export const UsersNavBar = () => {
   };
   return (
     <Navbar collapseOnSelect expand="lg" bg={bgState} variant={bgState}>
-      <Container>
+      <Container className="siteNavBar">
         <Navbar.Brand href="/">
           <img
             src="https://www.zion-net.co.il/wp-content/uploads/2021/06/ZioNET-Logo_new_new-156x66.png"
