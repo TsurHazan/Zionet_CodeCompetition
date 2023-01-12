@@ -3,6 +3,10 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { bgMode } from "../../../bgModeContext.js";
 import { checkUserCompetitions } from "../../../Middlewares/users/users.js";
 import { Link } from "react-router-dom";
+import {
+  updateCompetitionManagement,
+  updateStatusCompetition,
+} from "../../../Middlewares/competitions.js/competitions.js";
 
 export const ManagersCompetitions = () => {
   const [allCompetitions, setAllCompetitions] = useState([]);
@@ -30,6 +34,12 @@ export const ManagersCompetitions = () => {
     }
   };
 */
+  const startCopmetition = async (competitionID) => {
+    await updateStatusCompetition(user.sub, competitionID, "Running");
+    let ref = "/LiveManagerDashboard/" + competitionID;
+    window.location.href = ref;
+  };
+
   //load all users from DB
   useEffect(() => {
     const getAllUserCompetitions = async () => {
@@ -55,13 +65,21 @@ export const ManagersCompetitions = () => {
           {allCompetitions.map((competition) => {
             return (
               <tr key={competition.id}>
-                <td>
-                  <Link to={"/Management/" + competition.id}>
-                    {competition.name}
-                  </Link>
-                </td>
+                <td>{competition.name}</td>
                 <td>{competition.start.replace("T", " ")}</td>
                 <td>{competition.status}</td>
+                <td>
+                  <Link to={"/Management/" + competition.id}>Edit</Link>
+                </td>
+                <td>
+                  <button
+                    onClick={() => {
+                      startCopmetition(competition.id);
+                    }}
+                  >
+                    Start
+                  </button>
+                </td>
               </tr>
             );
           })}

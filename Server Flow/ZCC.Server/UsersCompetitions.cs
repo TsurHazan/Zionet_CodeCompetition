@@ -12,6 +12,7 @@ using System.Reflection;
 using ZCC.Entities;
 using System.Collections.Generic;
 using RestSharp;
+using ZCC.Models;
 
 namespace ZCC.Server
 {
@@ -57,8 +58,48 @@ namespace ZCC.Server
                 case "GetCompetition":
 
                     return new OkObjectResult(MainManager.Instance.competitionsManager.UserCompetitionManager(userid,competitionID));
+                case "UpdateCompetition":
+                    try
+                    {
+                        Competition competition = System.Text.Json.JsonSerializer.Deserialize<Competition>(requestBody);
+                        if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competition.id.ToString()))
+                        {
+                        bool ll= MainManager.Instance.competitionsManager.UpdateCompetition(competition);
+                        return new OkObjectResult(ll);
 
-                 
+                        }
+                        else
+                        {
+                            return new OkObjectResult(false);
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        return new OkObjectResult(false);
+                    }
+                case "UpdateCompetitionStatus":
+                    try
+                    {
+                        if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
+                        {
+                             MainManager.Instance.competitionsManager.ChangeCompetitionStatus(competitionID,requestBody);
+                            return new OkObjectResult(true);
+
+                        }
+                        else
+                        {
+                            return new OkObjectResult(false);
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        return new OkObjectResult(false);
+                    }
+
                 default:
                     break;
             }

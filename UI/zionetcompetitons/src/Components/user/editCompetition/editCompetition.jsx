@@ -7,6 +7,7 @@ import {
   getCategories,
   getCompetitionTask,
   getUserCompetitionManagement,
+  updateCompetitionManagement,
 } from "../../../Middlewares/competitions.js/competitions";
 
 export const EditCompetition = () => {
@@ -18,24 +19,13 @@ export const EditCompetition = () => {
   const [allTask, setAllTask] = useState({});
   const [allCategories, setCategories] = useState({});
 
-  /*
   const handleChange = (event) => {
-    const name = event.target.name;
+    const name = event.target.id;
     const value = event.target.value;
-
     setCompetition((values) => ({ ...values, [name]: value }));
-  };
-  */
-  const ChangcompetitionValue = (colum, val) => {
-    setCompetition((values) => ({ ...values, [colum]: val }));
     HandleDate();
   };
 
-  const handleStatusChange = (event) => {
-    const updated = competition;
-    updated.status = event.target.value;
-    setCompetition(updated);
-  };
   const HandleDate = () => {
     setCompetition((values) => ({
       ...values,
@@ -46,26 +36,27 @@ export const EditCompetition = () => {
 
   const getAllCompetitionTask = async () => {
     const all = await getCompetitionTask(user.sub, id);
-    console.log(all);
     const data = Object.values(all.data);
-    console.log(data);
-    //setAllTask(data);
+    setAllTask(data);
   };
   const getallCategories = async () => {
     const all = await getCategories();
-    console.log(all);
     const data = Object.values(all.data);
-    console.log(data);
-    //setAllTask(data);
+    setAllTask(data);
   };
   const getAllCompetitionDetailsFromDB = async () => {
     const ans = await getUserCompetitionManagement(user.sub, id);
-    console.log(ans);
-    // const data = Object.values(ans.data);
-    // console.log(data);
+    console.log(ans.data);
     setCompetition(ans.data);
     HandleDate();
   };
+  const handleUpdateCompetition = async () => {
+    competition.maxActiveTasks = parseInt(competition.maxActiveTasks);
+    console.log(competition);
+
+    await updateCompetitionManagement(user.sub, competition);
+  };
+
   useEffect(() => {
     const initUseEffect = async () => {
       await getAllCompetitionDetailsFromDB();
@@ -78,41 +69,47 @@ export const EditCompetition = () => {
   //<input type="text" id="status" value={competition.status} />
   return (
     <div className="competitionEdit">
-      <label htmlFor="name">
+      <label htmlFor="Name">
         Name
         <br />
-        <input type="text" id="name" defaultValue={competition.name} />
+        <input
+          type="text"
+          id="Name"
+          defaultValue={competition.name}
+          onChange={handleChange}
+        />
       </label>
 
-      <label htmlFor="status">
-        Status
-        <br />
-        <select defaultValue={competition.status} onChange={handleStatusChange}>
-          <option value="Running">Running</option>
-          <option value="Finished">Finished</option>
-          <option value="In Preparation">In Preparation</option>
-        </select>
-      </label>
-
-      <label htmlFor="start">
+      <label htmlFor="Start">
         Start
         <br />
         <input
           type="datetime-local"
-          id="start"
+          id="Start"
           defaultValue={competition.start}
+          onChange={handleChange}
         />
       </label>
 
-      <label htmlFor="end">
+      <label htmlFor="End">
         End <br />
-        <input type="datetime-local" id="end" defaultValue={competition.end} />
+        <input
+          type="datetime-local"
+          id="End"
+          defaultValue={competition.end}
+          onChange={handleChange}
+        />
       </label>
 
       <label htmlFor="hashcode">
         Hash Code
         <br />
-        <input type="text" id="hashcode" defaultValue={competition.hashcode} />
+        <input
+          type="text"
+          id="hashcode"
+          defaultValue={competition.hashcode}
+          onChange={handleChange}
+        />
       </label>
 
       <label htmlFor="maxActiveTasks">
@@ -122,8 +119,11 @@ export const EditCompetition = () => {
           type="number"
           id="maxActiveTasks"
           defaultValue={competition.maxActiveTasks}
+          onChange={handleChange}
         />
       </label>
+
+      <button onClick={handleUpdateCompetition}>Update</button>
     </div>
   );
 };

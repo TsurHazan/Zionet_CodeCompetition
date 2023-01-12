@@ -9,6 +9,7 @@ import {
 import { EditCompetitionPage } from "../exportPages.js";
 import { Route, Routes } from "react-router-dom";
 import "../../Styles/user.css";
+import { LiveManagerDash } from "../../Components/user/liveManagerDash/liveManagerDash";
 
 export const UsersPage = () => {
   const { bgState, setBgState } = useContext(bgMode);
@@ -22,6 +23,7 @@ export const UsersPage = () => {
         <Route path="/" element={<ManagersCompetitions />} />
         <Route path="/Management" element={<ManagersCompetitions />} />
         <Route path="/Management/:id" element={<EditCompetitionPage />} />
+        <Route path="/LiveManagerDashboard/:id" element={<LiveManagerDash />} />
       </Routes>
     </div>
   );
