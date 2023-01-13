@@ -167,29 +167,3 @@ export const CreateCompetition = () => {
     );
   }
 };
-/*
-  <Grid xs={6}>
-            <label>
-              Number of teams:
-              <input
-                type="number"
-                name="Numberofteams"
-                value={inputs.Numberofteams || "3"}
-                onChange={handleChange}
-              />
-            </label>
-          </Grid> 
-          */
-/* 
-            <Grid xs={6}>
-            <label>
-              Max active tasks:
-              <input
-                type="number"
-                name="maxactivetasks"
-                value={inputs.maxactivetasks || "3"}
-                onChange={handleChange}
-              />
-            </label>
-          </Grid>
-          */

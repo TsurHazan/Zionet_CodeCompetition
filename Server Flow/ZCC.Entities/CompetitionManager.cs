@@ -18,12 +18,6 @@ namespace ZCC.Entities
             competitionDataSql.ChangeCompetitionStatus(int.Parse(competitionID), newStatus);
         }
 
-        // ---------------------  remove all of the current managers from managing this competition ---------------------
-        public void RemoveCompetitionManagers(string competitionID)
-        {
-            int competitionid = int.Parse(competitionID);
-            competitionDataSql.RemoveCompetitionManager(competitionid);                         
-        }
 
         // --------------------- Update specific Competition row ---------------------
         public bool UpdateCompetition(Competition competition) 
@@ -32,16 +26,10 @@ namespace ZCC.Entities
         }
 
         // --------------------- Create new competition ---------------------
-        public void createCompetition(Competition competition, User[] users)
+        public int createCompetition(Competition competition)
         {
-            int newCompetitionID =  competitionDataSql.CreateNewCompetitions(competition);
-            setManagers(users, newCompetitionID);
-        }
-
-        // --------------------- Set users as competition managers in a specific competition ---------------------
-        public void setManagers(User[] users,int competitionID)
-        {
-            competitionDataSql.SetManagers(users, competitionID);   
+            return competitionDataSql.CreateNewCompetitions(competition);
+            
         }
 
         // --------------------- Return all competition in the DB ---------------------

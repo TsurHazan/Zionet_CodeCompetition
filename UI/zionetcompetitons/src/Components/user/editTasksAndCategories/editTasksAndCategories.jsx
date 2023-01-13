@@ -27,41 +27,43 @@ export const EditTasksAndCategories = () => {
     setValue(index);
   };
   return (
-    <Box
-      className={`systemDash tasksDash ${bgState}`}
-      sx={{
-        bgcolor: "background.paper",
-        width: 1300,
-        position: "relative",
-        minHeight: 600,
-      }}
-    >
-      <AppBar position="static" color="default">
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          indicatorColor="primary"
-          textColor="primary"
-          variant="fullWidth"
-          aria-label="action tabs example"
-        >
-          <Tab label="Create new Tasks" {...a11yProps(0)} />
-          <Tab label="Tasks" {...a11yProps(1)} />
-          <Tab label="Categories" {...a11yProps(2)} />
-        </Tabs>
-      </AppBar>
-      <SwipeableViews
-        axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-        index={value}
-        onChangeIndex={handleChangeIndex}
+    <>
+      <Box
+        className={`systemDash tasksDash ${bgState}`}
+        sx={{
+          bgcolor: "background.paper",
+          width: 1300,
+          position: "relative",
+          minHeight: 600,
+        }}
       >
-        <TabPanel value={value} index={0} dir={theme.direction}></TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}></TabPanel>
-        <TabPanel value={value} index={2} dir={theme.direction}>
-          Item Three
-        </TabPanel>
-      </SwipeableViews>
-    </Box>
+        <AppBar position="static" color="default">
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            indicatorColor="primary"
+            textColor="primary"
+            variant="fullWidth"
+            aria-label="action tabs example"
+          >
+            <Tab label="Create new Tasks" {...a11yProps(0)} />
+            <Tab label="Tasks" {...a11yProps(1)} />
+            <Tab label="Categories" {...a11yProps(2)} />
+          </Tabs>
+        </AppBar>
+        <SwipeableViews
+          axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+          index={value}
+          onChangeIndex={handleChangeIndex}
+        >
+          <TabPanel value={value} index={0} dir={theme.direction}></TabPanel>
+          <TabPanel value={value} index={1} dir={theme.direction}></TabPanel>
+          <TabPanel value={value} index={2} dir={theme.direction}>
+            Item Three
+          </TabPanel>
+        </SwipeableViews>
+      </Box>
+    </>
   );
 };
 

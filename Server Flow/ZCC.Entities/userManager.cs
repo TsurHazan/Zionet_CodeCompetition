@@ -12,6 +12,18 @@ namespace ZCC.Entities
     {
         private userDataSql UserDataSQL = new userDataSql(); //init userDataSql
 
+        // --------------------- Set users as competition managers in a specific competition ---------------------
+        public void setManagers(User[] users, int competitionID)
+        {
+            UserDataSQL.SetManagers(users, competitionID);
+        }
+
+        // ---------------------  remove all of the current managers from managing this competition ---------------------
+        public void RemoveCompetitionManagers(string competitionID,string userID)
+        {
+            
+            UserDataSQL.RemoveCompetitionManager(competitionID, userID);
+        }
 
         // --------------------- get all Competitions Managers from the DB ---------------------
         public Dictionary<string, User> getAllCompetitonManagers(string competitionID) { return UserDataSQL.getAllCompetitonManagers(competitionID); }

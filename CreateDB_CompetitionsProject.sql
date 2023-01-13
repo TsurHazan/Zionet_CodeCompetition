@@ -32,7 +32,7 @@ ALTER TABLE
 CREATE TABLE "Tasks"(
     "id" INT identity NOT NULL,
     "CompetitionID" INT NOT NULL,
-    "CategoryID" INT NOT NULL,
+    "CategoryID" NVARCHAR(50) NOT NULL,
     "Timeframe(minutes)" INT NOT NULL,
     "points" INT NOT NULL,
     "Description" NVARCHAR(255) NOT NULL,
@@ -66,8 +66,7 @@ CREATE  INDEX "active tasks_competitionid_" ON
 CREATE  INDEX "active tasks_taskid_" ON
     "Active Tasks"("taskID");
 CREATE TABLE "Categories"(
-    "id" INT identity NOT NULL,
-    "name" NVARCHAR(50) NOT NULL
+    "id" NVARCHAR(50) NOT NULL,
 );
 ALTER TABLE
     "Categories" ADD CONSTRAINT "categories_id_primary" PRIMARY KEY("id");

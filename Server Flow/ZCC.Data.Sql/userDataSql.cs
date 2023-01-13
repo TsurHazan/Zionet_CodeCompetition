@@ -16,6 +16,25 @@ namespace ZCC.Data.Sql
         private string query { get; set; }
 
 
+
+        // --------------------- set a competition managers ,if user is not related to the competition then insert him as manager ---------------------
+
+        public  void SetManagers(User[] users, int competitionID)
+        {
+            foreach (User user in users)
+            {
+                string query = $"IF exists(select * from [Users competitions] where ([UserID] =  '{user.user_id}' and [Competition ID] = {competitionID}))\r\nbegin\r\nupdate [Users competitions] set [Admin] = 1 where [UserID] = '{user.user_id}' and [Competition ID] = {competitionID}\r\nend\r\nELSE\r\nbegin\r\ninsert into [Users competitions] values ('{user.user_id}',1,1,{competitionID})\r\nend";
+                SqlServerQuery.runCommand(query);
+            }
+        }
+
+        // --------------------- Remove user from being manager in a specific Competition and from the competition  ---------------------
+        public void RemoveCompetitionManager(string competitionID, string userID)
+        {
+            string query = $"update [Users competitions] set [Admin] = 0,[Competition ID]= 1 where [Competition ID] = {competitionID}";
+            SqlServerQuery.runCommand(query);
+        }
+
         // --------------------- get all Competitions Managers from the DB ---------------------
         public Dictionary<string, User> getAllCompetitonManagers(string competitionID) {
             func = _getAllCompetitonManagers;

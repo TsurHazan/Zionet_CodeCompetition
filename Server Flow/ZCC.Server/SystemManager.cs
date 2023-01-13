@@ -41,18 +41,14 @@ namespace ZCC.Server
                     return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(MainManager.Instance.userEntities.allUsers));
 
                 case "createCompetition":
+                    
                     body = await new StreamReader(req.Body).ReadToEndAsync();
                     JObject data = JsonConvert.DeserializeObject<JObject>(body);
                     Competition newComp = data["Competition"].ToObject<Competition>();
                     User[] users = data["UsersArr"].ToObject<User[]>();
-                    MainManager.Instance.competitionsManager.createCompetition(newComp, users);
-                    users = null;
-                    newComp = null;
+                    MainManager.Instance.userEntities.setManagers(users, MainManager.Instance.competitionsManager.createCompetition(newComp));
+                    
                     return new OkObjectResult("Created new Competition successfully");
-
-                case "setCompetitionManagers":
-                    body = await new StreamReader(req.Body).ReadToEndAsync();
-                    break;
 
                 case "getAllCompetitions":
                     return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(MainManager.Instance.competitionsManager.allSystemCompetitions));
@@ -65,16 +61,16 @@ namespace ZCC.Server
                      data = JsonConvert.DeserializeObject<JObject>(body);
                     Competition Competition = data["Competition"].ToObject<Competition>();
                     User[] managers = data["ManagersArr"].ToObject<User[]>();
-                    MainManager.Instance.competitionsManager.RemoveCompetitionManagers(competitionID);
+                    MainManager.Instance.userEntities.RemoveCompetitionManagers(competitionID,userid);
                     bool completed = MainManager.Instance.competitionsManager.UpdateCompetition(Competition);
-                    MainManager.Instance.competitionsManager.setManagers(managers,int.Parse( competitionID));
-                    users = null;
-                    newComp = null;
+                    MainManager.Instance.userEntities.setManagers(managers,int.Parse( competitionID));  
+                    
                     return new OkObjectResult(completed);
                 
                 case "changeCompetitionStatus":
                     body = await new StreamReader(req.Body).ReadToEndAsync();
                     MainManager.Instance.competitionsManager.ChangeCompetitionStatus(competitionID, body);
+
                     return new OkObjectResult(200);
             }
             return new OkObjectResult("null");

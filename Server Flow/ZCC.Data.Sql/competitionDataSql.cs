@@ -17,6 +17,8 @@ namespace ZCC.Data.Sql
         private static string query;
         static Dictionary<int, Models.Competition> DiCompetitions = new Dictionary<int, Competition>();
 
+        
+
         // --------------------- Change Competition Status  ---------------------
         public void ChangeCompetitionStatus(int competitionID,string newStatus)
         {
@@ -24,12 +26,7 @@ namespace ZCC.Data.Sql
         }
 
 
-        // --------------------- Remove user from being manager in a specific Competition  ---------------------
-        public void RemoveCompetitionManager(int competitionID)
-        {
-            string query = $"update [Users competitions] set [Admin] = 0 where [Competition ID] = {competitionID}";
-            SqlServerQuery.runCommand(query);
-        }
+        
 
         // --------------------- Update specific Competition row ---------------------
         public bool UpdateCompetition(Competition competition)
@@ -64,7 +61,6 @@ namespace ZCC.Data.Sql
             return DiCompetitions;
         }
 
-
         public static Dictionary<int, Models.Competition> GetAllCompetitions()
         {
             func = _GetAllCompetitions;
@@ -73,7 +69,8 @@ namespace ZCC.Data.Sql
             return allCompetitions;
         }
 
-        // --------------------- create new competition in database ---------------------
+
+        // --------------------- create new competition in database and return its id ---------------------
 
         public static int CreateNewCompetitions(Competition competition)
         {
@@ -81,21 +78,16 @@ namespace ZCC.Data.Sql
             return (int) DAL.SqlServerQuery.getSingleValueFromDB(query);
             
         }
-
-        // --------------------- set a competition managers *if user is not related to the competition then add him as manager ---------------------
-
-        public static void SetManagers(User[] users,int competitionID)
+        
+        // --------------------- get all Competitions the user participating at ---------------------
+        public static Dictionary<int, Models.Competition> GetUserCompetitionsFromDB(string userID)
         {
-            foreach (User user in users)
-            {
-                string query = $"IF exists(select * from [Users competitions] where ([UserID] =  '{user.user_id}' and [Competition ID] = {competitionID}))\r\nbegin\r\nupdate [Users competitions] set [Admin] = 1 where [UserID] = '{user.user_id}' and [Competition ID] = {competitionID}\r\nend\r\nELSE\r\nbegin\r\ninsert into [Users competitions] values ('{user.user_id}',1,1,{competitionID})\r\nend";
-                SqlServerQuery.runCommand(query);
-            }
+            string sqlQuery = $"select  id ,Start,[End], numOfTeams, status,Name , hashcode,[max active Tasks] from [Users competitions] us join Competitions com on us.[Competition ID] = com.id where UserID = '{userID}' and [Admin] = 1";
+            SqlServerQuery.miisiksFunc func = SetDataToDictionary;
+            Dictionary<int, Models.Competition> ret = (Dictionary<int, Models.Competition>)DAL.SqlServerQuery.getValueFromDB(sqlQuery, func);
+            return ret;
         }
-
-        // --------------------- ??? ---------------------
-
-        public static Dictionary<int, Models.Competition> SetDataToDictionary(SqlDataReader reader)
+        private static Dictionary<int, Models.Competition> SetDataToDictionary(SqlDataReader reader)
         {
             DiCompetitions.Clear();
             while (reader.Read())
@@ -114,17 +106,7 @@ namespace ZCC.Data.Sql
             return DiCompetitions;
         }
 
-
-        // --------------------- get all Competitions the user participating at ---------------------
-
-        public static Dictionary<int, Models.Competition> GetUserCompetitionsFromDB(string userID)
-        {
-            string sqlQuery = $"select  id ,Start,[End], numOfTeams, status,Name , hashcode,[max active Tasks] from [Users competitions] us join Competitions com on us.[Competition ID] = com.id where UserID = '{userID}' and [Admin] = 1";
-            SqlServerQuery.miisiksFunc func = SetDataToDictionary;
-            Dictionary<int, Models.Competition> ret = (Dictionary<int, Models.Competition>)DAL.SqlServerQuery.getValueFromDB(sqlQuery, func);
-            return ret;
-        }
-
+        // --------------------- Get a specific competition the user is related to ---------------------
         public static Models.Competition SetDataToCompetition(SqlDataReader reader)
         {
             if (reader.Read())

@@ -1,13 +1,9 @@
 .newCompetitionDiv {
   text-align: center;
 }
-.systemDash {
-  margin: 20px auto 0 auto;
-  justify-content: center;
-  border: 3px solid;
-  border-radius: 5px;
-}
+
 .usersGrid {
+  height: 70vh;
   display: grid;
   grid-template-rows: auto auto auto auto;
   grid-template-columns: auto auto;
@@ -21,7 +17,6 @@
 .allUsersLabel {
   padding: 20px;
   width: 100%;
-  height: 60vh;
   display: grid;
   grid-template-rows: auto auto auto auto;
   grid-template-columns: auto auto auto auto;
@@ -59,5 +54,5 @@ th {
 .EditCompetition_SM {
   margin: 0 auto;
   justify-content: center;
-  width: 1200px;
+  width: 1400px;
 }

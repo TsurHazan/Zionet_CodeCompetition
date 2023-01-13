@@ -3,13 +3,14 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import "../../../Styles/navbar.css";
-import { bgMode } from "../../../bgModeContext";
-import { LogoutButton } from "../../exports.js";
+import { bgMode } from "../../../bgModeContext.js";
+import { useAuth0 } from "@auth0/auth0-react";
 import Brightness5Icon from "@mui/icons-material/Brightness5";
 import ModeNightIcon from "@mui/icons-material/ModeNight";
 
 export const UsersNavBar = () => {
   const { bgState, setBgState } = useContext(bgMode);
+  const { logout } = useAuth0();
   useEffect(() => {
     const firstTime = async () => {
       if (bgState === "undefined") await setBgState("light");
@@ -50,9 +51,11 @@ export const UsersNavBar = () => {
             >
               {bgState === "light" ? <Brightness5Icon /> : <ModeNightIcon />}
             </Nav.Item>
-            <Nav.Item>
-              <LogoutButton />
-            </Nav.Item>
+            <Nav.Link
+              onClick={() => logout({ returnTo: window.location.origin })}
+            >
+              Log out
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

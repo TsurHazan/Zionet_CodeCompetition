@@ -1,13 +1,12 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
 import { bgMode } from "../../../bgModeContext";
 import {
   getCategories,
   getCompetitionTask,
   getUserCompetitionManagement,
-} from "../../../Middlewares/competitions.js/competitions";
+} from "../../../Middlewares/competitions/competitions.js";
 
 export const EditCompetition = () => {
   let { id } = useParams();
@@ -79,9 +78,6 @@ export const EditCompetition = () => {
   return (
     <>
       <div className="competitionEdit">
-        <br />
-        <h3>Edit Details</h3>
-        <br />
         <label htmlFor="name">
           Name
           <br />
