@@ -30,7 +30,6 @@ export const LiveManagerDash = () => {
     HandleDate();
   };
   let newDate = new Date();
-  let nowDate = newDate.getTime();
   useEffect(() => {
     const initUseEffect = async () => {
       await getAllCompetitionDetailsFromDB();
@@ -48,7 +47,7 @@ export const LiveManagerDash = () => {
         {competition.name} IS {competition.status}
       </p>
       <p>Hash Code is: {competition.hashcode}</p>
-      <p>{nowDate}</p>
+      <p>{newDate.toISOString().substring(0, 19).replace("T", " ")}</p>
       {/* <p>End Time is: {competition.end.substring(11, 16)}</p> */}
       <button onClick={EndCopmetition}>Finish</button>
     </div>

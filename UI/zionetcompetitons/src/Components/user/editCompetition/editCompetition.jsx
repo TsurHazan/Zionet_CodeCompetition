@@ -15,7 +15,14 @@ export const EditCompetition = () => {
   const { user } = useAuth0();
   const { bgState } = useContext(bgMode);
 
-  const [competition, setCompetition] = useState({});
+  const [competition, setCompetition] = useState({
+    Start: "",
+    Name: "new Competition",
+    End: "",
+    Numberofteams: "0",
+    hashcode: "noHash",
+    maxActiveTasks: "0",
+  });
   const [allTask, setAllTask] = useState({});
   const [allCategories, setCategories] = useState({});
 
@@ -23,15 +30,16 @@ export const EditCompetition = () => {
     const name = event.target.id;
     const value = event.target.value;
     setCompetition((values) => ({ ...values, [name]: value }));
-    HandleDate();
+    // HandleDate();
   };
 
-  const HandleDate = () => {
+  const HandleDate = async () => {
     setCompetition((values) => ({
       ...values,
-      end: values.end.replace("T", " "),
-      start: values.start.replace("T", " "),
+      End: values.End.replace("T", " "),
+      Start: values.Start.replace("T", " "),
     }));
+    console.log(competition);
   };
 
   const getAllCompetitionTask = async () => {
@@ -45,16 +53,33 @@ export const EditCompetition = () => {
     setAllTask(data);
   };
   const getAllCompetitionDetailsFromDB = async () => {
-    const ans = await getUserCompetitionManagement(user.sub, id);
-    console.log(ans.data);
-    setCompetition(ans.data);
-    HandleDate();
+    const dat = await getUserCompetitionManagement(user.sub, id);
+    const ans = dat.data;
+    console.log(ans);
+    const myObj = {
+      id: ans.id,
+      Start: ans.start,
+      Name: ans.name,
+      End: ans.end,
+      Numberofteams: ans.numOfTeams,
+      status: ans.status,
+      hashcode: ans.hashcode,
+      maxActiveTasks: ans.maxActiveTasks,
+    };
+    console.log(myObj);
+    //const rows = Object.keys(ans).map((c) => ans[c]);
+    setCompetition(myObj);
+    //await HandleDate();
   };
   const handleUpdateCompetition = async () => {
     competition.maxActiveTasks = parseInt(competition.maxActiveTasks);
-    console.log(competition);
 
-    await updateCompetitionManagement(user.sub, competition);
+    // competition.End = competition.End.toISOString().substring(0, 16);
+    // competition.Start = competition.Start.toISOString().substring(0, 16);
+    console.log(competition);
+    const bla = JSON.stringify(competition);
+    console.log(bla);
+    await updateCompetitionManagement(user.sub, bla);
   };
 
   useEffect(() => {
@@ -65,7 +90,7 @@ export const EditCompetition = () => {
     };
     initUseEffect();
   }, []);
-
+  //console.log(competition);
   //<input type="text" id="status" value={competition.status} />
   return (
     <div className="competitionEdit">
@@ -75,7 +100,7 @@ export const EditCompetition = () => {
         <input
           type="text"
           id="Name"
-          defaultValue={competition.name}
+          value={competition.Name}
           onChange={handleChange}
         />
       </label>
@@ -86,7 +111,7 @@ export const EditCompetition = () => {
         <input
           type="datetime-local"
           id="Start"
-          defaultValue={competition.start}
+          defaultValue={competition.Start}
           onChange={handleChange}
         />
       </label>
@@ -96,7 +121,7 @@ export const EditCompetition = () => {
         <input
           type="datetime-local"
           id="End"
-          defaultValue={competition.end}
+          defaultValue={competition.End}
           onChange={handleChange}
         />
       </label>
@@ -107,7 +132,7 @@ export const EditCompetition = () => {
         <input
           type="text"
           id="hashcode"
-          defaultValue={competition.hashcode}
+          value={competition.hashcode}
           onChange={handleChange}
         />
       </label>
@@ -118,7 +143,7 @@ export const EditCompetition = () => {
         <input
           type="number"
           id="maxActiveTasks"
-          defaultValue={competition.maxActiveTasks}
+          value={competition.maxActiveTasks}
           onChange={handleChange}
         />
       </label>
