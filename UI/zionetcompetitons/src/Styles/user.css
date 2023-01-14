@@ -33,6 +33,7 @@ th {
 .card {
   height: 400px !important;
   width: 300px !important;
+  color: #393e46;
   box-sizing: border-box;
 }
 .card img {
@@ -61,4 +62,9 @@ th {
   width: 250px !important;
   margin: auto;
   box-sizing: border-box;
+}
+.list-group {
+  list-style: none;
+  color: #393e46;
+  overflow-y: auto;
 }

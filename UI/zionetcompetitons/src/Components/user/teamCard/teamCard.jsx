@@ -1,15 +1,20 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { getAllUsers } from "../../../Middlewares/users/users";
-import { useParams } from "react-router-dom";
 
-export const TeamCard = ({ teams, setTeams, competitionID }) => {
+export const TeamCard = ({ teams, setTeams, competitionID, indexOfTeam }) => {
   const { user } = useAuth0();
   const [team, setTeam] = useState([]);
   const [Users, setUsers] = useState([]);
-  const [Value, setValue] = useState("name");
+  const [Value, setValue] = useState("");
 
   useEffect(() => {
     const getUsers = async () => {
@@ -20,30 +25,26 @@ export const TeamCard = ({ teams, setTeams, competitionID }) => {
     getUsers();
   }, []);
 
-  const handleAddTeamMember = (newTeamMember) => {
-    const currentTeamIndex = teams.indexOf(team);
+  useEffect(() => {
+    let newTeams = teams;
+    newTeams[indexOfTeam] = team;
+    setTeams(newTeams);
+  }, [team]);
 
-    setTeam([...team, newTeamMember]);
-    console.log(Value);
-    console.log(teams);
+  const handleAddTeamMember = () => {
+    const memberInArr = Object.values(Value);
+    setTeam([...team, memberInArr]);
   };
 
-  //<li className="list-group-item">Cras justo odio</li>
+  const handleRemoveTeamMember = (member, index) => {
+    setTeam((Prev) => Prev.filter((prevItem) => prevItem !== member));
+  };
+
   return (
     <div className="card">
-      <img
-        className="card-img-top"
-        src="https://images.unsplash.com/photo-1592811864976-cf898030c3bb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1161&q=80"
-        alt="Card cap"
-      />
-      <button
-        onClick={() => {
-          console.log(team, "::::", teams);
-        }}
-      >
-        log
-      </button>
-      <div className="card-body">
+      <br />
+      <h5>{indexOfTeam}</h5>
+      <div className={"card-body"}>
         <div className="searchAndAddDiv">
           <Autocomplete
             forcePopupIcon={true}
@@ -52,7 +53,7 @@ export const TeamCard = ({ teams, setTeams, competitionID }) => {
             onChange={(event, newValue) => {
               setValue(newValue);
             }}
-            className="searchUser"
+            className={"searchUser"}
             disablePortal
             options={Users}
             getOptionLabel={(option) => {
@@ -69,6 +70,7 @@ export const TeamCard = ({ teams, setTeams, competitionID }) => {
             sx={{ width: 150, height: 50 }}
             renderInput={(params) => (
               <TextField
+                label="User"
                 onChange={() => {
                   console.log(params);
                 }}
@@ -76,17 +78,26 @@ export const TeamCard = ({ teams, setTeams, competitionID }) => {
               />
             )}
           />
-          <button
-            onClick={() => handleAddTeamMember(Value)}
-            className="btn btn-success"
-          >
-            Add
+          <button onClick={handleAddTeamMember} className="btn btn-success">
+            +
           </button>
         </div>
       </div>
       <ul className="list-group list-group-flush">
-        {team.map((member) => {
-          return <li>{member.name}</li>;
+        {team.map((member, index) => {
+          return (
+            <li key={member[2]}>
+              {member[1]}
+              <button
+                className="btn btn-danger"
+                onClick={() => {
+                  handleRemoveTeamMember(member, index);
+                }}
+              >
+                -
+              </button>
+            </li>
+          );
         })}
       </ul>
     </div>
