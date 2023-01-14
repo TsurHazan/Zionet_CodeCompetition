@@ -30,7 +30,7 @@ namespace ZCC.Server
 
             //check if user is System Manager
             var checkRole = new RestRequest("", Method.Get);
-            string getRole = $"http://localhost:7175/api/getRole/{userid}";
+            string getRole = $"http://localhost:7175/api/users/getRole/{userid}";
             var roleClient = new RestClient(getRole);
             string response = roleClient.Execute(checkRole).Content;
             if (!response.Contains("System Manager")) return new ObjectResult("no permissions");

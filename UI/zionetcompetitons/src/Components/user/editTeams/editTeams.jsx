@@ -1,10 +1,12 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React, { useEffect, useState } from "react";
 import { TeamCard } from "../userExports";
+import { useParams } from "react-router-dom";
 
 export const EditTeams = () => {
   const { user } = useAuth0();
   const [teams, setTeams] = useState([]);
+  const { id } = useParams();
 
   const handleAddTeam = () => {
     const add = teams;
@@ -16,19 +18,19 @@ export const EditTeams = () => {
 
   return (
     <div className="systemDash">
-      <button
-        onClick={() => {
-          console.log(teams);
-        }}
-      >
-        log
+      <button className="btn btn-success teamCard" onClick={handleAddTeam}>
+        New Team
       </button>
       <div className="teamsDiv">
-        <button className="btn btn-success teamCard" onClick={handleAddTeam}>
-          add
-        </button>
         {teams.map((team, index) => {
-          return <TeamCard arr={team} key={index}></TeamCard>;
+          return (
+            <TeamCard
+              key={index}
+              setTeams={setTeams}
+              teams={teams}
+              competitionID={id}
+            ></TeamCard>
+          );
         })}
       </div>
     </div>

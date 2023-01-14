@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
-import { getAllUsers } from "../../../Middlewares/users/users.js";
 import { useAuth0 } from "@auth0/auth0-react";
 import { bgMode } from "../../../bgModeContext.js";
-import { updateCurrentCompetition } from "../../../Middlewares/systemManager/systemManager.js";
+import {
+  getAllUsers_SM,
+  updateCurrentCompetition,
+} from "../../../Middlewares/systemManager/systemManager.js";
 import { LoadingMagnifyingGlass } from "../../exports.js";
 import { editCompetition } from "../editCompetition_context.js";
 import { DeleteCompetition } from "../deleteCompetition/deleteCompetition.jsx";
@@ -58,7 +60,7 @@ export const EditCompetition_SM = () => {
   //load all users and managers from DB
   useEffect(() => {
     const getAllUsersFromDB = async () => {
-      const all = await getAllUsers(user.sub);
+      const all = await getAllUsers_SM(user.sub);
       //const managers = await getAllCompetitonManagers(competition.id, user.sub);
       const data = Object.values(all.data);
       setLoading(false);

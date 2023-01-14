@@ -18,7 +18,7 @@ namespace ZCC.Server
     {
         [FunctionName("users")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "{action}/{userid}")] HttpRequest req, string action, string userid,
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "users/{action}/{userid}/{competitionID?}")] HttpRequest req, string action, string userid,string competitionID,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
@@ -58,8 +58,15 @@ namespace ZCC.Server
                     }
                     return new OkObjectResult("true");
 
-          
-                
+                case "getAllUsers":
+
+                    if(MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
+                    {
+                        return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(MainManager.Instance.userEntities.allUsers));
+                    }
+                     return new OkObjectResult("No Permission");
+
+
             }
             return new OkObjectResult("null");
         }

@@ -3,11 +3,6 @@ let reqURL;
 
 export const createNewCompetition = async (competitionObj, systemManagerID) => {
   reqURL = `http://localhost:7175/api/systemManager/createCompetition/${systemManagerID}`;
-
-  const newCompetitionID = await axios.post(
-    reqURL,
-    JSON.stringify(competitionObj)
-  );
 };
 
 export const setCompetitionManagers = async (userIDs, systemManagerID) => {
@@ -44,4 +39,9 @@ export const changeCompetitionStatus = async (
 ) => {
   reqURL = `http://localhost:7175/api/systemManager/changeCompetitionStatus/${systemManagerID}/${competitionID}`;
   await axios.post(reqURL, newstatus);
+};
+
+export const getAllUsers_SM = async (userID) => {
+  reqURL = `http://localhost:7175/api/systemManager/getAllUsers/${userID}`;
+  return await axios.get(reqURL);
 };

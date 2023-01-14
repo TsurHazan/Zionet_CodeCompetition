@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
-import { getAllUsers } from "../../../Middlewares/users/users.js";
+import { getAllUsers_SM } from "../../../Middlewares/systemManager/systemManager.js";
 import { useAuth0 } from "@auth0/auth0-react";
 import { bgMode } from "../../../bgModeContext.js";
 import { createNewCompetition } from "../../../Middlewares/systemManager/systemManager.js";
@@ -56,7 +56,7 @@ export const CreateCompetition = () => {
   //load all users from DB
   useEffect(() => {
     const getAllUsersFromDB = async () => {
-      const all = await getAllUsers(user.sub);
+      const all = await getAllUsers_SM(user.sub);
       const data = Object.values(all.data);
       setLoading(false);
       setAllUsers(data);
