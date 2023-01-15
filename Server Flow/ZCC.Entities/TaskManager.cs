@@ -13,5 +13,9 @@ namespace ZCC.Entities
         {
             return (Dictionary<int, Models.Task>)taskDataSql.GetAllCompetitionTaskFromDB(userId, competitionID);
         }
+        public void setNewTask(Models.Task task)
+        {
+            taskDataSql.SetTaskToDB(task);
+        }
     }
 }

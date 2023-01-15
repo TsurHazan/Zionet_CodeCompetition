@@ -30,17 +30,6 @@ namespace ZCC.Server
 
             switch (action)
             {
-                case "Add":
-
-                    break;
-
-                case "Remove":
-
-                    break;
-
-                case "Update":
-
-                    break;
 
                 case "EnableCompetition":
 
@@ -72,7 +61,6 @@ namespace ZCC.Server
                         {
                             return new OkObjectResult(false);
                         }
-
                     }
                     catch (Exception ex)
                     {
@@ -86,13 +74,41 @@ namespace ZCC.Server
                         {
                              MainManager.Instance.competitionsManager.ChangeCompetitionStatus(competitionID,requestBody);
                             return new OkObjectResult(true);
-
                         }
                         else
                         {
                             return new OkObjectResult(false);
                         }
-
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        return new OkObjectResult(false);
+                    }
+                case "UpdateCategory":
+                    try
+                    {
+                         MainManager.Instance.categoriesManager.setNewCategory(requestBody);
+                            return new OkObjectResult(200);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        return new OkObjectResult(false);
+                    }
+                case "UpdateTask":
+                    try
+                    {
+                        if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
+                        {
+                            Models.Task task = System.Text.Json.JsonSerializer.Deserialize<Models.Task>(requestBody);
+                            MainManager.Instance.taskManager.setNewTask(task);
+                            return new OkObjectResult(true);
+                        }
+                        else
+                        {
+                            return new OkObjectResult(false);
+                        }
                     }
                     catch (Exception ex)
                     {

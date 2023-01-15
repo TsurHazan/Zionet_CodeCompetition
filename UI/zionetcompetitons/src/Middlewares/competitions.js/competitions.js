@@ -23,10 +23,20 @@ export const getCategories = async () => {
   let reqGet = await axios.get(reqUrl);
   return reqGet;
 };
+export const setNewCategory = async (category) => {
+  let reqUrl = `http://localhost:7175/api/UsersCompetitions/UpdateCategory/${category}`;
+  let reqGet = await axios.post(reqUrl, category);
+  return reqGet;
+};
 
 export const getCompetitionTask = async (userID, competitionID) => {
   let reqUrl = `http://localhost:7175/api/competition/GetTask/${userID}/${competitionID}`;
   let reqGet = await axios.get(reqUrl);
+  return reqGet;
+};
+export const setNewTask = async (userID, competitionID, task) => {
+  let reqUrl = `http://localhost:7175/api/UsersCompetitions/UpdateTask/${userID}/${competitionID}`;
+  let reqGet = await axios.post(reqUrl, task);
   return reqGet;
 };
 

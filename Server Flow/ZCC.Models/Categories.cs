@@ -9,13 +9,11 @@ namespace ZCC.Models
     public class Categories
     {
 
-        public Categories(int aid,string aname) 
+        public Categories(string aid) 
         {
           id = aid;
-          name = aname;
         }
 
-        public int id { get; set; }
-        public string name { get; set; }
+        public string id { get; set; }
     }
 }

@@ -63,6 +63,18 @@ export const ManagersCompetitions = () => {
         </thead>
         <tbody>
           {allCompetitions.map((competition) => {
+            let forBtn = competition.status;
+            let toDisabled;
+            if (forBtn === "In Preparation") {
+              forBtn = "Start";
+              toDisabled = false;
+            } else if (forBtn === "Running") {
+              forBtn = "Enter";
+              toDisabled = false;
+            } else {
+              forBtn = "Finish";
+              toDisabled = true;
+            }
             return (
               <tr key={competition.id}>
                 <td>{competition.name}</td>
@@ -76,8 +88,9 @@ export const ManagersCompetitions = () => {
                     onClick={() => {
                       startCopmetition(competition.id);
                     }}
+                    disabled={toDisabled}
                   >
-                    Start
+                    {forBtn}
                   </button>
                 </td>
               </tr>

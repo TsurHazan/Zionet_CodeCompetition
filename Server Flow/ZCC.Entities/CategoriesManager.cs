@@ -11,10 +11,14 @@ namespace ZCC.Entities
     public class CategoriesManager
     {
 
-        public Dictionary<int,Models.Categories> allCategories()
+        public Dictionary<string,Models.Categories> allCategories()
         {
 
             return categoriesDataSql.GetCategoriesFromDB();
+        }
+        public void setNewCategory(string id)
+        {
+            categoriesDataSql.setCategoryToDB(id);
         }
     }
 }
