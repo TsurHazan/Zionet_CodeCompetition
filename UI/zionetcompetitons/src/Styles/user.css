@@ -31,15 +31,10 @@ th {
 }
 
 .card {
-  height: 400px !important;
-  width: 300px !important;
+  height: 300px !important;
+  width: 250px !important;
   color: #393e46;
   box-sizing: border-box;
-}
-.card img {
-  width: 250px;
-  height: 135px;
-  margin: 10px auto 0 auto;
 }
 
 .searchAndAddDiv {

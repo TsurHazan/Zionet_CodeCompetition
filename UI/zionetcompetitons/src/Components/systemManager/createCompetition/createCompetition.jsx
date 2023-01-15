@@ -5,6 +5,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { bgMode } from "../../../bgModeContext.js";
 import { createNewCompetition } from "../../../Middlewares/systemManager/systemManager.js";
 import { LoadingMagnifyingGlass } from "../../exports.js";
+import { WindowSharp } from "@mui/icons-material";
 
 export const CreateCompetition = () => {
   const { user } = useAuth0();
@@ -79,10 +80,9 @@ export const CreateCompetition = () => {
                 inputsfixed.Start = inputsfixed.Start.replace(/[a-zA-Z]/g, " ");
                 inputsfixed.End = inputsfixed.End.replace(/[a-zA-Z]/g, " ");
                 setInputs(inputsfixed);
-                //   setInputs(() => ({ ...inputs, ["userIDs"]: UsersArr }));
-                //inputsfixed = Object.values(inputs);
                 const trya = { ["Competition"]: inputs, UsersArr };
                 createNewCompetition(trya, user.sub);
+                window.location.href = "/";
               };
               handleSubmit();
             }}

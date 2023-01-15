@@ -13,7 +13,7 @@ SELECT
     LEFT(NEWID(), 10) + '@example.com' AS email
 	DECLARE @i INT = 0;
 
-WHILE @i < 100
+WHILE @i < 5
 BEGIN
     INSERT INTO Users (id, name, email)
     SELECT

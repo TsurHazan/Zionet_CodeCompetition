@@ -3,6 +3,7 @@ let reqURL;
 
 export const createNewCompetition = async (competitionObj, systemManagerID) => {
   reqURL = `http://localhost:7175/api/systemManager/createCompetition/${systemManagerID}`;
+  await axios.post(reqURL, JSON.stringify(competitionObj));
 };
 
 export const setCompetitionManagers = async (userIDs, systemManagerID) => {

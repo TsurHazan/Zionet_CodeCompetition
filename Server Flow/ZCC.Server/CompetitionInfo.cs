@@ -17,26 +17,25 @@ namespace ZCC.Server
         [FunctionName("CompetitionInfo")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "Competition/{action}/{userid?}/{competitionID?}")] HttpRequest req,
-           string action,string userid ,string competitionID, ILogger log)
+           string action, string userid, string competitionID, ILogger log)
         {
-
-
             log.LogInformation("C# HTTP trigger function processed a request.");
-
-
 
             switch (action)
             {
                 case "Add":
-                    
+
                     break;
+
                 case "Remove":
 
                     break;
+
                 case "Update":
                     break;
+
                 case "GetTask":
-                    return new OkObjectResult(MainManager.Instance.taskManager.getAllCompetitiomTask(userid,competitionID));
+                    return new OkObjectResult(MainManager.Instance.taskManager.getAllCompetitiomTask(userid, competitionID));
 
                 case "GetCategories":
                     return new OkObjectResult(MainManager.Instance.categoriesManager.allCategories());
