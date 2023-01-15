@@ -23,7 +23,7 @@ namespace ZCC.Data.Sql
                 Models.Task task = new Models.Task();
                 task.id = reader.GetInt32(0);
                 task.CompetitionID = reader.GetInt32(1);
-                task.CategoryID = reader.GetInt32(2);
+                task.CategoryID = reader.GetString(2);
                 task.Timeframe = reader.GetInt32(3);
                 task.points = reader.GetInt32(4);
                 task.Description = reader.GetString(5);
@@ -44,6 +44,12 @@ namespace ZCC.Data.Sql
              func = SetDataToDictionary;
             Dictionary<int, Models.Task> ret = (Dictionary<int, Models.Task>)DAL.SqlServerQuery.getValueFromDB(sqlQuery, func);
             return ret;
+        }
+
+        public static void SetTaskToDB(Models.Task task)
+        {
+            string sqlQuery = $"insert into Tasks values ({task.CompetitionID},'{task.CategoryID}',{task.Timeframe},{task.points},'{task.Description}',{task.BonusPoints},{task.BonusTime},'{task.name}')";
+            DAL.SqlServerQuery.runCommand(sqlQuery);
         }
     }
 }

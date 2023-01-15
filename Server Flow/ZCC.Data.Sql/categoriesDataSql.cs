@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ZCC.DAL;
+using ZCC.Models;
 
 namespace ZCC.Data.Sql
 {
@@ -13,27 +14,33 @@ namespace ZCC.Data.Sql
         private static SqlServerQuery.miisiksFunc func { get; set; }
 
 
-        public static Dictionary<int, Models.Categories> catObj=new Dictionary<int, Models.Categories>() ;
-        public static Dictionary<int, Models.Categories> SetDataToDictionary(SqlDataReader reader)
+        public static Dictionary<string, Models.Categories> catObj=new Dictionary<string, Models.Categories>() ;
+        public static Dictionary<string, Models.Categories> SetDataToDictionary(SqlDataReader reader)
         {
             catObj.Clear();
             while (reader.Read())
             {
-                int id = reader.GetInt32(0);
-                string Name = reader.GetString(1);
-                Models.Categories Category = new Models.Categories(id,Name);
+                string id = reader.GetString(0);
+                Models.Categories Category = new Models.Categories(id);
                 catObj.Add(id, Category);
              
             }
             return catObj;
         }
 
-        public static Dictionary<int, Models.Categories> GetCategoriesFromDB()
+        public static Dictionary<string, Models.Categories> GetCategoriesFromDB()
         {
             string sqlQuery = "SELECT * FROM Categories";
             func = SetDataToDictionary;
-             Dictionary<int, Models.Categories> ret = (Dictionary<int, Models.Categories>)DAL.SqlServerQuery.getValueFromDB(sqlQuery, func);
+             Dictionary<string, Models.Categories> ret = (Dictionary<string, Models.Categories>)DAL.SqlServerQuery.getValueFromDB(sqlQuery, func);
             return ret;
+        }
+        public static void setCategoryToDB(string id)
+        {
+            
+            string sqlQuery = $"insert into Categories values('{id}')";
+            DAL.SqlServerQuery.runCommand(sqlQuery);
+
         }
     }
 }

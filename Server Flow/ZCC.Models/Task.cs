@@ -11,7 +11,7 @@ namespace ZCC.Models
         public Task() { }
         public int id { get; set; }
         public int CompetitionID { get; set; }
-        public int CategoryID { get; set; }
+        public string CategoryID { get; set; }
         public int Timeframe { get; set; }
         public int points { get; set; }
         public string Description { get; set; }
