@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React, { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
-import { setNewTask } from "../../../Middlewares/competitions.js/competitions";
+import { setNewTask } from "../../../Middlewares/competitions/competitions.js";
 
 export const EditTask = () => {
   const { id } = useParams();

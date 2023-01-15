@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import {
   getUserCompetitionManagement,
   updateStatusCompetition,
-} from "../../../Middlewares/competitions.js/competitions";
+} from "../../../Middlewares/competitions/competitions";
 
 export const LiveManagerDash = () => {
   const { id } = useParams();

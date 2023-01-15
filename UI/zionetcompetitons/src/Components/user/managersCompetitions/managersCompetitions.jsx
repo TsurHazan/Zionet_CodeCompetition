@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import {
   updateCompetitionManagement,
   updateStatusCompetition,
-} from "../../../Middlewares/competitions.js/competitions.js";
+} from "../../../Middlewares/competitions/competitions.js";
 
 export const ManagersCompetitions = () => {
   const [allCompetitions, setAllCompetitions] = useState([]);

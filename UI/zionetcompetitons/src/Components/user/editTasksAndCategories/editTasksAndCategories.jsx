@@ -17,7 +17,7 @@ import {
   getCategories,
   getCompetitionTask,
   setNewCategory,
-} from "../../../Middlewares/competitions.js/competitions";
+} from "../../../Middlewares/competitions/competitions";
 import { useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { EditTask } from "../editTask/editTask";
