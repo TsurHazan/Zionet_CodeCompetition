@@ -1,7 +1,9 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { Autocomplete, TextField } from "@mui/material";
 import React, { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import { setNewTask } from "../../../Middlewares/competitions/competitions.js";
+import { categoriesList } from "../../../Pages/editCompetition/categoriesContext.js";
 
 export const EditTask = () => {
   const { id } = useParams();
@@ -17,10 +19,26 @@ export const EditTask = () => {
     name: "Name",
   });
 
+  const { lcategories, setLcategories } = useContext(categoriesList);
+
   const handleChange = (event) => {
-    const name = event.target.id;
-    const value = event.target.value;
-    setnewTask((values) => ({ ...values, [name]: value }));
+    let name;
+    let value;
+    if (event._reactName === "onClick") {
+      name = "CategoryID";
+      value = event.target.innerHTML;
+
+      let valLen = value.length;
+      if (valLen > 50) {
+        return;
+      }
+      setnewTask((values) => ({ ...values, [name]: value }));
+    } else {
+      name = event.target.id;
+      value = event.target.value;
+
+      setnewTask((values) => ({ ...values, [name]: value }));
+    }
   };
   const sendTaskToDB = async () => {
     console.log(newTask);
@@ -30,8 +48,10 @@ export const EditTask = () => {
     newTask.points = parseInt(newTask.points);
 
     await setNewTask(user.sub, id, newTask);
-  };
 
+    //get all geteg
+  };
+  console.log(newTask);
   return (
     <div className="taskEdit">
       <label htmlFor="name">
@@ -47,11 +67,42 @@ export const EditTask = () => {
       <label htmlFor="CategoryID">
         Category
         <br />
-        <input
+        {/* <input
           type="text"
           id="CategoryID"
           value={newTask.CategoryID}
           onChange={handleChange}
+        /> */}
+        <Autocomplete
+          forcePopupIcon={true}
+          freeSolo={true}
+          disablePortal
+          value={newTask.CategoryID}
+          onChange={handleChange}
+          // onChange={(event, value) => {
+          //   handleChange(value.label);
+          // }}
+
+          // getOptionLabel={(option) => {
+          //   if (typeof option === "string") {
+          //     return option;
+          //   }
+
+          //   if (option.inputValue) {
+          //     return option.inputValue;
+          //   }
+          //   return option.label;
+          // }}
+          // onChange={(event, value) => {
+          //   setV(value.label);
+          // }}
+
+          id="combo-box-demo"
+          options={lcategories}
+          sx={{ width: 300 }}
+          renderInput={(params) => (
+            <TextField {...params} label="ALL CATEGORIES" />
+          )}
         />
       </label>
       <label htmlFor="Timeframe">

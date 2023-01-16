@@ -28,6 +28,7 @@ import { categoriesList } from "../../../Pages/editCompetition/categoriesContext
 export const EditTasksAndCategories = () => {
   const theme = useTheme();
   const [value, setValue] = useState(1);
+  const [V, setV] = useState("");
   const { bgState } = useContext(bgMode);
   const { id } = useParams();
   const { user } = useAuth0();
@@ -48,6 +49,7 @@ export const EditTasksAndCategories = () => {
   };
 
   const handleChangeIndex = (index) => {
+    getAllCompetitionTask();
     setValue(index);
   };
   // <---------- Get All Task For This Copmetition -------------->
@@ -97,7 +99,6 @@ export const EditTasksAndCategories = () => {
     };
     initUseEffect();
   }, []);
-
   return (
     <>
       <Box
@@ -197,7 +198,13 @@ export const EditTasksAndCategories = () => {
               <br />
               <br />
               <Autocomplete
+                forcePopupIcon={true}
+                freeSolo={true}
                 disablePortal
+                value={V}
+                onChange={(event, value) => {
+                  setV(value.label);
+                }}
                 id="combo-box-demo"
                 options={categoriesOpt}
                 sx={{ width: 300 }}
@@ -205,12 +212,6 @@ export const EditTasksAndCategories = () => {
                   <TextField {...params} label="ALL CATEGORIES" />
                 )}
               />
-              <br />
-              {/* <ul className="categoryList">
-              {allCategories.map((category) => {
-                return <li key={category.name}>{category.id}</li>;
-              })}
-            </ul> */}
             </div>
           </TabPanel>
         </SwipeableViews>
