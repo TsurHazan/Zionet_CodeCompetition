@@ -15,7 +15,7 @@ namespace ZCC.Server
     {
         [FunctionName("teams")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "teams/{action}/{userID}/{competitionID}")] HttpRequest req,string action,string userID,string competitionID,
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "teams/{action}/{userID}/{competitionID}")] HttpRequest req, string action, string userID, string competitionID,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
@@ -23,12 +23,19 @@ namespace ZCC.Server
             switch (action)
             {
                 case "GetAllTeamsInCompetition":
-                    if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userID,competitionID))
+                    if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userID, competitionID))
                     {
                         return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(MainManager.Instance.teamsManager.GetAllTeamsInCompetition(competitionID)));
                     }
                     break;
-                 
+
+                case "CreateNewTeam":
+                    if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userID, competitionID))
+                    {
+                        return new OkObjectResult(MainManager.Instance.teamsManager.AddTeamToCompetition(competitionID).ToString());
+                    }
+
+                    break;
             }
 
             return new OkObjectResult("null");
