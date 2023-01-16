@@ -29,13 +29,18 @@ import { taskObjToEdit } from "../../../Pages/editCompetition/taskContext";
 
 export const EditTasksAndCategories = () => {
   const theme = useTheme();
+  //value of current page in task view
   const [value, setValue] = useState(1);
+  //use State of all categories
   const [V, setV] = useState("");
   const { bgState } = useContext(bgMode);
+  //Parameter of Copmetition's ID
   const { id } = useParams();
+  //Parameter of User's ID
   const { user } = useAuth0();
-
+  //use Context of Categories List
   const { lcategories, setLcategories } = useContext(categoriesList);
+  //use Context of Task To send into Editing Page
   const { taskToEdit, settaskToEdit } = useContext(taskObjToEdit);
 
   const [allTask, setAllTask] = useState([]);
@@ -46,11 +51,11 @@ export const EditTasksAndCategories = () => {
   const handlenewCategory = (event) => {
     setnewCategory(event.target.value);
   };
-
+  //handle of index Page of Task Editing
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
+  //Get All Competition Task when moving page after add new Competition
   const handleChangeIndex = (index) => {
     getAllCompetitionTask();
     setValue(index);
@@ -76,6 +81,7 @@ export const EditTasksAndCategories = () => {
     await getallCategories();
     await setCategoriesOption();
   };
+  //sending task editing whit handle object value like in DB
   const moveToEditTask = (task) => {
     console.log(task);
     settaskToEdit({
@@ -91,6 +97,7 @@ export const EditTasksAndCategories = () => {
     });
     setValue(0);
   };
+
   const setCategoriesOption = async () => {
     let category = allCategories;
     let num = 0;

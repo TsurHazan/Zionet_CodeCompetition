@@ -39,7 +39,7 @@ export const UsersNavBar = () => {
           <Nav className="me-auto">
             <Nav.Link href="/Management">Management</Nav.Link>
             <Nav.Link href="#pricing">Participate</Nav.Link>
-            <Nav.Link href="#pricing">Settings</Nav.Link>
+            <Nav.Link href="#Settings">Settings</Nav.Link>
           </Nav>
           <Nav>
             <Nav.Item

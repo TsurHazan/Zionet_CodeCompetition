@@ -26,8 +26,9 @@ export const EditTask = () => {
   const { lcategories, setLcategories } = useContext(categoriesList);
 
   const { taskToEdit, settaskToEdit } = useContext(taskObjToEdit);
-
+  // check if have value in state of edit is empty
   const isCreate = taskToEdit.length === 0 ? true : false;
+  //for button of Create/Update competition
   const sendOrUpdate = isCreate ? "Create" : "Update";
 
   const handleChange = (event) => {
@@ -39,10 +40,11 @@ export const EditTask = () => {
       value = event.target.innerHTML;
 
       let valLen = value.length;
+      //return null for avoid bring back the div to value
       if (valLen > 50) {
-        return;
+        return null;
       }
-
+      //set the info in the correct use state- Create OR Edit
       if (isCreate) {
         setnewTask((values) => ({ ...values, [name]: value }));
       } else {
@@ -51,7 +53,7 @@ export const EditTask = () => {
     } else {
       name = event.target.id;
       value = event.target.value;
-
+      //set the info in the correct use state- Create OR Edit
       if (isCreate) {
         setnewTask((values) => ({ ...values, [name]: value }));
       } else {
@@ -61,8 +63,8 @@ export const EditTask = () => {
   };
 
   const sendTaskToDB = async () => {
-    console.log(newTask);
-    console.log(taskToEdit);
+    //set the info in the correct use state- Create OR Edit
+    //parse all int vlaue from string to int
     if (isCreate) {
       newTask.BonusPoints = parseInt(newTask.BonusPoints);
       newTask.BonusTime = parseInt(newTask.BonusTime);
@@ -88,17 +90,6 @@ export const EditTask = () => {
       settaskToEdit([]);
     }
   };
-  useEffect(() => {
-    const initEffect = async () => {
-      if (taskToEdit.length !== 0) {
-        //await setnewTask(taskToEdit);
-      }
-    };
-    initEffect();
-  }, []);
-  console.log(newTask);
-  console.log(taskToEdit);
-
   return (
     <div className="taskEdit">
       <label htmlFor="name">
@@ -114,36 +105,12 @@ export const EditTask = () => {
       <label htmlFor="CategoryID">
         Category
         <br />
-        {/* <input
-          type="text"
-          id="CategoryID"
-          value={newTask.CategoryID}
-          onChange={handleChange}
-        /> */}
         <Autocomplete
           forcePopupIcon={true}
           freeSolo={true}
           disablePortal
           value={taskToEdit.CategoryID || newTask.CategoryID}
           onChange={handleChange}
-          // onChange={(event, value) => {
-          //   handleChange(value.label);
-          // }}
-
-          // getOptionLabel={(option) => {
-          //   if (typeof option === "string") {
-          //     return option;
-          //   }
-
-          //   if (option.inputValue) {
-          //     return option.inputValue;
-          //   }
-          //   return option.label;
-          // }}
-          // onChange={(event, value) => {
-          //   setV(value.label);
-          // }}
-
           id="combo-box-demo"
           options={lcategories}
           sx={{ width: 300 }}
@@ -162,7 +129,6 @@ export const EditTask = () => {
           onChange={handleChange}
         />
       </label>
-
       <label htmlFor="points">
         Points
         <br />
@@ -193,7 +159,6 @@ export const EditTask = () => {
           onChange={handleChange}
         />
       </label>
-
       <label className="descriptionArea" htmlFor="Description">
         Description
         <br />
@@ -205,12 +170,6 @@ export const EditTask = () => {
           onChange={handleChange}
           value={taskToEdit.Description || newTask.Description}
         ></textarea>
-        {/* <input
-          type="textarea"
-          id="Description"
-          value={newTask.Description}
-          onChange={handleChange}
-        /> */}
       </label>
       <button onClick={sendTaskToDB}>{sendOrUpdate}</button>
     </div>
