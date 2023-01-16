@@ -64,9 +64,12 @@ namespace ZCC.DAL
             {
                 using (SqlCommand command = new SqlCommand(sqlQuery, connection))
                 {
-                    connection.Open();
-                    return command.ExecuteScalar();
-
+                    try
+                    {
+                        connection.Open();
+                        return command.ExecuteScalar();
+                    }
+                    catch (Exception) { return "invalid parameters"; }
                 }
             }
         }

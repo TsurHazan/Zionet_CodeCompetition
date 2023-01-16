@@ -10,17 +10,16 @@ namespace ZCC.Entities
 {
     public class TeamsManager
     {
-        TeamsDataSql teamsDataSql = new TeamsDataSql();
+        private TeamsDataSql teamsDataSql = new TeamsDataSql();
 
-        public Dictionary<string, Team> GetAllTeamsInCompetition(string competitionId) 
+        public Dictionary<int, Team> GetAllTeamsInCompetition(string competitionId)
         {
             return teamsDataSql.GetAllTeamsInCompetition(competitionId);
         }
 
-
-        public void AddTeamToCompetition()
+        public int AddTeamToCompetition(string competitionID)
         {
-
+            return teamsDataSql.AddTeamToCompetition(competitionID);
         }
     }
 }
