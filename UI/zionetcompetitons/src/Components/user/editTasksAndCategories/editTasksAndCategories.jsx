@@ -14,6 +14,7 @@ import {
 } from "../../systemManager/systemManagerExports.js";
 import { bgMode } from "../../../bgModeContext.js";
 import {
+  DeleteOneTask,
   getCategories,
   getCompetitionTask,
   setNewCategory,
@@ -24,6 +25,7 @@ import { EditTask } from "../editTask/editTask";
 import { Autocomplete, TextField } from "@mui/material";
 import { type } from "@testing-library/user-event/dist/type";
 import { categoriesList } from "../../../Pages/editCompetition/categoriesContext";
+import { taskObjToEdit } from "../../../Pages/editCompetition/taskContext";
 
 export const EditTasksAndCategories = () => {
   const theme = useTheme();
@@ -34,6 +36,7 @@ export const EditTasksAndCategories = () => {
   const { user } = useAuth0();
 
   const { lcategories, setLcategories } = useContext(categoriesList);
+  const { taskToEdit, settaskToEdit } = useContext(taskObjToEdit);
 
   const [allTask, setAllTask] = useState([]);
   const [allCategories, setCategories] = useState([]);
@@ -57,7 +60,9 @@ export const EditTasksAndCategories = () => {
     const all = await getCompetitionTask(user.sub, id);
     const data = Object.values(all.data);
     setAllTask(data);
+    console.log(data);
   };
+
   // <---------- Get All Categories -------------->
   const getallCategories = async () => {
     const all = await getCategories();
@@ -71,7 +76,19 @@ export const EditTasksAndCategories = () => {
     await getallCategories();
     await setCategoriesOption();
   };
-  const moveToEditTask = () => {
+  const moveToEditTask = (task) => {
+    console.log(task);
+    settaskToEdit({
+      id: task.id,
+      CompetitionID: task.competitionID,
+      CategoryID: task.categoryID,
+      Timeframe: task.timeframe,
+      points: task.points,
+      Description: task.description,
+      BonusPoints: task.bonusPoints,
+      BonusTime: task.bonusTime,
+      name: task.name,
+    });
     setValue(0);
   };
   const setCategoriesOption = async () => {
@@ -90,6 +107,12 @@ export const EditTasksAndCategories = () => {
     setCategoriesOpt(AllCat);
     setLcategories(AllCat);
   };
+
+  const deleteTaskFromDB = async (taskID) => {
+    await DeleteOneTask(user.sub, id, taskID.toString());
+    await getAllCompetitionTask();
+  };
+
   useEffect(() => {
     const initUseEffect = async () => {
       await getAllCompetitionTask();
@@ -98,7 +121,7 @@ export const EditTasksAndCategories = () => {
       await setCategoriesOption();
     };
     initUseEffect();
-  }, []);
+  }, [value]);
   return (
     <>
       <Box
@@ -162,7 +185,17 @@ export const EditTasksAndCategories = () => {
                   return (
                     <tr key={task.id}>
                       <td>
-                        <button onClick={moveToEditTask}>Edit</button>
+                        <button
+                          onClick={() => {
+                            moveToEditTask(
+                              allTask.find((c) => {
+                                return c.id === task.id;
+                              })
+                            );
+                          }}
+                        >
+                          Edit
+                        </button>
                       </td>
                       <td>{task.name}</td>
                       <td>{task.categoryID}</td>
@@ -172,7 +205,13 @@ export const EditTasksAndCategories = () => {
                       <td>{task.bonusPoints}</td>
                       <td>{task.description}</td>
                       <td>
-                        <button>Delete</button>
+                        <button
+                          onClick={() => {
+                            deleteTaskFromDB(task.id);
+                          }}
+                        >
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   );

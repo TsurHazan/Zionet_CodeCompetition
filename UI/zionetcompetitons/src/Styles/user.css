@@ -10,7 +10,7 @@ th {
   height: 50vh;
   display: grid;
   gap: 5px;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto auto auto;
   align-items: center;
   border: 2px solid;
   border-radius: 3px;

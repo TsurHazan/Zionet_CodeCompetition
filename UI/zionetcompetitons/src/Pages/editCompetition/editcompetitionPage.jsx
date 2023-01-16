@@ -7,9 +7,11 @@ import {
 import "../../Styles/user.css";
 
 import { categoriesList } from "./categoriesContext.js";
+import { taskObjToEdit } from "./taskContext.js";
 
 export const EditCompetitionPage = () => {
   const [lcategories, setLcategories] = useState([]);
+  const [taskToEdit, settaskToEdit] = useState([]);
 
   return (
     <div className="editCompetitionPage">
@@ -17,8 +19,9 @@ export const EditCompetitionPage = () => {
       <categoriesList.Provider value={{ lcategories, setLcategories }}>
         <EditCompetition></EditCompetition>
         <h3>Edit Tasks & Categories</h3>
-
-        <EditTasksAndCategories></EditTasksAndCategories>
+        <taskObjToEdit.Provider value={{ taskToEdit, settaskToEdit }}>
+          <EditTasksAndCategories></EditTasksAndCategories>
+        </taskObjToEdit.Provider>
         <h3>Edit Teams</h3>
         <EditTeams></EditTeams>
       </categoriesList.Provider>

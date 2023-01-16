@@ -57,7 +57,6 @@ export const EditCompetition = () => {
       hashcode: ans.hashcode,
       maxActiveTasks: ans.maxActiveTasks,
     };
-    console.log(myObj);
     setCompetition(myObj);
   };
   // <---------- Send Update Competition To DB -------------->

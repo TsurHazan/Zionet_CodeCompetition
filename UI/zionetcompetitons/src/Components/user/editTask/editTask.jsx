@@ -1,9 +1,13 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { Autocomplete, TextField } from "@mui/material";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { setNewTask } from "../../../Middlewares/competitions/competitions.js";
+import {
+  setNewTask,
+  UpdateOneTaskOfCompetition,
+} from "../../../Middlewares/competitions/competitions.js";
 import { categoriesList } from "../../../Pages/editCompetition/categoriesContext.js";
+import { taskObjToEdit } from "../../../Pages/editCompetition/taskContext.js";
 
 export const EditTask = () => {
   const { id } = useParams();
@@ -21,9 +25,15 @@ export const EditTask = () => {
 
   const { lcategories, setLcategories } = useContext(categoriesList);
 
+  const { taskToEdit, settaskToEdit } = useContext(taskObjToEdit);
+
+  const isCreate = taskToEdit.length === 0 ? true : false;
+  const sendOrUpdate = isCreate ? "Create" : "Update";
+
   const handleChange = (event) => {
     let name;
     let value;
+    //check its not return the div itself
     if (event._reactName === "onClick") {
       name = "CategoryID";
       value = event.target.innerHTML;
@@ -32,26 +42,63 @@ export const EditTask = () => {
       if (valLen > 50) {
         return;
       }
-      setnewTask((values) => ({ ...values, [name]: value }));
+
+      if (isCreate) {
+        setnewTask((values) => ({ ...values, [name]: value }));
+      } else {
+        settaskToEdit((values) => ({ ...values, [name]: value }));
+      }
     } else {
       name = event.target.id;
       value = event.target.value;
 
-      setnewTask((values) => ({ ...values, [name]: value }));
+      if (isCreate) {
+        setnewTask((values) => ({ ...values, [name]: value }));
+      } else {
+        settaskToEdit((values) => ({ ...values, [name]: value }));
+      }
     }
   };
+
   const sendTaskToDB = async () => {
     console.log(newTask);
-    newTask.BonusPoints = parseInt(newTask.BonusPoints);
-    newTask.BonusTime = parseInt(newTask.BonusTime);
-    newTask.Timeframe = parseInt(newTask.Timeframe);
-    newTask.points = parseInt(newTask.points);
-
-    await setNewTask(user.sub, id, newTask);
-
-    //get all geteg
+    console.log(taskToEdit);
+    if (isCreate) {
+      newTask.BonusPoints = parseInt(newTask.BonusPoints);
+      newTask.BonusTime = parseInt(newTask.BonusTime);
+      newTask.Timeframe = parseInt(newTask.Timeframe);
+      newTask.points = parseInt(newTask.points);
+      await setNewTask(user.sub, id, newTask);
+      setnewTask({
+        CompetitionID: parseInt(id),
+        CategoryID: "",
+        Timeframe: 0,
+        points: 0,
+        Description: "Description",
+        BonusPoints: 0,
+        BonusTime: 0,
+        name: "Name",
+      });
+    } else {
+      taskToEdit.BonusPoints = parseInt(taskToEdit.BonusPoints);
+      taskToEdit.BonusTime = parseInt(taskToEdit.BonusTime);
+      taskToEdit.Timeframe = parseInt(taskToEdit.Timeframe);
+      taskToEdit.points = parseInt(taskToEdit.points);
+      await UpdateOneTaskOfCompetition(user.sub, id, taskToEdit);
+      settaskToEdit([]);
+    }
   };
+  useEffect(() => {
+    const initEffect = async () => {
+      if (taskToEdit.length !== 0) {
+        //await setnewTask(taskToEdit);
+      }
+    };
+    initEffect();
+  }, []);
   console.log(newTask);
+  console.log(taskToEdit);
+
   return (
     <div className="taskEdit">
       <label htmlFor="name">
@@ -60,7 +107,7 @@ export const EditTask = () => {
         <input
           type="text"
           id="name"
-          value={newTask.name}
+          value={taskToEdit.name || newTask.name}
           onChange={handleChange}
         />
       </label>
@@ -77,7 +124,7 @@ export const EditTask = () => {
           forcePopupIcon={true}
           freeSolo={true}
           disablePortal
-          value={newTask.CategoryID}
+          value={taskToEdit.CategoryID || newTask.CategoryID}
           onChange={handleChange}
           // onChange={(event, value) => {
           //   handleChange(value.label);
@@ -111,7 +158,7 @@ export const EditTask = () => {
         <input
           type="number"
           id="Timeframe"
-          value={newTask.Timeframe}
+          value={taskToEdit.Timeframe || newTask.Timeframe}
           onChange={handleChange}
         />
       </label>
@@ -122,7 +169,7 @@ export const EditTask = () => {
         <input
           type="number"
           id="points"
-          value={newTask.points}
+          value={taskToEdit.points || newTask.points}
           onChange={handleChange}
         />
       </label>
@@ -132,7 +179,7 @@ export const EditTask = () => {
         <input
           type="number"
           id="BonusPoints"
-          value={newTask.BonusPoints}
+          value={taskToEdit.BonusPoints || newTask.BonusPoints}
           onChange={handleChange}
         />
       </label>
@@ -142,7 +189,7 @@ export const EditTask = () => {
         <input
           type="number"
           id="BonusTime"
-          value={newTask.BonusTime}
+          value={taskToEdit.BonusTime || newTask.BonusTime}
           onChange={handleChange}
         />
       </label>
@@ -156,7 +203,7 @@ export const EditTask = () => {
           rows="4"
           cols="60"
           onChange={handleChange}
-          defaultValue={newTask.Description}
+          value={taskToEdit.Description || newTask.Description}
         ></textarea>
         {/* <input
           type="textarea"
@@ -165,7 +212,7 @@ export const EditTask = () => {
           onChange={handleChange}
         /> */}
       </label>
-      <button onClick={sendTaskToDB}>Create Task</button>
+      <button onClick={sendTaskToDB}>{sendOrUpdate}</button>
     </div>
   );
 };
