@@ -9,9 +9,7 @@ export const checkIfUserInDB = async (userID) => {
 
 export const checkUserCompetitions = async (userID) => {
   const reqUrl = `http://localhost:7175/api/UsersCompetitions/GetAllCompetition/${userID}/`;
-  console.log(reqUrl);
   const reqGet = await axios.get(reqUrl);
-  console.log(reqGet);
   return reqGet;
 };
 

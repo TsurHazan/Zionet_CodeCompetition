@@ -14,6 +14,7 @@ import {
 } from "../../systemManager/systemManagerExports.js";
 import { bgMode } from "../../../bgModeContext.js";
 import {
+  DeleteOneTask,
   getCategories,
   getCompetitionTask,
   setNewCategory,
@@ -24,15 +25,23 @@ import { EditTask } from "../editTask/editTask";
 import { Autocomplete, TextField } from "@mui/material";
 import { type } from "@testing-library/user-event/dist/type";
 import { categoriesList } from "../../../Pages/editCompetition/categoriesContext";
+import { taskObjToEdit } from "../../../Pages/editCompetition/taskContext";
 
 export const EditTasksAndCategories = () => {
   const theme = useTheme();
+  //value of current page in task view
   const [value, setValue] = useState(1);
+  //use State of all categories
+  const [V, setV] = useState("");
   const { bgState } = useContext(bgMode);
+  //Parameter of Copmetition's ID
   const { id } = useParams();
+  //Parameter of User's ID
   const { user } = useAuth0();
-
+  //use Context of Categories List
   const { lcategories, setLcategories } = useContext(categoriesList);
+  //use Context of Task To send into Editing Page
+  const { taskToEdit, settaskToEdit } = useContext(taskObjToEdit);
 
   const [allTask, setAllTask] = useState([]);
   const [allCategories, setCategories] = useState([]);
@@ -42,12 +51,13 @@ export const EditTasksAndCategories = () => {
   const handlenewCategory = (event) => {
     setnewCategory(event.target.value);
   };
-
+  //handle of index Page of Task Editing
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
+  //Get All Competition Task when moving page after add new Competition
   const handleChangeIndex = (index) => {
+    getAllCompetitionTask();
     setValue(index);
   };
   // <---------- Get All Task For This Copmetition -------------->
@@ -55,7 +65,9 @@ export const EditTasksAndCategories = () => {
     const all = await getCompetitionTask(user.sub, id);
     const data = Object.values(all.data);
     setAllTask(data);
+    console.log(data);
   };
+
   // <---------- Get All Categories -------------->
   const getallCategories = async () => {
     const all = await getCategories();
@@ -69,9 +81,23 @@ export const EditTasksAndCategories = () => {
     await getallCategories();
     await setCategoriesOption();
   };
-  const moveToEditTask = () => {
+  //sending task editing whit handle object value like in DB
+  const moveToEditTask = (task) => {
+    console.log(task);
+    settaskToEdit({
+      id: task.id,
+      CompetitionID: task.competitionID,
+      CategoryID: task.categoryID,
+      Timeframe: task.timeframe,
+      points: task.points,
+      Description: task.description,
+      BonusPoints: task.bonusPoints,
+      BonusTime: task.bonusTime,
+      name: task.name,
+    });
     setValue(0);
   };
+
   const setCategoriesOption = async () => {
     let category = allCategories;
     let num = 0;
@@ -88,6 +114,12 @@ export const EditTasksAndCategories = () => {
     setCategoriesOpt(AllCat);
     setLcategories(AllCat);
   };
+
+  const deleteTaskFromDB = async (taskID) => {
+    await DeleteOneTask(user.sub, id, taskID.toString());
+    await getAllCompetitionTask();
+  };
+
   useEffect(() => {
     const initUseEffect = async () => {
       await getAllCompetitionTask();
@@ -96,8 +128,7 @@ export const EditTasksAndCategories = () => {
       await setCategoriesOption();
     };
     initUseEffect();
-  }, []);
-
+  }, [value]);
   return (
     <>
       <Box
@@ -161,7 +192,17 @@ export const EditTasksAndCategories = () => {
                   return (
                     <tr key={task.id}>
                       <td>
-                        <button onClick={moveToEditTask}>Edit</button>
+                        <button
+                          onClick={() => {
+                            moveToEditTask(
+                              allTask.find((c) => {
+                                return c.id === task.id;
+                              })
+                            );
+                          }}
+                        >
+                          Edit
+                        </button>
                       </td>
                       <td>{task.name}</td>
                       <td>{task.categoryID}</td>
@@ -171,7 +212,13 @@ export const EditTasksAndCategories = () => {
                       <td>{task.bonusPoints}</td>
                       <td>{task.description}</td>
                       <td>
-                        <button>Delete</button>
+                        <button
+                          onClick={() => {
+                            deleteTaskFromDB(task.id);
+                          }}
+                        >
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   );
@@ -197,7 +244,13 @@ export const EditTasksAndCategories = () => {
               <br />
               <br />
               <Autocomplete
+                forcePopupIcon={true}
+                freeSolo={true}
                 disablePortal
+                value={V}
+                onChange={(event, value) => {
+                  setV(value.label);
+                }}
                 id="combo-box-demo"
                 options={categoriesOpt}
                 sx={{ width: 300 }}
@@ -205,12 +258,6 @@ export const EditTasksAndCategories = () => {
                   <TextField {...params} label="ALL CATEGORIES" />
                 )}
               />
-              <br />
-              {/* <ul className="categoryList">
-              {allCategories.map((category) => {
-                return <li key={category.name}>{category.id}</li>;
-              })}
-            </ul> */}
             </div>
           </TabPanel>
         </SwipeableViews>

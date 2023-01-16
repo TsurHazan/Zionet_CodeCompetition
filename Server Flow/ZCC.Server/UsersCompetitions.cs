@@ -20,7 +20,7 @@ namespace ZCC.Server
     {
         [FunctionName("UsersCompetitions")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", "update", "delete", Route = "UsersCompetitions/{action}/{userid}/{competitionID?}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "UsersCompetitions/{action}/{userid}/{competitionID?}")] HttpRequest req,
            string action, string userid, string competitionID, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");

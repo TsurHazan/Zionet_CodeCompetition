@@ -17,5 +17,13 @@ namespace ZCC.Entities
         {
             taskDataSql.SetTaskToDB(task);
         }
+        public void UpdateOneTask(Models.Task task)
+        {
+            taskDataSql.UpdateOneTask(task);
+        }
+        public void DeleteTaskFromDB(string competitionID, string taskID)
+        {
+            taskDataSql.DeleteTaskById(competitionID, taskID);
+        }
     }
 }

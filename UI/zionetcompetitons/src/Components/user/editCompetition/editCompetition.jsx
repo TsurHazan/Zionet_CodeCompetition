@@ -22,28 +22,12 @@ export const EditCompetition = () => {
     hashcode: "noHash",
     maxActiveTasks: "0",
   });
-  // const [allTask, setAllTask] = useState({});
-  // const [allCategories, setCategories] = useState({});
 
   const handleChange = (event) => {
     const name = event.target.id;
     const value = event.target.value;
     setCompetition((values) => ({ ...values, [name]: value }));
   };
-
-  // // <---------- Get All Task For This Copmetition -------------->
-  // const getAllCompetitionTask = async () => {
-  //   const all = await getCompetitionTask(user.sub, id);
-  //   const data = Object.values(all.data);
-  //   setAllTask(data);
-  // };
-  // // <---------- Get All Categories -------------->
-  // const getallCategories = async () => {
-  //   const all = await getCategories();
-  //   const data = Object.values(all.data);
-  //   setAllTask(data);
-  // };
-  // <---------- Get And Set All Competition Data -------------->
   const getAllCompetitionDetailsFromDB = async () => {
     const dat = await getUserCompetitionManagement(user.sub, id);
     const ans = dat.data;
@@ -57,7 +41,6 @@ export const EditCompetition = () => {
       hashcode: ans.hashcode,
       maxActiveTasks: ans.maxActiveTasks,
     };
-    console.log(myObj);
     setCompetition(myObj);
   };
   // <---------- Send Update Competition To DB -------------->
@@ -72,8 +55,6 @@ export const EditCompetition = () => {
   useEffect(() => {
     const initUseEffect = async () => {
       await getAllCompetitionDetailsFromDB();
-      // await getAllCompetitionTask();
-      // await getallCategories();
     };
     initUseEffect();
   }, []);

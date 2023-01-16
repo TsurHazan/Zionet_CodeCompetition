@@ -12,28 +12,8 @@ export const ManagersCompetitions = () => {
   const [allCompetitions, setAllCompetitions] = useState([]);
   const { user } = useAuth0();
   const { bgState } = useContext(bgMode);
-  //const [CompetitionsArr, setCompetitionsArr] = useState([]);
-  //const [Competition, setCompetition] = useState(CompetitionsArr);
 
-  /*const toggleItem = (index) => {
-    // Create a new array with the values of the state variable
-    const newCompetition = [...Competition];
-    // Toggle the value at the specified index
-    newCompetition[index] =
-      newCompetition[index] === "highlight" ? "" : "highlight";
-    // Set the new array as the value of the state variable
-    setCompetition(newCompetition);
-  };
-
-   const chooseManager = (user) => {
-    if (CompetitionsArr.includes(user)) {
-      const newCompetition = UsersArr.filter((i) => i !== user);
-      setUsersArr(newCompetition);
-    } else {
-      setUsersArr([...CompetitionsArr, user]);
-    }
-  };
-*/
+  //chenge competition statis To Running and move to Live Page
   const startCopmetition = async (competitionID) => {
     await updateStatusCompetition(user.sub, competitionID, "Running");
     let ref = "/LiveManagerDashboard/" + competitionID;
