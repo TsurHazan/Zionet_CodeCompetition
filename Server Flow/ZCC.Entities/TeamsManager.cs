@@ -12,14 +12,27 @@ namespace ZCC.Entities
     {
         private TeamsDataSql teamsDataSql = new TeamsDataSql();
 
+        public void UpdateTeam(User[] team, string competitionID, string teamID)
+        {
+            foreach (User user in team)
+            {
+                teamsDataSql.AddUserToTeam(teamID, user.user_id, competitionID);
+            }
+        }
+
+        public Dictionary<string, User> GetTeamMembers(int competitionID, int teamID)
+        {
+            return teamsDataSql.GetTeamMembers(competitionID, teamID);
+        }
+
         public Dictionary<int, Team> GetAllTeamsInCompetition(string competitionId)
         {
             return teamsDataSql.GetAllTeamsInCompetition(competitionId);
         }
 
-        public int AddTeamToCompetition(string competitionID)
+        public void AddTeamToCompetition(string competitionID)
         {
-            return teamsDataSql.AddTeamToCompetition(competitionID);
+            teamsDataSql.AddTeamToCompetition(competitionID);
         }
     }
 }

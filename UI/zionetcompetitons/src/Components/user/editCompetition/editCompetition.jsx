@@ -46,7 +46,6 @@ export const EditCompetition = () => {
   // <---------- Send Update Competition To DB -------------->
   const handleUpdateCompetition = async () => {
     competition.maxActiveTasks = parseInt(competition.maxActiveTasks);
-    console.log(competition);
     const bla = JSON.stringify(competition);
     await updateCompetitionManagement(user.sub, bla);
   };

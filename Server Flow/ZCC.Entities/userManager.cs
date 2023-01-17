@@ -19,15 +19,14 @@ namespace ZCC.Entities
         }
 
         // ---------------------  remove all of the current managers from managing this competition ---------------------
-        public void RemoveCompetitionManagers(string competitionID,string userID)
+        public void RemoveCompetitionManagers(string competitionID, string userID)
         {
-            
             UserDataSQL.RemoveCompetitionManager(competitionID, userID);
         }
 
         // --------------------- get all Competitions Managers from the DB ---------------------
-        public Dictionary<string, User> getAllCompetitonManagers(string competitionID) { return UserDataSQL.getAllCompetitonManagers(competitionID); }
-
+        public Dictionary<string, User> getAllCompetitonManagers(string competitionID)
+        { return UserDataSQL.getAllCompetitonManagers(competitionID); }
 
         // --------------------- check if user exist in the Database or not ---------------------
         public bool checkIfUserInDB(string userID)
@@ -35,20 +34,17 @@ namespace ZCC.Entities
             return UserDataSQL.checkIfUserInDB(userID);
         }
 
-
         // --------------------- checking if user is a manager of the competition given ---------------------
         public bool checkIfUserIsCompetitionManager(string userID, string competitionID)
         {
             return UserDataSQL.checkIfUserIsCompetitionManager(userID, competitionID);
         }
 
-
         // --------------------- inser a user to the DB  ---------------------
         public void insertUserToDB(User user)
         {
             UserDataSQL.insertUserToDB(user);
         }
-
 
         // --------------------- get all users on the DB ---------------------
         public Dictionary<string, User> allUsers
