@@ -25,7 +25,6 @@ export const LiveManagerDash = () => {
   };
   const getAllCompetitionDetailsFromDB = async () => {
     const ans = await getUserCompetitionManagement(user.sub, id);
-    console.log(ans.data);
     setCompetition(ans.data);
     HandleDate();
   };

@@ -15,6 +15,26 @@ namespace ZCC.Data.Sql
         private string query { get; set; }
         private SqlServerQuery.miisiksFunc func { get; set; }
 
+        // --------------------- Get all team members ---------------------
+
+        public Dictionary<string, User> GetTeamMembers(int competitionID, int teamID)
+        {
+            func = _GetTeamMembers;
+            query = $"select * from [Users]\r\n  inner join [Users competitions] on [Users].id = [Users competitions].UserID\r\n  where [Users competitions].[TeamID] = {teamID}";
+            return (Dictionary<string, User>)SqlServerQuery.getValueFromDB(query, func);
+        }
+
+        private object _GetTeamMembers(SqlDataReader reader)
+        {
+            Dictionary<string, User> teamMembers = new Dictionary<string, User>();
+            while (reader.Read())
+            {
+                User user = new User(reader.GetString(reader.GetOrdinal("id")).ToString(), reader.GetString(reader.GetOrdinal("Name")), reader.GetString(reader.GetOrdinal("Email")));
+                teamMembers.Add(user.email, user);
+            }
+            return teamMembers;
+        }
+
         // --------------------- Get all teams in the competition ---------------------
 
         public Dictionary<int, Team> GetAllTeamsInCompetition(string competitionID)
@@ -44,12 +64,12 @@ namespace ZCC.Data.Sql
 
         // --------------------- Add new Team to a competition ---------------------
 
-        public int AddTeamToCompetition(string competitionID)
+        public void AddTeamToCompetition(string competitionID)
         {
             // link is to default picture to a team
 
-            query = $"insert into [Teams] values ('teamtam',0,'','https://www.freepik.com/free-vector/hand-coding-concept-illustration_21864184.htm#query=code&position=24&from_view=search&track=sph',{competitionID}) \r\n select  @@IDENTITY\r\n ";
-            return (int)SqlServerQuery.getSingleValueFromDB(query);
+            query = $"insert into [Teams] values ('teamtam',0,'','https://www.freepik.com/free-vector/hand-coding-concept-illustration_21864184.htm#query=code&position=24&from_view=search&track=sph',{competitionID})";
+            SqlServerQuery.getSingleValueFromDB(query);
         }
 
         // --------------------- Remove a team from competition ---------------------

@@ -23,7 +23,6 @@ export const EditTask = () => {
     setnewTask((values) => ({ ...values, [name]: value }));
   };
   const sendTaskToDB = async () => {
-    console.log(newTask);
     newTask.BonusPoints = parseInt(newTask.BonusPoints);
     newTask.BonusTime = parseInt(newTask.BonusTime);
     newTask.Timeframe = parseInt(newTask.Timeframe);

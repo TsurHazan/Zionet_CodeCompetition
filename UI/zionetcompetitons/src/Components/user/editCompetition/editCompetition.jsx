@@ -57,13 +57,11 @@ export const EditCompetition = () => {
       hashcode: ans.hashcode,
       maxActiveTasks: ans.maxActiveTasks,
     };
-    console.log(myObj);
     setCompetition(myObj);
   };
   // <---------- Send Update Competition To DB -------------->
   const handleUpdateCompetition = async () => {
     competition.maxActiveTasks = parseInt(competition.maxActiveTasks);
-    console.log(competition);
     const bla = JSON.stringify(competition);
     await updateCompetitionManagement(user.sub, bla);
   };
