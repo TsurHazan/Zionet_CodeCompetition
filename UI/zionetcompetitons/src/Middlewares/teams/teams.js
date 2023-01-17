@@ -21,6 +21,5 @@ export const GetTeamMembers = async (userID, competitionID, team) => {
 export const UpdateTeams = async (userID, competitionID, members, teamid) => {
   const reqURL = `http://localhost:7175/api/teams/UpdateTeams/${userID}/${competitionID}/${teamid}`;
   const json = await JSON.stringify(members);
-  console.log(json);
   await axios.post(reqURL, json);
 };

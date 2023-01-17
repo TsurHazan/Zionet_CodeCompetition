@@ -61,8 +61,7 @@ export const TeamCard = ({ allTeams, setAllTeams, thisTeam, indexOfTeam }) => {
     <div className="card">
       <button
         onClick={() => {
-          console.log(team);
-          console.log(allTeams);
+        
         }}
       >
         {thisTeam.Name}
