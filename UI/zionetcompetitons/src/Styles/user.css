@@ -100,3 +100,11 @@ th {
   border: 2px solid;
   border-radius: 3px;
 }
+
+.liveManagerDash {
+  display: flex;
+  flex-direction: column;
+}
+.liveManagerDash table tbody tr td img {
+  height: 50px;
+}

@@ -5,11 +5,14 @@ import {
   getUserCompetitionManagement,
   updateStatusCompetition,
 } from "../../../Middlewares/competitions/competitions";
+import { GetAllTeamsInCompetition } from "../../../Middlewares/teams/teams";
 
 export const LiveManagerDash = () => {
   const { id } = useParams();
   const { user } = useAuth0();
   const [competition, setCompetition] = useState({});
+  const [teamsInfo, setTeamsInfo] = useState([]);
+  const [timeLeft, setTimeLeft] = useState("");
 
   const EndCopmetition = async () => {
     await updateStatusCompetition(user.sub, id, "Finished");
@@ -26,26 +29,65 @@ export const LiveManagerDash = () => {
   const getAllCompetitionDetailsFromDB = async () => {
     const ans = await getUserCompetitionManagement(user.sub, id);
     setCompetition(ans.data);
+    let nowDate = new Date();
+    let newDate = new Date(ans.data.end);
+    let ddd = new Date(newDate - nowDate);
+    console.log(nowDate);
+    console.log(newDate);
+    console.log(ddd);
+
+    console.log(ddd.TimeOfDay);
+    setTimeLeft(ddd.toTimeString().substring(0, 8));
+
     HandleDate();
   };
-  let newDate = new Date();
+  const getCompettitionTeams = async () => {
+    const allteam = await GetAllTeamsInCompetition(user.sub, id);
+    const data = Object.values(allteam.data);
+    setTeamsInfo(data);
+  };
   useEffect(() => {
     const initUseEffect = async () => {
       await getAllCompetitionDetailsFromDB();
+      await getCompettitionTeams();
     };
     initUseEffect();
   }, []);
-
+  console.log(teamsInfo);
   return (
-    <div>
+    <div className="liveManagerDash">
       <h1>DASH</h1>
       <h2>{id}</h2>
       <p>
         {competition.name} IS {competition.status}
       </p>
       <p>Hash Code is: {competition.hashcode}</p>
-      <p>{newDate.toISOString().substring(0, 19).replace("T", " ")}</p>
-      <button onClick={EndCopmetition}>Finish</button>
+      <p>Time Left: {timeLeft}</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Icon</th>
+            <th>Name</th>
+            <th>Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          {teamsInfo.map((team) => {
+            return (
+              <tr key={team.id}>
+                <td>
+                  <img src={team.Icon} alt={team.Name} />
+                </td>
+                <td>{team.Name}</td>
+                <td>{team.Points}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <p>
+        <button onClick={EndCopmetition}>Finish</button>
+      </p>
     </div>
   );
 };

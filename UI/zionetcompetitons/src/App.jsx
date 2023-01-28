@@ -11,6 +11,7 @@ import {
   VisitiorsPage,
   SystemManagerPage,
 } from "./Pages/exportPages.js";
+import { ParticipantPage } from "./Pages/participantPage/participantPage";
 export const App = () => {
   const [bgState, setBgState] = useState(localStorage.Theme);
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -19,9 +20,18 @@ export const App = () => {
     return <Load_ProgressBar />;
   }
   if (isAuthenticated) {
+    let isCompetitionManager;
     const checkDB = async () => {
       let msg = await checkIfUserInDB(user.sub, user.given_name);
       const userComp = await checkUserCompetitions(user.sub);
+      const data = Object.values(userComp.data);
+
+      if (data.length > 0) {
+        isCompetitionManager = true;
+      } else {
+        isCompetitionManager = false;
+      }
+
       // alert(msg);
     };
     checkDB();
@@ -33,11 +43,19 @@ export const App = () => {
         </bgMode.Provider>
       );
     } else {
-      return (
-        <bgMode.Provider value={{ bgState, setBgState }}>
-          <UsersPage></UsersPage>
-        </bgMode.Provider>
-      );
+      if (isCompetitionManager) {
+        return (
+          <bgMode.Provider value={{ bgState, setBgState }}>
+            <UsersPage></UsersPage>
+          </bgMode.Provider>
+        );
+      } else {
+        return (
+          <bgMode.Provider value={{ bgState, setBgState }}>
+            <ParticipantPage></ParticipantPage>
+          </bgMode.Provider>
+        );
+      }
     }
   } else {
     return <VisitiorsPage />;
