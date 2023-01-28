@@ -48,6 +48,7 @@
     <Compile Include="TaskManager.cs" />
     <Compile Include="TeamsManager.cs" />
     <Compile Include="userManager.cs" />
+    <Compile Include="UsersCompetitionsManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ZCC.Data.Sql\ZCC.Data.Sql.csproj">

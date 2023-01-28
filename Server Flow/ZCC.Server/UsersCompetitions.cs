@@ -115,6 +115,9 @@ namespace ZCC.Server
                         Console.WriteLine(ex.Message);
                         return new OkObjectResult(false);
                     }
+                case "getParticipantCompetitions":
+
+                    return new OkObjectResult(MainManager.Instance.usersCompetitionsManager.getAllParticipantCompetitions(userid));
 
                 default:
                     break;

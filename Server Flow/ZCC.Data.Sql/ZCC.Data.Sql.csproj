@@ -50,6 +50,7 @@
     <Compile Include="taskDataSql.cs" />
     <Compile Include="TeamsDataSql.cs" />
     <Compile Include="userDataSql.cs" />
+    <Compile Include="UsersCompetitionsDataSql.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ZCC.DAL\ZCC.DAL.csproj">
