@@ -116,6 +116,7 @@ namespace ZCC.Server
                         return new OkObjectResult(false);
                     }
                 case "getParticipantCompetitions":
+                    Dictionary<int, Models.UsersCompetitions> Dic = MainManager.Instance.usersCompetitionsManager.getAllParticipantCompetitions(userid);
 
                     return new OkObjectResult(MainManager.Instance.usersCompetitionsManager.getAllParticipantCompetitions(userid));
 

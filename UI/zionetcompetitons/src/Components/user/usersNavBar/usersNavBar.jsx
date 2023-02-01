@@ -38,7 +38,7 @@ export const UsersNavBar = () => {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link href="/Management">Management</Nav.Link>
-            <Nav.Link href="#pricing">Participate</Nav.Link>
+            <Nav.Link href="/Participate">Participate</Nav.Link>
             <Nav.Link href="#Settings">Settings</Nav.Link>
           </Nav>
           <Nav>

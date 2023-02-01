@@ -32,11 +32,7 @@ export const LiveManagerDash = () => {
     let nowDate = new Date();
     let newDate = new Date(ans.data.end);
     let ddd = new Date(newDate - nowDate);
-    console.log(nowDate);
-    console.log(newDate);
-    console.log(ddd);
 
-    console.log(ddd.TimeOfDay);
     setTimeLeft(ddd.toTimeString().substring(0, 8));
 
     HandleDate();
@@ -53,14 +49,11 @@ export const LiveManagerDash = () => {
     };
     initUseEffect();
   }, []);
-  console.log(teamsInfo);
   return (
     <div className="liveManagerDash">
-      <h1>DASH</h1>
-      <h2>{id}</h2>
-      <p>
-        {competition.name} IS {competition.status}
-      </p>
+      <h4>Live Manager DASH</h4>
+      <h2>{competition.name}</h2>
+      <p>Status: {competition.status}</p>
       <p>Hash Code is: {competition.hashcode}</p>
       <p>Time Left: {timeLeft}</p>
       <table>
