@@ -5,16 +5,24 @@ import { bgMode } from "../../../bgModeContext.js";
 import {
   getAllUsers_SM,
   updateCurrentCompetition,
+  getAllCompetitonManagers,
 } from "../../../Middlewares/systemManager/systemManager.js";
 import { LoadingMagnifyingGlass } from "../../exports.js";
-import { editCompetition } from "../editCompetition_context.js";
+import {
+  editCompetition,
+  editCompetition_atom,
+} from "../editCompetition_context.js";
 import { DeleteCompetition } from "../deleteCompetition/deleteCompetition.jsx";
+import { useRecoilState } from "recoil";
 
 export const EditCompetition_SM = () => {
   const { user } = useAuth0();
   const [loading, setLoading] = useState(true);
   const { competitionToEdit, setcompetitionToEdit } =
     useContext(editCompetition);
+
+  const [atomCompetitionToEdit, setAtomCompetitionToEdit] =
+    useRecoilState(editCompetition_atom);
 
   const [inputs, setInputs] = useState({
     id: competitionToEdit.id,
@@ -39,11 +47,8 @@ export const EditCompetition_SM = () => {
   };
 
   const toggleItem = (index) => {
-    // Create a new array with the values of the state variable
     const newItems = [...items];
-    // Toggle the value at the specified index
     newItems[index] = newItems[index] === "highlight" ? "" : "highlight";
-    // Set the new array as the value of the state variable
     setItems(newItems);
   };
 
@@ -60,13 +65,21 @@ export const EditCompetition_SM = () => {
   //load all users and managers from DB
   useEffect(() => {
     const getAllUsersFromDB = async () => {
-      const all = await getAllUsers_SM(user.sub);
-      //const managers = await getAllCompetitonManagers(competition.id, user.sub);
-      const data = Object.values(all.data);
+      console.log(competitionToEdit, inputs, atomCompetitionToEdit);
+
+      const allUsers = await getAllUsers_SM(user.sub);
+      const managers = await getAllCompetitonManagers(
+        competitionToEdit.id,
+        user.sub
+      );
+      const allUsersData = Object.values(allUsers.data);
+      const allManagersData = Object.values(managers.data);
       setLoading(false);
-      setAllUsers(data);
+      setAllUsers(allUsersData);
+      setManagersArr(allManagersData);
     };
     getAllUsersFromDB();
+    console.log(competitionToEdit, inputs, atomCompetitionToEdit);
   }, [bgState]);
 
   if (loading) {
@@ -153,18 +166,21 @@ export const EditCompetition_SM = () => {
             <h2>Current Managers</h2>
             <label className="allUsersLabel">
               {allUsers.map((user, index) => {
-                return (
-                  <button
-                    key={user.Email + index.toString()}
-                    onClick={() => {
-                      chooseManager(user, index);
-                      // toggleItem(index);
-                    }}
-                    className={`btn ${bgState} ${items[index]}`}
-                  >
-                    {user.name}
-                  </button>
-                );
+                if (!ManagersArr.includes()) {
+                  // console.log(ManagersArr.includes(user), user);
+                  return (
+                    <button
+                      key={user.Email + index.toString()}
+                      onClick={() => {
+                        chooseManager(user, index);
+                        // toggleItem(index);
+                      }}
+                      className={`btn ${bgState} ${items[index]}`}
+                    >
+                      {user.name}
+                    </button>
+                  );
+                }
               })}
             </label>
 
@@ -175,7 +191,7 @@ export const EditCompetition_SM = () => {
                     key={user.Email + index.toString()}
                     onClick={() => {
                       chooseManager(user);
-                      toggleItem(index);
+                      // toggleItem(index);
                     }}
                     className={`btn ${bgState} ${items[index]}`}
                   >

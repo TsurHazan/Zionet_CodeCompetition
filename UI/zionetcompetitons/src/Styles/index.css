@@ -37,3 +37,9 @@
   height: 320px !important;
   width: 200px;
 }
+
+.searchBar {
+  width: 15em;
+  border: 3px solid;
+  border-radius: 5px;
+}

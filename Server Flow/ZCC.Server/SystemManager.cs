@@ -35,11 +35,6 @@ namespace ZCC.Server
             string response = roleClient.Execute(checkRole).Content;
             if (!response.Contains("System Manager")) return new ObjectResult("no permissions");
 
-            OkObjectResult getAllUsers()
-            {
-                return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(MainManager.Instance.userEntities.allUsers));
-            }
-
             switch (action)
             {
                 case "getAllUsers":

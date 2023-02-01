@@ -26,6 +26,7 @@ export const CreateCompetition = () => {
   const { bgState } = useContext(bgMode);
   const [UsersArr, setUsersArr] = useState([]);
   const [items, setItems] = useState(UsersArr);
+  const [searchText, setSearchText] = useState("");
 
   //get data from form
   const handleChange = (event) => {
@@ -45,7 +46,7 @@ export const CreateCompetition = () => {
   };
 
   //add user to UsersArr state array
-  const chooseManager = (user) => {
+  const chooseManager = (user, index) => {
     if (UsersArr.includes(user)) {
       const newItems = UsersArr.filter((i) => i !== user);
       setUsersArr(newItems);
@@ -95,7 +96,7 @@ export const CreateCompetition = () => {
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           >
             <Grid xs={6}>
-              <label>
+              <span>
                 Start Date:
                 <input
                   type="datetime-local"
@@ -105,10 +106,10 @@ export const CreateCompetition = () => {
                   }
                   onChange={handleChange}
                 />
-              </label>
+              </span>
             </Grid>
             <Grid xs={6}>
-              <label>
+              <span>
                 Competition name:
                 <input
                   type="text"
@@ -116,11 +117,11 @@ export const CreateCompetition = () => {
                   value={inputs.Name || "new competition"}
                   onChange={handleChange}
                 />
-              </label>
+              </span>
             </Grid>
 
             <Grid xs={6}>
-              <label>
+              <span>
                 End Date:
                 <input
                   type="datetime-local"
@@ -128,11 +129,11 @@ export const CreateCompetition = () => {
                   value={inputs.End || newDate.toISOString().substring(0, 16)}
                   onChange={handleChange}
                 />
-              </label>
+              </span>
             </Grid>
 
             <Grid xs={6}>
-              <label>
+              <span>
                 hashcode:
                 <input
                   type="text"
@@ -140,27 +141,38 @@ export const CreateCompetition = () => {
                   value={inputs.hashcode || "twitter code"}
                   onChange={handleChange}
                 />
-              </label>
+              </span>
             </Grid>
           </Grid>
           <Grid xs={6}>
             <h3>Set Managers:</h3>
-            <label className="allUsersLabel">
+            <input
+              type="search"
+              className="searchBar"
+              onChange={(event) => {
+                setSearchText(event.target.value);
+              }}
+            />
+            <span className="allUsersLabel">
               {allUsers.map((user, index) => {
-                return (
-                  <button
-                    key={user.Email + index.toString()}
-                    onClick={() => {
-                      chooseManager(user);
-                      toggleItem(index);
-                    }}
-                    className={`btn ${bgState} ${items[index]}`}
-                  >
-                    {user.name}
-                  </button>
-                );
+                if (user.name.includes(searchText)) {
+                  console.log(searchText);
+                  return (
+                    <button
+                      key={user.Email + index.toString()}
+                      onClick={() => {
+                        chooseManager(user);
+                        toggleItem(index);
+                        console.log(user.name);
+                      }}
+                      className={`btn ${bgState} ${items[index]}`}
+                    >
+                      {user.name}
+                    </button>
+                  );
+                }
               })}
-            </label>
+            </span>
           </Grid>
         </div>
       </>
