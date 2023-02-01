@@ -15,11 +15,9 @@ namespace ZCC.Data.Sql
         private SqlServerQuery.miisiksFunc func { get; set; }
         private string query { get; set; }
 
-
-
         // --------------------- set a competition managers ,if user is not related to the competition then insert him as manager ---------------------
 
-        public  void SetManagers(User[] users, int competitionID)
+        public void SetManagers(User[] users, int competitionID)
         {
             foreach (User user in users)
             {
@@ -36,11 +34,13 @@ namespace ZCC.Data.Sql
         }
 
         // --------------------- get all Competitions Managers from the DB ---------------------
-        public Dictionary<string, User> getAllCompetitonManagers(string competitionID) {
+        public Dictionary<string, User> getAllCompetitonManagers(string competitionID)
+        {
             func = _getAllCompetitonManagers;
-            query = $"select * from [dbo].[Users competitions] where [Competition ID] = {competitionID} and [Admin] = 1";
+            query = $"select [Users].* from [dbo].[Users competitions] inner join [Users] on [Users].id = [Users competitions].UserID where [Competition ID] = {competitionID} and [Admin] = 1";
             return (Dictionary<string, User>)SqlServerQuery.getValueFromDB(query, func);
         }
+
         private object _getAllCompetitonManagers(SqlDataReader reader)
         {
             Dictionary<string, User> allUsers = new Dictionary<string, User>();
@@ -55,7 +55,6 @@ namespace ZCC.Data.Sql
         // --------------------- checking if user is a manager of the competition given ---------------------
         public bool checkIfUserIsCompetitionManager(string UserID, string CompetitionID)
         {
-            
             query = $"select [admin] from [dbo].[Users competitions] where ([Competition ID] = {CompetitionID} and [UserID] = '{UserID}')";
             if ((bool?)SqlServerQuery.getSingleValueFromDB(query) == null) return false;
             return true;
@@ -84,7 +83,6 @@ namespace ZCC.Data.Sql
             if (!exist) { return false; }
             return true;
         }
-        
 
         // --------------------- get all users on the DB ---------------------
         private object _getAllUsers(SqlDataReader reader)
@@ -106,6 +104,5 @@ namespace ZCC.Data.Sql
             Dictionary<string, User> allUsers = (Dictionary<string, User>)SqlServerQuery.getValueFromDB(query, func);
             return allUsers;
         }
-        
     }
 }

@@ -11,6 +11,8 @@ import {
   VisitiorsPage,
   SystemManagerPage,
 } from "./Pages/exportPages.js";
+import { RecoilRoot } from "recoil";
+
 export const App = () => {
   const [bgState, setBgState] = useState(localStorage.Theme);
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -29,7 +31,9 @@ export const App = () => {
     if (user.role[0] === "System Manager") {
       return (
         <bgMode.Provider value={{ bgState, setBgState }}>
-          <SystemManagerPage />
+          <RecoilRoot>
+            <SystemManagerPage />
+          </RecoilRoot>
         </bgMode.Provider>
       );
     } else {
