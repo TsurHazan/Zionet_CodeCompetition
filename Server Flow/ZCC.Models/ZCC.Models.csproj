@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActiveTasks.cs" />
     <Compile Include="Categories.cs" />
     <Compile Include="Competition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
