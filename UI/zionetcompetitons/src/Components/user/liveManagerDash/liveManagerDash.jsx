@@ -1,11 +1,15 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import {
+  getCompetitionTask,
+  getSubmittedTask,
   getUserCompetitionManagement,
   updateStatusCompetition,
 } from "../../../Middlewares/competitions/competitions";
 import { GetAllTeamsInCompetition } from "../../../Middlewares/teams/teams";
+import { submitTask } from "../../../Pages/editCompetition/taskContext";
 
 export const LiveManagerDash = () => {
   const { id } = useParams();
@@ -13,6 +17,8 @@ export const LiveManagerDash = () => {
   const [competition, setCompetition] = useState({});
   const [teamsInfo, setTeamsInfo] = useState([]);
   const [timeLeft, setTimeLeft] = useState("");
+  const [taskSubmitted, setTaskSubmitted] = useRecoilState(submitTask);
+  const [enterPoint, setenterPoint] = useState({});
 
   const EndCopmetition = async () => {
     await updateStatusCompetition(user.sub, id, "Finished");
@@ -42,13 +48,27 @@ export const LiveManagerDash = () => {
     const data = Object.values(allteam.data);
     setTeamsInfo(data);
   };
+  const getAllCompettitionsTask = async () => {
+    const allteam = await getCompetitionTask(user.sub, id);
+    const data = Object.values(allteam.data);
+    console.log("All Tasks", data);
+  };
+  const getAllSubmittedTask = async () => {
+    const allTask = await getSubmittedTask(user.sub, id);
+    const data = Object.values(allTask.data);
+    console.log("Submit Tasks", data);
+    setTaskSubmitted(data);
+  };
   useEffect(() => {
     const initUseEffect = async () => {
       await getAllCompetitionDetailsFromDB();
       await getCompettitionTeams();
+      await getAllCompettitionsTask();
+      await getAllSubmittedTask();
     };
     initUseEffect();
   }, []);
+  console.log(enterPoint);
   return (
     <div className="liveManagerDash">
       <h4>Live Manager DASH</h4>
@@ -78,9 +98,26 @@ export const LiveManagerDash = () => {
           })}
         </tbody>
       </table>
-      <p>
+      {taskSubmitted.map((task) => {
+        return (
+          <span>
+            <a href={"http://" + task.gitRepo} target="_blank">
+              Open Repository
+            </a>
+            <button
+              onClick={() => {
+                let givenPoint = prompt("Enter Point");
+                setenterPoint({ taskID: task.id, Point: givenPoint });
+              }}
+            >
+              Add Point
+            </button>
+          </span>
+        );
+      })}
+      <div>
         <button onClick={EndCopmetition}>Finish</button>
-      </p>
+      </div>
     </div>
   );
 };

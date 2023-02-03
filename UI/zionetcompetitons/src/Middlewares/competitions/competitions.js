@@ -60,3 +60,8 @@ export const updateStatusCompetition = async (
   reqGet = await axios.post(reqUrl, newStatus);
   return reqGet;
 };
+export const getSubmittedTask = async (userID, competitionID) => {
+  reqUrl = `http://localhost:7175/api/competition/GetSubmittedTasks/${userID}/${competitionID}`;
+  reqGet = await axios.get(reqUrl);
+  return reqGet;
+};
