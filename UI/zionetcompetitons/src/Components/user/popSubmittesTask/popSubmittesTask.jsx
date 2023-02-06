@@ -1,11 +1,23 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import { useParams } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { confirmSubmittedTask } from "../../../Middlewares/competitions/competitions";
+import { submitTaskSucceeded } from "../../../Pages/editCompetition/taskContext";
 
 export const PopSubmittesTask = ({ originalTask, submittedTask }) => {
+  const [submitTaskSuccess, setSubmitTaskSuccess] =
+    useRecoilState(submitTaskSucceeded);
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setSubmitTaskSuccess(!submitTaskSuccess);
+  };
   const handleShow = () => setShow(true);
+  const { id } = useParams();
+  const { user } = useAuth0();
 
   const isSubmitBonus = submittedTask.bonus === true ? "YES" : "NO";
   const maxPoint =
@@ -19,14 +31,15 @@ export const PopSubmittesTask = ({ originalTask, submittedTask }) => {
     setpointsGiven(event.target.value);
   };
   const handleSaveChange = async () => {
-    alert(`${pointsGiven} Points`);
-    //handleClose();
+    let response = await confirmSubmittedTask(
+      user.sub,
+      id,
+      pointsGiven,
+      submittedTask
+    );
+    console.log(response);
+    handleClose();
   };
-
-  //console.log("originalTask", originalTask);
-  //console.log("submittedTask", submittedTask);
-  console.log("pointsGiven", pointsGiven);
-
   return (
     <>
       <Button variant="primary" onClick={handleShow}>
@@ -39,16 +52,13 @@ export const PopSubmittesTask = ({ originalTask, submittedTask }) => {
         </Modal.Header>
         <Modal.Body>
           <div>
-            <p>
-              <a
-                href={"http://" + submittedTask.gitRepo}
-                target="_blank"
-                //????? rel="noreferrer"
-                rel="noreferrer"
-              >
-                Open Repository
-              </a>
-            </p>
+            <a
+              href={"http://" + submittedTask.gitRepo}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <button className="btn btn-primary">Open Repository</button>
+            </a>
             <table>
               <tbody>
                 <tr>
@@ -69,15 +79,15 @@ export const PopSubmittesTask = ({ originalTask, submittedTask }) => {
                 </tr>
                 <tr>
                   <td>Start Time:</td>
-                  <td>{submittedTask.startTime.substring(11, 19)}</td>
+                  <td>{submittedTask.startTime.substring(11, 16)}</td>
                 </tr>
                 <tr>
                   <td>End Time:</td>
-                  <td>{submittedTask.endTime.substring(11, 19)}</td>
+                  <td>{submittedTask.endTime.substring(11, 16)}</td>
                 </tr>
                 <tr>
                   <td>Submit Time:</td>
-                  <td>{submittedTask.submitTime.substring(11, 19)}</td>
+                  <td>{submittedTask.submitTime.substring(11, 16)}</td>
                 </tr>
               </tbody>
             </table>

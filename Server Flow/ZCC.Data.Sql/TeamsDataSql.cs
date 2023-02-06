@@ -86,5 +86,19 @@ namespace ZCC.Data.Sql
             query = $"DECLARE @CompetitionID INT = {competitionID},\r\n        @UserID varchar(max) = '{userId}',\r\n        @TeamID int = {teamID};\r\n\t\t\r\n if exists(select * from [Users competitions] where [Competition ID]= @CompetitionID and [UserID] = @UserID)\r\n BEGIN\r\n    update [Users competitions] set [TeamID] = @TeamID\r\n\twhere( [Competition ID] = @CompetitionID) and ([UserID] like @UserID)\r\nEND\r\nELSE\r\nBEGIN\r\n    INSERT INTO [Users competitions] values (@UserID,0, @TeamID, @CompetitionID)\r\nEND";
             SqlServerQuery.runCommand(query);
         }
+        
+        public int GetTeamsPoint(string TeamID)
+        {
+            query = $"select Points from Teams where id = {TeamID}";
+            int teamPoint = (int)SqlServerQuery.getSingleValueFromDB(query);
+            return teamPoint;
+        }
+        public void UpdateTeamsPoint(string TeamID,string enterPoint)
+        {
+            query = $"update [Teams] set Points += {enterPoint} where id = {TeamID}";
+            SqlServerQuery.runCommand(query);
+        }
+
+
     }
 }

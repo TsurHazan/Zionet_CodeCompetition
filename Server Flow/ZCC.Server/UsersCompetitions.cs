@@ -20,8 +20,8 @@ namespace ZCC.Server
     {
         [FunctionName("UsersCompetitions")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "UsersCompetitions/{action}/{userid}/{competitionID?}")] HttpRequest req,
-           string action, string userid, string competitionID, ILogger log)
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "UsersCompetitions/{action}/{useID}/{competitionID?}/{enterPoint?}")] HttpRequest req,
+           string action, string useID, string competitionID, string enterPoint, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
@@ -34,7 +34,7 @@ namespace ZCC.Server
                 case "EnableCompetition":
 
                     //check if the request sent by
-                    if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
+                    if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(useID, competitionID))
                     {
                         //update competition
                         return new OkObjectResult(true);
@@ -43,15 +43,15 @@ namespace ZCC.Server
                     break;
                 case "GetAllCompetition":
                     
-                    return new OkObjectResult(MainManager.Instance.competitionsManager.allUserCompetitions(userid));
+                    return new OkObjectResult(MainManager.Instance.competitionsManager.allUserCompetitions(useID));
                 case "GetCompetition":
 
-                    return new OkObjectResult(MainManager.Instance.competitionsManager.UserCompetitionManager(userid,competitionID));
+                    return new OkObjectResult(MainManager.Instance.competitionsManager.UserCompetitionManager(useID,competitionID));
                 case "UpdateCompetition":
                     try
                     {
                         Competition competition = System.Text.Json.JsonSerializer.Deserialize<Competition>(requestBody);
-                        if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competition.id.ToString()))
+                        if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(useID, competition.id.ToString()))
                         {
                         bool ll= MainManager.Instance.competitionsManager.UpdateCompetition(competition);
                         return new OkObjectResult(ll);
@@ -70,7 +70,7 @@ namespace ZCC.Server
                 case "UpdateCompetitionStatus":
                     try
                     {
-                        if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
+                        if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(useID, competitionID))
                         {
                              MainManager.Instance.competitionsManager.ChangeCompetitionStatus(competitionID,requestBody);
                             return new OkObjectResult(true);
@@ -99,7 +99,7 @@ namespace ZCC.Server
                 case "UpdateTask":
                     try
                     {
-                        if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
+                        if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(useID, competitionID))
                         {
                             Models.Task task = System.Text.Json.JsonSerializer.Deserialize<Models.Task>(requestBody);
                             MainManager.Instance.taskManager.setNewTask(task);
@@ -116,9 +116,33 @@ namespace ZCC.Server
                         return new OkObjectResult(false);
                     }
                 case "getParticipantCompetitions":
-                    Dictionary<int, Models.UsersCompetitions> Dic = MainManager.Instance.usersCompetitionsManager.getAllParticipantCompetitions(userid);
+                    Dictionary<int, Models.UsersCompetitions> Dic = MainManager.Instance.usersCompetitionsManager.getAllParticipantCompetitions(useID);
 
-                    return new OkObjectResult(MainManager.Instance.usersCompetitionsManager.getAllParticipantCompetitions(userid));
+                    return new OkObjectResult(MainManager.Instance.usersCompetitionsManager.getAllParticipantCompetitions(useID));
+                    
+                case "ConfirmSubmittedTask":
+
+                    if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(useID, competitionID))
+                    {
+                        //get the active task
+                        ActiveTasks activeTasks = System.Text.Json.JsonSerializer.Deserialize<ActiveTasks>(requestBody);
+                        //get Teams Point Before update current Task Point
+                        int teamPointBefore = MainManager.Instance.teamsManager.GetTeamsPoint(activeTasks.teamID.ToString());
+                        //Update Teams Point
+                        MainManager.Instance.teamsManager.UpdateTeamsPoint(activeTasks.teamID.ToString(), enterPoint);
+                        //get Teams Point After update current Task Point
+                        int teamPointAfter = MainManager.Instance.teamsManager.GetTeamsPoint(activeTasks.teamID.ToString());
+                        //check if the teams Point is Update
+                        if (teamPointBefore+ int.Parse(enterPoint) ==teamPointAfter)
+                        {
+                            //Update Active Task Status To Done
+                            string currentStatus = MainManager.Instance.activeTasksManager.UpdateTaskStatusToDone(activeTasks.id.ToString());
+                            return new OkObjectResult(currentStatus);
+                        }
+                        return new BadRequestObjectResult(false);
+                    }
+                    return new BadRequestObjectResult("NO ACCESS");
+
 
                 default:
                     break;

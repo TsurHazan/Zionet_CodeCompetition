@@ -44,6 +44,14 @@ namespace ZCC.Data.Sql
             }
             return activeTaskDic;
         }
+
+        public static string UpdateSubmittedTaskStatus(string activeTaskID)
+        {
+            query = $"update [Active Tasks] set Status = 'Done' where id = {activeTaskID}  select Status from [Active Tasks] where id = {activeTaskID}";
+            string currentStatus = (string)SqlServerQuery.getSingleValueFromDB(query);
+            return currentStatus;
+        }
+
     }
 }
 

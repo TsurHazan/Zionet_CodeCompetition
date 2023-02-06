@@ -9,7 +9,7 @@ import {
   updateStatusCompetition,
 } from "../../../Middlewares/competitions/competitions";
 import { GetAllTeamsInCompetition } from "../../../Middlewares/teams/teams";
-import { submitTask } from "../../../Pages/editCompetition/taskContext";
+import { submitTaskSucceeded } from "../../../Pages/editCompetition/taskContext";
 import { PopSubmittesTask } from "../popSubmittesTask/popSubmittesTask";
 
 export const LiveManagerDash = () => {
@@ -21,6 +21,8 @@ export const LiveManagerDash = () => {
   const [taskSubmitted, setTaskSubmitted] = useState([]);
   const [allTasks, setAllTasks] = useState([]);
   const [enterPoint, setenterPoint] = useState({});
+  const [submitTaskSuccess, setSubmitTaskSuccess] =
+    useRecoilState(submitTaskSucceeded);
 
   const EndCopmetition = async () => {
     await updateStatusCompetition(user.sub, id, "Finished");
@@ -48,19 +50,16 @@ export const LiveManagerDash = () => {
   const getCompettitionTeams = async () => {
     const allteam = await GetAllTeamsInCompetition(user.sub, id);
     const data = Object.values(allteam.data);
-    console.log("Teams info", data);
     setTeamsInfo(data);
   };
   const getAllCompettitionsTask = async () => {
     const allteam = await getCompetitionTask(user.sub, id);
     const data = Object.values(allteam.data);
-    console.log("All Tasks", data);
     setAllTasks(data);
   };
   const getAllSubmittedTask = async () => {
     const allTask = await getSubmittedTask(user.sub, id);
     const data = Object.values(allTask.data);
-    console.log("Submit Tasks", data);
     setTaskSubmitted(data);
   };
   useEffect(() => {
@@ -71,9 +70,8 @@ export const LiveManagerDash = () => {
       await getAllSubmittedTask();
     };
     initUseEffect();
-  }, []);
+  }, [submitTaskSuccess]);
   //enterPoint TO useEffect ??
-  console.log(enterPoint);
   return (
     <div className="liveManagerDash">
       <h4>Live Manager DASH</h4>
@@ -97,6 +95,7 @@ export const LiveManagerDash = () => {
                   <img src={team.Icon} alt={team.Name} />
                 </td>
                 <td>{team.Name}</td>
+                {/* <td>{team.email}</td> */}
                 <td>{team.Points}</td>
               </tr>
             );
