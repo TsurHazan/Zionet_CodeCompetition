@@ -10,6 +10,7 @@ import {
 } from "../../../Middlewares/competitions/competitions";
 import { GetAllTeamsInCompetition } from "../../../Middlewares/teams/teams";
 import { submitTask } from "../../../Pages/editCompetition/taskContext";
+import { PopSubmittesTask } from "../popSubmittesTask/popSubmittesTask";
 
 export const LiveManagerDash = () => {
   const { id } = useParams();
@@ -17,7 +18,8 @@ export const LiveManagerDash = () => {
   const [competition, setCompetition] = useState({});
   const [teamsInfo, setTeamsInfo] = useState([]);
   const [timeLeft, setTimeLeft] = useState("");
-  const [taskSubmitted, setTaskSubmitted] = useRecoilState(submitTask);
+  const [taskSubmitted, setTaskSubmitted] = useState([]);
+  const [allTasks, setAllTasks] = useState([]);
   const [enterPoint, setenterPoint] = useState({});
 
   const EndCopmetition = async () => {
@@ -46,12 +48,14 @@ export const LiveManagerDash = () => {
   const getCompettitionTeams = async () => {
     const allteam = await GetAllTeamsInCompetition(user.sub, id);
     const data = Object.values(allteam.data);
+    console.log("Teams info", data);
     setTeamsInfo(data);
   };
   const getAllCompettitionsTask = async () => {
     const allteam = await getCompetitionTask(user.sub, id);
     const data = Object.values(allteam.data);
     console.log("All Tasks", data);
+    setAllTasks(data);
   };
   const getAllSubmittedTask = async () => {
     const allTask = await getSubmittedTask(user.sub, id);
@@ -68,6 +72,7 @@ export const LiveManagerDash = () => {
     };
     initUseEffect();
   }, []);
+  //enterPoint TO useEffect ??
   console.log(enterPoint);
   return (
     <div className="liveManagerDash">
@@ -98,20 +103,23 @@ export const LiveManagerDash = () => {
           })}
         </tbody>
       </table>
+      {/* Map task Submitted */}
+      {/* Map team info to get Team Name for task  */}
       {taskSubmitted.map((task) => {
+        let teamObj = teamsInfo.find((oneTeam) => {
+          return oneTeam.id === task.teamID;
+        });
+        let originalTask = allTasks.find((oneTask) => {
+          return oneTask.id === task.taskID;
+        });
         return (
-          <span>
-            <a href={"http://" + task.gitRepo} target="_blank">
-              Open Repository
-            </a>
-            <button
-              onClick={() => {
-                let givenPoint = prompt("Enter Point");
-                setenterPoint({ taskID: task.id, Point: givenPoint });
-              }}
-            >
-              Add Point
-            </button>
+          <span key={task.id}>
+            <p>{teamObj.Name}</p>
+            <p>Task: {originalTask.name}</p>
+            <PopSubmittesTask
+              originalTask={originalTask}
+              submittedTask={task}
+            ></PopSubmittesTask>
           </span>
         );
       })}
