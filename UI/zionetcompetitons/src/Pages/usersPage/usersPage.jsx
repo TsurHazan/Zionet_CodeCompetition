@@ -14,6 +14,7 @@ import { Route, Routes } from "react-router-dom";
 import "../../Styles/user.css";
 import { LiveManagerDash } from "../../Components/user/liveManagerDash/liveManagerDash";
 import { UsersHomePage } from "../../Components/user/usersHomePage/usersHomePage";
+import { LiveParticipantDashboard } from "../liveParticipantDashboard/liveParticipantDashboard";
 
 export const UsersPage = () => {
   const { bgState, setBgState } = useContext(bgMode);
@@ -29,6 +30,10 @@ export const UsersPage = () => {
         <Route path="/Management/:id" element={<EditCompetitionPage />} />
         <Route path="/LiveManagerDashboard/:id" element={<LiveManagerDash />} />
         <Route path="/Participate" element={<ParticipantsCompetitions />} />
+        <Route
+          path="/LiveCompetitionDashboard/:competitionID/:teamID"
+          element={<LiveParticipantDashboard />}
+        />
       </Routes>
     </div>
   );

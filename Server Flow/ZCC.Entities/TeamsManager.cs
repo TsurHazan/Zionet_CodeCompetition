@@ -8,12 +8,13 @@ using ZCC.Models;
 
 namespace ZCC.Entities
 {
-    public class TeamsManager
+    public class TeamsManager : BaseEntity
     {
         private TeamsDataSql teamsDataSql = new TeamsDataSql();
 
         public void UpdateTeam(User[] team, string competitionID, string teamID)
         {
+            teamsDataSql.ResetTeam(teamID);
             foreach (User user in team)
             {
                 teamsDataSql.AddUserToTeam(teamID, user.user_id, competitionID);

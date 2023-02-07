@@ -10,7 +10,7 @@ using ZCC.Models;
 
 namespace ZCC.Data.Sql
 {
-    public class TeamsDataSql
+    public class TeamsDataSql : BaseDataSql
     {
         private string query { get; set; }
         private SqlServerQuery.miisiksFunc func { get; set; }
@@ -83,7 +83,14 @@ namespace ZCC.Data.Sql
 
         public void AddUserToTeam(string teamID, string userId, string competitionID)
         {
-            query = $"DECLARE @CompetitionID INT = {competitionID},\r\n        @UserID varchar(max) = '{userId}',\r\n        @TeamID int = {teamID};\r\n\t\t\r\n if exists(select * from [Users competitions] where [Competition ID]= @CompetitionID and [UserID] = @UserID)\r\n BEGIN\r\n    update [Users competitions] set [TeamID] = @TeamID\r\n\twhere( [Competition ID] = @CompetitionID) and ([UserID] like @UserID)\r\nEND\r\nELSE\r\nBEGIN\r\n    INSERT INTO [Users competitions] values (@UserID,0, @TeamID, @CompetitionID)\r\nEND";
+            query = $"DECLARE @CompetitionID INT = {competitionID},\r\n@UserID varchar(max) = '{userId}',\r\n@TeamID int = {teamID};\r\n\t\t\r\n if exists(select * from [Users competitions] where [Competition ID]= @CompetitionID and [UserID] = @UserID)\r\n BEGIN\r\n    update [Users competitions] set [TeamID] = @TeamID\r\n\twhere( [Competition ID] = @CompetitionID) and ([UserID] like @UserID)\r\nEND\r\nELSE\r\nBEGIN\r\n    INSERT INTO [Users competitions] values (@UserID,0, @TeamID, @CompetitionID)\r\nEND";
+            SqlServerQuery.runCommand(query);
+        }
+
+        // --------------------- Resets a team,Removes all current team members ---------------------
+        public void ResetTeam(string teamID)
+        {
+            query = $"update [Users competitions] set [TeamID] = 1 where [Users competitions].Admin = 0 and [TeamID] ={teamID}";
             SqlServerQuery.runCommand(query);
         }
         

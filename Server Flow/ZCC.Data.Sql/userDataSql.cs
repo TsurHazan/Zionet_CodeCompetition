@@ -10,7 +10,7 @@ using ZCC.Models;
 
 namespace ZCC.Data.Sql
 {
-    public class userDataSql
+    public class userDataSql : BaseDataSql
     {
         private SqlServerQuery.miisiksFunc func { get; set; }
         private string query { get; set; }

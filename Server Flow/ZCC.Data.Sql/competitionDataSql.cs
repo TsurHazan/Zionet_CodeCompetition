@@ -11,22 +11,17 @@ using ZCC.Models;
 
 namespace ZCC.Data.Sql
 {
-    public class competitionDataSql
+    public class competitionDataSql : BaseDataSql
     {
         private static SqlServerQuery.miisiksFunc func { get; set; }
         private static string query;
-        static Dictionary<int, Models.Competition> DiCompetitions = new Dictionary<int, Competition>();
-
-        
+        private static Dictionary<int, Models.Competition> DiCompetitions = new Dictionary<int, Competition>();
 
         // --------------------- Change Competition Status  ---------------------
-        public void ChangeCompetitionStatus(int competitionID,string newStatus)
+        public void ChangeCompetitionStatus(int competitionID, string newStatus)
         {
             SqlServerQuery.runCommand($"update [Competitions] set [status] = '{newStatus}' where [id] = {competitionID}");
         }
-
-
-        
 
         // --------------------- Update specific Competition row ---------------------
         public bool UpdateCompetition(Competition competition)
@@ -53,10 +48,9 @@ namespace ZCC.Data.Sql
                 competition.hashcode = reader.GetString(reader.GetOrdinal("hashcode"));
                 competition.status = reader.GetString(reader.GetOrdinal("status"));
                 competition.numOfTeams = reader.GetInt32(reader.GetOrdinal("numOfTeams"));
-                competition.maxActiveTasks= reader.GetInt32(reader.GetOrdinal("max active Tasks"));
-                    
-                DiCompetitions.Add(competition.id, competition);
+                competition.maxActiveTasks = reader.GetInt32(reader.GetOrdinal("max active Tasks"));
 
+                DiCompetitions.Add(competition.id, competition);
             }
             return DiCompetitions;
         }
@@ -69,24 +63,23 @@ namespace ZCC.Data.Sql
             return allCompetitions;
         }
 
-
         // --------------------- create new competition in database and return its id ---------------------
 
         public static int CreateNewCompetitions(Competition competition)
         {
             string query = $"insert into Competitions ([Name],[Start],[End],numOfTeams,[status],hashcode,[max active Tasks]) values('{competition.Name}','{competition.Start.ToString("yyyy-MM-dd HH:mm:ss").Replace("/", "-")}','{competition.End.ToString("yyyy-MM-dd HH:mm:ss").Replace("/", "-")}',{competition.numOfTeams},'In Preparation','{competition.hashcode}',{competition.maxActiveTasks}) select COUNT(id) from Competitions";
-            return (int) DAL.SqlServerQuery.getSingleValueFromDB(query);
-            
+            return (int)DAL.SqlServerQuery.getSingleValueFromDB(query);
         }
-        
-        // --------------------- get all Competitions the user participating at ---------------------
-        public static Dictionary<int, Models.Competition> GetUserCompetitionsFromDB(string userID)
+
+        // --------------------- get all Competitions the user participating\managing at ---------------------
+        public static Dictionary<int, Models.Competition> GetUserCompetitionsFromDB(string userID, int admin)
         {
-            string sqlQuery = $"select  id ,Start,[End], numOfTeams, status,Name , hashcode,[max active Tasks] from [Users competitions] us join Competitions com on us.[Competition ID] = com.id where UserID = '{userID}' and [Admin] = 1";
+            string sqlQuery = $"select  id ,Start,[End], numOfTeams, status,Name , hashcode,[max active Tasks] from [Users competitions] us join Competitions com on us.[Competition ID] = com.id where UserID = '{userID}' and [Admin] = {admin}";
             SqlServerQuery.miisiksFunc func = SetDataToDictionary;
             Dictionary<int, Models.Competition> ret = (Dictionary<int, Models.Competition>)DAL.SqlServerQuery.getValueFromDB(sqlQuery, func);
             return ret;
         }
+
         private static Dictionary<int, Models.Competition> SetDataToDictionary(SqlDataReader reader)
         {
             DiCompetitions.Clear();
@@ -120,7 +113,7 @@ namespace ZCC.Data.Sql
                 competition.Name = reader.GetString(5);
                 competition.hashcode = reader.GetString(6);
                 competition.maxActiveTasks = reader.GetInt32(7);
-                 return competition;
+                return competition;
             }
             return null;
         }
@@ -129,7 +122,7 @@ namespace ZCC.Data.Sql
         {
             string sqlQuery = $"select  id ,Start,[End], numOfTeams, status,Name , hashcode,[max active Tasks] from [Users competitions] us join Competitions com on us.[Competition ID] = com.id where UserID = '{userID}' and [Competition ID] = {competitionID} and [Admin] = 1";
             SqlServerQuery.miisiksFunc func = SetDataToCompetition;
-             Models.Competition ret = ( Models.Competition)DAL.SqlServerQuery.getValueFromDB(sqlQuery, func);
+            Models.Competition ret = (Models.Competition)DAL.SqlServerQuery.getValueFromDB(sqlQuery, func);
             return ret;
         }
     }

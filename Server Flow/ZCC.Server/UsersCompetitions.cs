@@ -20,17 +20,15 @@ namespace ZCC.Server
     {
         [FunctionName("UsersCompetitions")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "UsersCompetitions/{action}/{useID}/{competitionID?}/{enterPoint?}")] HttpRequest req,
-           string action, string useID, string competitionID, string enterPoint, ILogger log)
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "UsersCompetitions/{action}/{userid}/{competitionID?}/{teamID?}/{enterPoint?}")] HttpRequest req,
+           string action, string userid, string competitionID, string teamID, string enterPoint, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
-
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
 
             switch (action)
             {
-
                 case "EnableCompetition":
 
                     //check if the request sent by
@@ -41,21 +39,27 @@ namespace ZCC.Server
                     }
 
                     break;
-                case "GetAllCompetition":
-                    
-                    return new OkObjectResult(MainManager.Instance.competitionsManager.allUserCompetitions(useID));
+
+                case "GetAllManagerCompetition":
+
+                    return new OkObjectResult(MainManager.Instance.competitionsManager.allUserCompetitions(userid, 1));
+
+                case "GetAllParticipantCompetition":
+
+                    return new OkObjectResult(MainManager.Instance.competitionsManager.allUserCompetitions(userid, 0));
+
                 case "GetCompetition":
 
-                    return new OkObjectResult(MainManager.Instance.competitionsManager.UserCompetitionManager(useID,competitionID));
+                    return new OkObjectResult(MainManager.Instance.competitionsManager.UserCompetitionManager(userid, competitionID));
+
                 case "UpdateCompetition":
                     try
                     {
                         Competition competition = System.Text.Json.JsonSerializer.Deserialize<Competition>(requestBody);
                         if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(useID, competition.id.ToString()))
                         {
-                        bool ll= MainManager.Instance.competitionsManager.UpdateCompetition(competition);
-                        return new OkObjectResult(ll);
-
+                            bool ll = MainManager.Instance.competitionsManager.UpdateCompetition(competition);
+                            return new OkObjectResult(ll);
                         }
                         else
                         {
@@ -72,7 +76,7 @@ namespace ZCC.Server
                     {
                         if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(useID, competitionID))
                         {
-                             MainManager.Instance.competitionsManager.ChangeCompetitionStatus(competitionID,requestBody);
+                            MainManager.Instance.competitionsManager.ChangeCompetitionStatus(competitionID, requestBody);
                             return new OkObjectResult(true);
                         }
                         else
@@ -88,8 +92,8 @@ namespace ZCC.Server
                 case "UpdateCategory":
                     try
                     {
-                         MainManager.Instance.categoriesManager.setNewCategory(requestBody);
-                            return new OkObjectResult(200);
+                        MainManager.Instance.categoriesManager.setNewCategory(requestBody);
+                        return new OkObjectResult(200);
                     }
                     catch (Exception ex)
                     {
@@ -115,10 +119,6 @@ namespace ZCC.Server
                         Console.WriteLine(ex.Message);
                         return new OkObjectResult(false);
                     }
-                case "getParticipantCompetitions":
-                    Dictionary<int, Models.UsersCompetitions> Dic = MainManager.Instance.usersCompetitionsManager.getAllParticipantCompetitions(useID);
-
-                    return new OkObjectResult(MainManager.Instance.usersCompetitionsManager.getAllParticipantCompetitions(useID));
                     
                 case "ConfirmSubmittedTask":
 
@@ -147,7 +147,7 @@ namespace ZCC.Server
                 default:
                     break;
             }
-            return new OkObjectResult("null");
+            return new NotFoundObjectResult("404 Not Found");
         }
     }
 }

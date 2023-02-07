@@ -81,7 +81,7 @@ namespace ZCC.Server
                 default:
                     break;
             }
-            return new OkObjectResult("null");
+            return new NotFoundObjectResult("404 Not Found");
         }
     }
 }

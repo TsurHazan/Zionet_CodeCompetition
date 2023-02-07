@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { bgMode } from "../../../bgModeContext.js";
-import { checkUserCompetitions } from "../../../Middlewares/users/users.js";
+import { GetAllManagerCompetition } from "../../../Middlewares/users/users.js";
 import { Link } from "react-router-dom";
 import {
   updateCompetitionManagement,
@@ -13,17 +13,17 @@ export const ManagersCompetitions = () => {
   const { user } = useAuth0();
   const { bgState } = useContext(bgMode);
 
-  //chenge competition statis To Running and move to Live Page
+  //change competition status To Running and move to Live Page
   const startCopmetition = async (competitionID) => {
     await updateStatusCompetition(user.sub, competitionID, "Running");
     let ref = "/LiveManagerDashboard/" + competitionID;
     window.location.href = ref;
   };
 
-  //load all users from DB
+  //load all competitions from DB
   useEffect(() => {
     const getAllUserCompetitions = async () => {
-      const all = await checkUserCompetitions(user.sub);
+      const all = await GetAllManagerCompetition(user.sub);
       const data = Object.values(all.data);
       setAllCompetitions(data);
     };

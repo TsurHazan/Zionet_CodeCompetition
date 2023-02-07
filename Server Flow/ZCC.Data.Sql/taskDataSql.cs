@@ -9,12 +9,12 @@ using ZCC.Models;
 
 namespace ZCC.Data.Sql
 {
-    public class taskDataSql
+    public class taskDataSql : BaseDataSql
     {
         private static SqlServerQuery.miisiksFunc func { get; set; }
 
-
         public static Dictionary<int, Models.Task> taskDic = new Dictionary<int, Models.Task>();
+
         public static Dictionary<int, Models.Task> SetDataToDictionary(SqlDataReader reader)
         {
             taskDic.Clear();
@@ -31,12 +31,11 @@ namespace ZCC.Data.Sql
                 task.BonusTime = reader.GetInt32(7);
                 task.name = reader.GetString(8);
 
-
                 taskDic.Add(task.id, task);
-
             }
             return taskDic;
         }
+
         public static Models.Task SetDataToObj(SqlDataReader reader)
         {
             if (reader.Read())
@@ -52,17 +51,15 @@ namespace ZCC.Data.Sql
                 task.BonusTime = reader.GetInt32(7);
                 task.name = reader.GetString(8);
 
-
                 return task;
-
             }
             return null;
         }
 
-        public static Dictionary<int, Models.Task> GetAllCompetitionTaskFromDB(string userID,string competitionID)
+        public static Dictionary<int, Models.Task> GetAllCompetitionTaskFromDB(string userID, string competitionID)
         {
             string sqlQuery = $"SELECT * FROM Tasks where CompetitionID = ( SELECT [Competition ID] FROM [Users competitions]  where UserID = '{userID}' and [Competition ID] = {competitionID} and Admin = 1)";
-             func = SetDataToDictionary;
+            func = SetDataToDictionary;
             Dictionary<int, Models.Task> ret = (Dictionary<int, Models.Task>)DAL.SqlServerQuery.getValueFromDB(sqlQuery, func);
             return ret;
         }
@@ -72,14 +69,16 @@ namespace ZCC.Data.Sql
             string sqlQuery = $"insert into Tasks values ({task.CompetitionID},'{task.CategoryID}',{task.Timeframe},{task.points},'{task.Description}',{task.BonusPoints},{task.BonusTime},'{task.name}')";
             DAL.SqlServerQuery.runCommand(sqlQuery);
         }
+
         public static void UpdateOneTask(Models.Task task)
         {
             string sqlQuery = $"update Tasks set CategoryID = '{task.CategoryID}', [Timeframe(minutes)]= {task.Timeframe}, points = {task.points}, Description = '{task.Description}', [Bonus points] = {task.BonusPoints}, [Bonus Time(minutes)] = {task.BonusTime}, name = '{task.name}' where id = {task.id}";
             DAL.SqlServerQuery.runCommand(sqlQuery);
         }
+
         public static void DeleteTaskById(string competitionID, string taskID)
         {
-             string sqlQuery = $"delete Tasks where id = {taskID}  and CompetitionID = {competitionID}";
+            string sqlQuery = $"delete Tasks where id = {taskID}  and CompetitionID = {competitionID}";
             DAL.SqlServerQuery.runCommand(sqlQuery);
         }
     }

@@ -10,13 +10,15 @@ namespace ZCC.Entities
     public class MainManager
     {
         private MainManager()
-        { userEntities = new userManager();
+        {
+            userEntities = new userManager();
             competitionsManager = new CompetitionManager();
             categoriesManager = new CategoriesManager();
             taskManager = new TaskManager();
             teamsManager = new TeamsManager();
             usersCompetitionsManager = new UsersCompetitionsManager();
             activeTasksManager = new ActiveTasksManager();
+            participantsManager = new ParticipantManager();
         }
 
         private static readonly MainManager _Instance = new MainManager();
@@ -25,9 +27,9 @@ namespace ZCC.Entities
         { get { return _Instance; } private set { } }
 
         public userManager userEntities;
-
-        public CompetitionManager competitionsManager ;
-        public CategoriesManager categoriesManager ;
+        public ParticipantManager participantsManager;
+        public CompetitionManager competitionsManager;
+        public CategoriesManager categoriesManager;
         public TaskManager taskManager;
         public TeamsManager teamsManager;
         public UsersCompetitionsManager usersCompetitionsManager;
