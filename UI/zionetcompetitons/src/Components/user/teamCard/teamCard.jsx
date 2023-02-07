@@ -16,13 +16,12 @@ export const TeamCard = ({ allTeams, setAllTeams, thisTeam, indexOfTeam }) => {
   const [team, setTeam] = useState([]);
   const [Users, setUsers] = useState([]);
   const [Value, setValue] = useState("");
-  const [members, setMembers] = useState();
 
   useEffect(() => {
     const getUsers = async () => {
       const users = await getAllUsers(user.sub, thisTeam.CompetitionID);
       const usersData = Object.values(users.data);
-      await setUsers(usersData);
+      setUsers(usersData);
       let newTeams = allTeams;
       newTeams[indexOfTeam] = team;
       setAllTeams(newTeams);
@@ -54,18 +53,18 @@ export const TeamCard = ({ allTeams, setAllTeams, thisTeam, indexOfTeam }) => {
   };
 
   const handleRemoveTeamMember = (member) => {
-    setTeam((Prev) => Prev.filter((prevItem) => prevItem !== member));
+    console.log("team:", team);
+    const newTeam = team.filter((o) => o !== member);
+    console.log("newTeam", newTeam);
+    setTeam(newTeam);
+
+    console.log("team:", team, "newTeam", newTeam);
   };
+  console.log("team:", team);
 
   return (
     <div className="card">
-      <button
-        onClick={() => {
-        
-        }}
-      >
-        {thisTeam.Name}
-      </button>
+      <button onClick={() => {}}>{thisTeam.Name}</button>
       <br />
       <h5>{indexOfTeam}</h5>
       <div className={"card-body"}>

@@ -8,7 +8,7 @@ using ZCC.Models;
 
 namespace ZCC.Entities
 {
-    public class CompetitionManager
+    public class CompetitionManager : BaseEntity
     {
         private competitionDataSql competitionDataSql = new competitionDataSql();
 
@@ -18,9 +18,8 @@ namespace ZCC.Entities
             competitionDataSql.ChangeCompetitionStatus(int.Parse(competitionID), newStatus);
         }
 
-
         // --------------------- Update specific Competition row ---------------------
-        public bool UpdateCompetition(Competition competition) 
+        public bool UpdateCompetition(Competition competition)
         {
             return competitionDataSql.UpdateCompetition(competition);
         }
@@ -29,22 +28,21 @@ namespace ZCC.Entities
         public int createCompetition(Competition competition)
         {
             return competitionDataSql.CreateNewCompetitions(competition);
-            
         }
 
         // --------------------- Return all competition in the DB ---------------------
-        public Dictionary<int ,Competition> allSystemCompetitions { get { return competitionDataSql.GetAllCompetitions(); } private set { } }
-
+        public Dictionary<int, Competition> allSystemCompetitions
+        { get { return competitionDataSql.GetAllCompetitions(); } private set { } }
 
         // --------------------- Return all competition in the DB for a specific user ---------------------
-        public Dictionary<int, Models.Competition> allUserCompetitions(string id)
+        public Dictionary<int, Models.Competition> allUserCompetitions(string id, int admin)
         {
-            return competitionDataSql.GetUserCompetitionsFromDB(id);
+            return competitionDataSql.GetUserCompetitionsFromDB(id, admin);
         }
+
         public Models.Competition UserCompetitionManager(string id, string competitionidID)
         {
             return competitionDataSql.GetCompetitionByIdFromDB(id, competitionidID);
         }
-        
     }
 }

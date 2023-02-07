@@ -35,6 +35,7 @@ export const EditTeams = () => {
         };
         arr.push(element);
       }
+      console.log(teamsInfo);
       await UpdateTeams(user.sub, id, arr, teamsInfo[i].id);
     }
   };

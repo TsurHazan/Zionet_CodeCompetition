@@ -63,8 +63,9 @@ namespace ZCC.Server
                         return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(MainManager.Instance.userEntities.allUsers));
                     }
                     return new OkObjectResult("No Permission");
+                    
             }
-            return new OkObjectResult("null");
+            return new NotFoundObjectResult("404 Not Found");
         }
     }
 }

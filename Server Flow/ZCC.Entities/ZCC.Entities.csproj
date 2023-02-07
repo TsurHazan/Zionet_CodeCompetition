@@ -41,14 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseEntity.cs" />
     <Compile Include="CategoriesManager.cs" />
     <Compile Include="CompetitionManager.cs" />
     <Compile Include="MainManager.cs" />
+    <Compile Include="ParticipantManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskManager.cs" />
     <Compile Include="TeamsManager.cs" />
     <Compile Include="userManager.cs" />
-    <Compile Include="UsersCompetitionsManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ZCC.Data.Sql\ZCC.Data.Sql.csproj">

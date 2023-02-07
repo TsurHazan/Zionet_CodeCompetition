@@ -51,8 +51,9 @@ CREATE TABLE "Active Tasks"(
     "teamID" INT NOT NULL,
     "competitionID" INT NOT NULL,
     "taskID" INT NOT NULL,
-    "start time" DATE NOT NULL,
-    "end time" DATE NOT NULL,
+    "start time" DATETIME NOT NULL,
+    "end time" DATETIME NOT NULL,
+	"submit time" DATETIME NOT NULL,
     "Status" NVARCHAR(20) NOT NULL,
     "bonus" BIT NOT NULL,
     "git repo" NVARCHAR(255) NOT NULL

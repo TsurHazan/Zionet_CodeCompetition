@@ -8,7 +8,7 @@ using ZCC.Models;
 
 namespace ZCC.Entities
 {
-    public class userManager
+    public class userManager : BaseEntity
     {
         private userDataSql UserDataSQL = new userDataSql(); //init userDataSql
 

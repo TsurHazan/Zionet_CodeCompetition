@@ -7,9 +7,22 @@ export const checkIfUserInDB = async (userID) => {
   await axios.get(reqURL);
 };
 
-export const checkUserCompetitions = async (userID) => {
-  const reqUrl = `http://localhost:7175/api/UsersCompetitions/GetAllCompetition/${userID}/`;
+export const GetAllManagerCompetition = async (userID) => {
+  const reqUrl = `http://localhost:7175/api/UsersCompetitions/GetAllManagerCompetition/${userID}/`;
   const reqGet = await axios.get(reqUrl);
+  return reqGet;
+};
+
+export const GetAllParticipantCompetition = async (userID) => {
+  const reqUrl = `http://localhost:7175/api/UsersCompetitions/GetAllParticipantCompetition/${userID}/`;
+  const reqGet = await axios.get(reqUrl);
+  return reqGet;
+};
+
+export const FindParticipantTeam = async (userID, competitionID) => {
+  const reqUrl = `http://localhost:7175/api/ParticipantActions/FindParticipantTeam/${userID}/${competitionID}`;
+  const reqGet = await axios.get(reqUrl);
+  console.log(reqGet);
   return reqGet;
 };
 

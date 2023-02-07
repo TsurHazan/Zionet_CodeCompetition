@@ -73,7 +73,7 @@ namespace ZCC.Server
 
                     return new OkObjectResult(200);
             }
-            return new OkObjectResult("null");
+            return new NotFoundObjectResult("404 Not Found");
         }
     }
 }
