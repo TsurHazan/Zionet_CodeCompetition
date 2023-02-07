@@ -16,7 +16,6 @@ namespace ZCC.Entities
             categoriesManager = new CategoriesManager();
             taskManager = new TaskManager();
             teamsManager = new TeamsManager();
-            usersCompetitionsManager = new UsersCompetitionsManager();
             activeTasksManager = new ActiveTasksManager();
             participantsManager = new ParticipantManager();
         }
@@ -32,7 +31,6 @@ namespace ZCC.Entities
         public CategoriesManager categoriesManager;
         public TaskManager taskManager;
         public TeamsManager teamsManager;
-        public UsersCompetitionsManager usersCompetitionsManager;
         public ActiveTasksManager activeTasksManager;
     }
 }

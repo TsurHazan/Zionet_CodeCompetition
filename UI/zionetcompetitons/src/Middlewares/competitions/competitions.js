@@ -72,7 +72,8 @@ export const confirmSubmittedTask = async (
   enterPoint,
   submittesTask
 ) => {
-  reqUrl = `http://localhost:7175/api/UsersCompetitions/ConfirmSubmittedTask/${userID}/${competitionID}/${enterPoint}`;
+  console.log(submittesTask);
+  reqUrl = `http://localhost:7175/api/UsersCompetitions/ConfirmSubmittedTask/${userID}/${competitionID}/${submittesTask.teamID}/${enterPoint}`;
   reqGet = await axios.post(reqUrl, submittesTask);
   return reqGet;
 };

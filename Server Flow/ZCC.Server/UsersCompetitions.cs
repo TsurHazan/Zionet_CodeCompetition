@@ -32,7 +32,7 @@ namespace ZCC.Server
                 case "EnableCompetition":
 
                     //check if the request sent by
-                    if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(useID, competitionID))
+                    if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
                     {
                         //update competition
                         return new OkObjectResult(true);
@@ -56,7 +56,7 @@ namespace ZCC.Server
                     try
                     {
                         Competition competition = System.Text.Json.JsonSerializer.Deserialize<Competition>(requestBody);
-                        if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(useID, competition.id.ToString()))
+                        if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competition.id.ToString()))
                         {
                             bool ll = MainManager.Instance.competitionsManager.UpdateCompetition(competition);
                             return new OkObjectResult(ll);
@@ -74,7 +74,7 @@ namespace ZCC.Server
                 case "UpdateCompetitionStatus":
                     try
                     {
-                        if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(useID, competitionID))
+                        if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
                         {
                             MainManager.Instance.competitionsManager.ChangeCompetitionStatus(competitionID, requestBody);
                             return new OkObjectResult(true);
@@ -103,7 +103,7 @@ namespace ZCC.Server
                 case "UpdateTask":
                     try
                     {
-                        if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(useID, competitionID))
+                        if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
                         {
                             Models.Task task = System.Text.Json.JsonSerializer.Deserialize<Models.Task>(requestBody);
                             MainManager.Instance.taskManager.setNewTask(task);
@@ -122,7 +122,7 @@ namespace ZCC.Server
                     
                 case "ConfirmSubmittedTask":
 
-                    if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(useID, competitionID))
+                    if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
                     {
                         //get the active task
                         ActiveTasks activeTasks = System.Text.Json.JsonSerializer.Deserialize<ActiveTasks>(requestBody);
