@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using ZCC.Entities;
 using RestSharp.Serializers.Json;
+using System.Collections.Generic;
 
 namespace ZCC.Server
 {
@@ -24,8 +25,14 @@ namespace ZCC.Server
             switch (action)
             {
                 case "FindParticipantTeam":
-                    teamID = MainManager.Instance.participantsManager.FindParticipantTeam(userID, competitionID);
+                    teamID = MainManager.Instance.userEntities.FindParticipantTeam(userID, competitionID);
                     if (teamID != null) { return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(teamID)); }
+                    return new BadRequestResult();
+
+                case "GetAvailableTasks":
+
+                    Dictionary<int, Models.Task> GetAllAvailableTasksForTeam = MainManager.Instance.taskManager.GetAllAvailableTasksForTeam(teamID, competitionID);
+                    if (GetAllAvailableTasksForTeam != null) { return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(GetAllAvailableTasksForTeam)); }
                     return new BadRequestResult();
             }
 

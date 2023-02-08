@@ -6,18 +6,52 @@ using System.Text;
 using System.Threading.Tasks;
 using ZCC.DAL;
 using ZCC.Models;
+using Task = ZCC.Models.Task;
 
 namespace ZCC.Data.Sql
 {
     public class taskDataSql : BaseDataSql
     {
-        private static SqlServerQuery.miisiksFunc func { get; set; }
+        // --------------------- Participant choose task ---------------------
+        public static string ChooseTask(string competitionID, string teamID, string taskID, string timeFrame)
+        {
+            string query = $"exec ChooseTask @TEAMID ={teamID} , @COMPETITIONID ={competitionID}, @TASKID ={taskID} ,@TIMEFRAME ={timeFrame}";
 
-        public static Dictionary<int, Models.Task> taskDic = new Dictionary<int, Models.Task>();
+            SqlServerQuery.miisiksFunc func = _ChooseTask;
+            if ((Task)DAL.SqlServerQuery.getValueFromDB(query, func) != null) { return "success"; }
+            return "error";
+        }
 
+        private static Models.Task _ChooseTask(SqlDataReader reader)
+        {
+            Task task = new Models.Task();
+
+            reader.Read();
+            task.id = reader.GetInt32(0);
+            task.CompetitionID = reader.GetInt32(1);
+            task.CategoryID = reader.GetString(2);
+            task.Timeframe = reader.GetInt32(3);
+            task.points = reader.GetInt32(4);
+            task.Description = reader.GetString(5);
+            task.BonusPoints = reader.GetInt32(6);
+            task.BonusTime = reader.GetInt32(7);
+            task.name = reader.GetString(8);
+            return task;
+        }
+
+        // --------------------- Get all the tasks left for a team ---------------------
+        public static Dictionary<int, Task> GetAllAvailableTasksForTeam(string competitionID, string teamID)
+        {
+            string sqlQuery = $"exec SelectAvailableTasks @TEAMID={teamID},@COMPETITIONID={competitionID}";
+            SqlServerQuery.miisiksFunc func = SetDataToDictionary;
+            Dictionary<int, Models.Task> ret = (Dictionary<int, Models.Task>)DAL.SqlServerQuery.getValueFromDB(sqlQuery, func);
+            return ret;
+        }
+
+        // --------------------- // ---------------------
         public static Dictionary<int, Models.Task> SetDataToDictionary(SqlDataReader reader)
         {
-            taskDic.Clear();
+            Dictionary<int, Models.Task> taskDic = new Dictionary<int, Models.Task>();
             while (reader.Read())
             {
                 Models.Task task = new Models.Task();
@@ -59,7 +93,7 @@ namespace ZCC.Data.Sql
         public static Dictionary<int, Models.Task> GetAllCompetitionTaskFromDB(string userID, string competitionID)
         {
             string sqlQuery = $"SELECT * FROM Tasks where CompetitionID = ( SELECT [Competition ID] FROM [Users competitions]  where UserID = '{userID}' and [Competition ID] = {competitionID} and Admin = 1)";
-            func = SetDataToDictionary;
+            SqlServerQuery.miisiksFunc func = SetDataToDictionary;
             Dictionary<int, Models.Task> ret = (Dictionary<int, Models.Task>)DAL.SqlServerQuery.getValueFromDB(sqlQuery, func);
             return ret;
         }

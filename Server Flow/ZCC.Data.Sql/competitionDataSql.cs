@@ -120,7 +120,7 @@ namespace ZCC.Data.Sql
 
         public static Models.Competition GetCompetitionByIdFromDB(string userID, string competitionID)
         {
-            string sqlQuery = $"select  id ,Start,[End], numOfTeams, status,Name , hashcode,[max active Tasks] from [Users competitions] us join Competitions com on us.[Competition ID] = com.id where UserID = '{userID}' and [Competition ID] = {competitionID} and [Admin] = 1";
+            string sqlQuery = $"select  id ,Start,[End], numOfTeams, status,Name , hashcode,[max active Tasks] from [Users competitions] us join Competitions com on us.[Competition ID] = com.id where UserID = '{userID}' and [Competition ID] = {competitionID}";
             SqlServerQuery.miisiksFunc func = SetDataToCompetition;
             Models.Competition ret = (Models.Competition)DAL.SqlServerQuery.getValueFromDB(sqlQuery, func);
             return ret;

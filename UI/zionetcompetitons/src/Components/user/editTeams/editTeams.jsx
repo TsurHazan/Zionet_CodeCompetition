@@ -47,7 +47,7 @@ export const EditTeams = () => {
   };
 
   return (
-    <div className="systemDash">
+    <div className="component-container">
       <button className="btn btn-success teamCard" onClick={handleAddTeam}>
         New Team
       </button>

@@ -28,6 +28,12 @@ export const FindParticipantTeam = async (userID, competitionID) => {
 
 export const getAllUsers = async (userID, competitionID) => {
   const reqUrl = `http://localhost:7175/api/users/getAllUsers/${userID}/${competitionID}`;
-  const ans = await axios.get(reqUrl);
-  return ans;
+  const reqGet = await axios.get(reqUrl);
+  return reqGet;
+};
+
+export const GetCompetition = async (userID, competitionID) => {
+  const reqUrl = `http://localhost:7175/api/UsersCompetitions/GetCompetition/${userID}/${competitionID}`;
+  const reqGet = await axios.get(reqUrl);
+  return reqGet;
 };

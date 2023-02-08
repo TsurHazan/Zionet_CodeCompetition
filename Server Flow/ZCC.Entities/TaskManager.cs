@@ -2,14 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using ZCC.Data.Sql;
+using ZCC.Models;
 
 namespace ZCC.Entities
 {
     public class TaskManager : BaseEntity
     {
-        public Dictionary<int, Models.Task> getAllCompetitiomTask(string userId, string competitionID)
+        // --------------------- Get all the tasks left for a team ---------------------
+
+        public Dictionary<int, Task> GetAllAvailableTasksForTeam(string teamId, string competitionID)
+        {
+            return taskDataSql.GetAllAvailableTasksForTeam(competitionID, teamId);
+        }
+
+        // ---------------------  ---------------------
+
+        public Dictionary<int, Models.Task> getAllCompetitionTask(string userId, string competitionID)
         {
             return (Dictionary<int, Models.Task>)taskDataSql.GetAllCompetitionTaskFromDB(userId, competitionID);
         }

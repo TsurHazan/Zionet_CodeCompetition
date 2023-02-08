@@ -108,3 +108,24 @@ th {
 .liveManagerDash table tbody tr td img {
   height: 50px;
 }
+
+.chooseTask-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.singleTask-table {
+  display: grid;
+  width: 100%;
+  grid-template-columns:
+    calc(100% / 7) calc(100% / 7) calc(100% / 7) calc(100% / 7)
+    calc(100% / 7) calc(100% / 7) calc(100% / 7);
+}
+.singleTask-column {
+  border: 1px solid;
+  margin: 0.4px;
+}
+
+.headerTask {
+  background-color: #1976d2;
+}

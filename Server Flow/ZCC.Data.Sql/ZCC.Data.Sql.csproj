@@ -48,7 +48,6 @@
     <Compile Include="BaseDataSql.cs" />
     <Compile Include="categoriesDataSql.cs" />
     <Compile Include="competitionDataSql.cs" />
-    <Compile Include="ParticipantDataSql.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="taskDataSql.cs" />
     <Compile Include="TeamsDataSql.cs" />

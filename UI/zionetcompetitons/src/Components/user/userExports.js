@@ -5,3 +5,4 @@ export * from "./editCompetition/editCompetition.jsx";
 export * from "./editTasksAndCategories/editTasksAndCategories.jsx";
 export * from "./editTeams/editTeams.jsx";
 export * from "./teamCard/teamCard.jsx";
+export * from "./participantChooseTasks/participantChooseTasks.jsx";

@@ -23,14 +23,14 @@ namespace ZCC.Server
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
 
-
             switch (action)
             {
-              case "GetTask":
-                    return new OkObjectResult(MainManager.Instance.taskManager.getAllCompetitiomTask(userid, competitionID));
+                case "GetTask":
+                    return new OkObjectResult(MainManager.Instance.taskManager.getAllCompetitionTask(userid, competitionID));
 
                 case "GetCategories":
                     return new OkObjectResult(MainManager.Instance.categoriesManager.allCategories());
+
                 case "UpdateOneTask":
                     if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
                     {
@@ -38,25 +38,44 @@ namespace ZCC.Server
 
                         MainManager.Instance.taskManager.UpdateOneTask(task);
                         return new OkObjectResult(true);
-
                     }
                     else
                     {
-                       ; return new OkObjectResult(false);
+                        ; return new OkObjectResult(false);
                     };
                 case "DeleteOneTask":
                     if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
                     {
-                     //   string taskID = System.Text.Json.JsonSerializer.Deserialize<string>(requestBody);
+                        //   string taskID = System.Text.Json.JsonSerializer.Deserialize<string>(requestBody);
 
                         MainManager.Instance.taskManager.DeleteTaskFromDB(competitionID, requestBody);
                         return new OkObjectResult(true);
-
                     }
                     else
                     {
                         return new OkObjectResult(false);
+<<<<<<< Updated upstream
                     }
+=======
+                    };
+                case "GetSubmittedTasks":
+                    try
+                    {
+                        if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
+                        {
+                            return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(MainManager.Instance.activeTasksManager.GetSubmittedTasks(competitionID)));
+                        }
+                        else
+                        {
+                            return new OkObjectResult(false);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        return new OkObjectResult(false);
+                    };
+>>>>>>> Stashed changes
 
                 default:
                     break;

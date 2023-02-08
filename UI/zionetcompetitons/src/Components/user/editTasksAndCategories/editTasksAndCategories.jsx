@@ -132,7 +132,7 @@ export const EditTasksAndCategories = () => {
   return (
     <>
       <Box
-        className={`systemDash tasksDash ${bgState}`}
+        className={`component-container tasksDash ${bgState}`}
         sx={{
           bgcolor: "background.paper",
           width: 1300,
