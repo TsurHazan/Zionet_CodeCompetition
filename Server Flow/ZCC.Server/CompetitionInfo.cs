@@ -54,20 +54,19 @@ namespace ZCC.Server
                     else
                     {
                         return new OkObjectResult(false);
-<<<<<<< Updated upstream
-                    }
-=======
                     };
                 case "GetSubmittedTasks":
                     try
                     {
                         if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
                         {
+
                             return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(MainManager.Instance.activeTasksManager.GetSubmittedTasks(competitionID)));
+
                         }
                         else
                         {
-                            return new OkObjectResult(false);
+                             return new OkObjectResult(false);
                         }
                     }
                     catch (Exception ex)
@@ -75,7 +74,7 @@ namespace ZCC.Server
                         Console.WriteLine(ex.Message);
                         return new OkObjectResult(false);
                     };
->>>>>>> Stashed changes
+                    
 
                 default:
                     break;

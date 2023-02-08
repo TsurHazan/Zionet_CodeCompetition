@@ -20,8 +20,8 @@ namespace ZCC.Server
     {
         [FunctionName("UsersCompetitions")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "UsersCompetitions/{action}/{userid}/{competitionID?}/{teamID?}")] HttpRequest req,
-           string action, string userid, string competitionID, string teamID, ILogger log)
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "UsersCompetitions/{action}/{userid}/{competitionID?}/{teamID?}/{enterPoint?}")] HttpRequest req,
+           string action, string userid, string competitionID, string teamID, string enterPoint, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
@@ -119,6 +119,30 @@ namespace ZCC.Server
                         Console.WriteLine(ex.Message);
                         return new OkObjectResult(false);
                     }
+                    
+                case "ConfirmSubmittedTask":
+
+                    if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
+                    {
+                        //get the active task
+                        ActiveTasks activeTasks = System.Text.Json.JsonSerializer.Deserialize<ActiveTasks>(requestBody);
+                        //get Teams Point Before update current Task Point
+                        int teamPointBefore = MainManager.Instance.teamsManager.GetTeamsPoint(activeTasks.teamID.ToString());
+                        //Update Teams Point
+                        MainManager.Instance.teamsManager.UpdateTeamsPoint(activeTasks.teamID.ToString(), enterPoint);
+                        //get Teams Point After update current Task Point
+                        int teamPointAfter = MainManager.Instance.teamsManager.GetTeamsPoint(activeTasks.teamID.ToString());
+                        //check if the teams Point is Update
+                        if (teamPointBefore+ int.Parse(enterPoint) ==teamPointAfter)
+                        {
+                            //Update Active Task Status To Done
+                            string currentStatus = MainManager.Instance.activeTasksManager.UpdateTaskStatusToDone(activeTasks.id.ToString());
+                            return new OkObjectResult(currentStatus);
+                        }
+                        return new BadRequestObjectResult(false);
+                    }
+                    return new BadRequestObjectResult("NO ACCESS");
+
 
                 default:
                     break;

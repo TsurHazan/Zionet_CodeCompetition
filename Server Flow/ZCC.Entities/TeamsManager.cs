@@ -35,5 +35,15 @@ namespace ZCC.Entities
         {
             teamsDataSql.AddTeamToCompetition(competitionID);
         }
+
+        public int GetTeamsPoint(string TeamID)
+        {
+           return teamsDataSql.GetTeamsPoint(TeamID);
+        }
+        public void UpdateTeamsPoint(string TeamID,string enterPoint)
+        {
+            teamsDataSql.UpdateTeamsPoint(TeamID, enterPoint);
+        }
+
     }
 }

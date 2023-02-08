@@ -39,7 +39,9 @@ export const App = () => {
     } else {
       return (
         <bgMode.Provider value={{ bgState, setBgState }}>
-          <UsersPage></UsersPage>
+          <RecoilRoot>
+            <UsersPage></UsersPage>
+          </RecoilRoot>
         </bgMode.Provider>
       );
     }

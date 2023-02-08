@@ -1,11 +1,16 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import {
+  getCompetitionTask,
+  getSubmittedTask,
   getUserCompetitionManagement,
   updateStatusCompetition,
 } from "../../../Middlewares/competitions/competitions";
 import { GetAllTeamsInCompetition } from "../../../Middlewares/teams/teams";
+import { submitTaskSucceeded } from "../../../Pages/editCompetition/taskContext";
+import { PopSubmittesTask } from "../popSubmittesTask/popSubmittesTask";
 
 export const LiveManagerDash = () => {
   const { id } = useParams();
@@ -13,6 +18,11 @@ export const LiveManagerDash = () => {
   const [competition, setCompetition] = useState({});
   const [teamsInfo, setTeamsInfo] = useState([]);
   const [timeLeft, setTimeLeft] = useState("");
+  const [taskSubmitted, setTaskSubmitted] = useState([]);
+  const [allTasks, setAllTasks] = useState([]);
+  const [enterPoint, setenterPoint] = useState({});
+  const [submitTaskSuccess, setSubmitTaskSuccess] =
+    useRecoilState(submitTaskSucceeded);
 
   const EndCopmetition = async () => {
     await updateStatusCompetition(user.sub, id, "Finished");
@@ -42,13 +52,26 @@ export const LiveManagerDash = () => {
     const data = Object.values(allteam.data);
     setTeamsInfo(data);
   };
+  const getAllCompettitionsTask = async () => {
+    const allteam = await getCompetitionTask(user.sub, id);
+    const data = Object.values(allteam.data);
+    setAllTasks(data);
+  };
+  const getAllSubmittedTask = async () => {
+    const allTask = await getSubmittedTask(user.sub, id);
+    const data = Object.values(allTask.data);
+    setTaskSubmitted(data);
+  };
   useEffect(() => {
     const initUseEffect = async () => {
       await getAllCompetitionDetailsFromDB();
       await getCompettitionTeams();
+      await getAllCompettitionsTask();
+      await getAllSubmittedTask();
     };
     initUseEffect();
-  }, []);
+  }, [submitTaskSuccess]);
+  //enterPoint TO useEffect ??
   return (
     <div className="liveManagerDash">
       <h4>Live Manager DASH</h4>
@@ -72,15 +95,36 @@ export const LiveManagerDash = () => {
                   <img src={team.Icon} alt={team.Name} />
                 </td>
                 <td>{team.Name}</td>
+                {/* <td>{team.email}</td> */}
                 <td>{team.Points}</td>
               </tr>
             );
           })}
         </tbody>
       </table>
-      <p>
+      {/* Map task Submitted */}
+      {/* Map team info to get Team Name for task  */}
+      {taskSubmitted.map((task) => {
+        let teamObj = teamsInfo.find((oneTeam) => {
+          return oneTeam.id === task.teamID;
+        });
+        let originalTask = allTasks.find((oneTask) => {
+          return oneTask.id === task.taskID;
+        });
+        return (
+          <span key={task.id}>
+            <p>{teamObj.Name}</p>
+            <p>Task: {originalTask.name}</p>
+            <PopSubmittesTask
+              originalTask={originalTask}
+              submittedTask={task}
+            ></PopSubmittesTask>
+          </span>
+        );
+      })}
+      <div>
         <button onClick={EndCopmetition}>Finish</button>
-      </p>
+      </div>
     </div>
   );
 };

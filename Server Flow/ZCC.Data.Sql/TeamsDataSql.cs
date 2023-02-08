@@ -93,5 +93,19 @@ namespace ZCC.Data.Sql
             query = $"update [Users competitions] set [TeamID] = 1 where [Users competitions].Admin = 0 and [TeamID] ={teamID}";
             SqlServerQuery.runCommand(query);
         }
+        
+        public int GetTeamsPoint(string TeamID)
+        {
+            query = $"select Points from Teams where id = {TeamID}";
+            int teamPoint = (int)SqlServerQuery.getSingleValueFromDB(query);
+            return teamPoint;
+        }
+        public void UpdateTeamsPoint(string TeamID,string enterPoint)
+        {
+            query = $"update [Teams] set Points += {enterPoint} where id = {TeamID}";
+            SqlServerQuery.runCommand(query);
+        }
+
+
     }
 }

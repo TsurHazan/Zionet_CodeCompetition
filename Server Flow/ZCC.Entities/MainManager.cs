@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZCC.Models;
 
 namespace ZCC.Entities
 {
@@ -15,11 +16,7 @@ namespace ZCC.Entities
             categoriesManager = new CategoriesManager();
             taskManager = new TaskManager();
             teamsManager = new TeamsManager();
-<<<<<<< Updated upstream
-            participantsManager = new ParticipantManager();
-=======
             activeTasksManager = new ActiveTasksManager();
->>>>>>> Stashed changes
         }
 
         private static readonly MainManager _Instance = new MainManager();
@@ -32,5 +29,6 @@ namespace ZCC.Entities
         public CategoriesManager categoriesManager;
         public TaskManager taskManager;
         public TeamsManager teamsManager;
+        public ActiveTasksManager activeTasksManager;
     }
 }
