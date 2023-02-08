@@ -17,6 +17,12 @@ export const DeleteOneTask = async (userID, competitionID, taskID) => {
   return reqGet;
 };
 
+export const DuplicationTask = async (userID, competitionID, task) => {
+  reqUrl = `http://localhost:7175/api/UsersCompetitions/DuplicationTask/${userID}/${competitionID}`;
+  reqGet = await axios.post(reqUrl, task);
+  return reqGet;
+};
+
 export const getUserCompetitionManagement = async (userID, competitionID) => {
   reqUrl = `http://localhost:7175/api/UsersCompetitions/GetCompetition/${userID}/${competitionID}`;
   reqGet = await axios.get(reqUrl);

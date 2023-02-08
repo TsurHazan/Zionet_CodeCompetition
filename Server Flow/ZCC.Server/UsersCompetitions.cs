@@ -119,7 +119,27 @@ namespace ZCC.Server
                         Console.WriteLine(ex.Message);
                         return new OkObjectResult(false);
                     }
-                    
+
+                case "DuplicationTask":
+                    try
+                    {
+                        if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
+                        {
+                            Models.Task task = System.Text.Json.JsonSerializer.Deserialize<Models.Task>(requestBody);
+                            string ans = MainManager.Instance.taskManager.DuplicationTaskById(task);
+                            return new OkObjectResult(ans);
+                        }
+                        else
+                        {
+                            return new OkObjectResult(false);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        return new OkObjectResult(false);
+                    }
+
                 case "ConfirmSubmittedTask":
 
                     if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))

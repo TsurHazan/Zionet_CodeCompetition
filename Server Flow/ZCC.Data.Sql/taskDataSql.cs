@@ -81,5 +81,14 @@ namespace ZCC.Data.Sql
             string sqlQuery = $"delete Tasks where id = {taskID}  and CompetitionID = {competitionID}";
             DAL.SqlServerQuery.runCommand(sqlQuery);
         }
+
+        public static string DuplicationTask(Models.Task task)
+        {
+            string Query = $"insert into Tasks  (CompetitionID, [CategoryID],[Timeframe(minutes)],[points],[Description],[Bonus points] ,[Bonus Time(minutes)] ,[name])   select CompetitionID ,[CategoryID],[Timeframe(minutes)],[points],[Description],[Bonus points],[Bonus Time(minutes)] ,(select distinct [name] =  name+ (select CAST(count(name) as nvarchar)  from Tasks where name like ('{task.name}%') ) from Tasks where name =('{task.name}')) from [Tasks] where id = {task.id} select 'Successfully' ";
+            string answer = (string)DAL.SqlServerQuery.getSingleValueFromDB(Query);
+            
+            return answer;
+
+        }
     }
 }

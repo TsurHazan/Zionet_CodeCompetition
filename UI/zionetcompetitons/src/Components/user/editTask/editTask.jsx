@@ -106,6 +106,7 @@ export const EditTask = () => {
         Category
         <br />
         <Autocomplete
+          className="autocompleteCategories"
           forcePopupIcon={true}
           freeSolo={true}
           disablePortal

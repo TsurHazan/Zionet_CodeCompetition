@@ -28,5 +28,10 @@ namespace ZCC.Entities
         {
             taskDataSql.DeleteTaskById(competitionID, taskID);
         }
+
+        public string DuplicationTaskById(Models.Task task) 
+        {
+            return taskDataSql.DuplicationTask(task);
+        }
     }
 }

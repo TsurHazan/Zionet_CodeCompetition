@@ -15,6 +15,7 @@ import {
 import { bgMode } from "../../../bgModeContext.js";
 import {
   DeleteOneTask,
+  DuplicationTask,
   getCategories,
   getCompetitionTask,
   setNewCategory,
@@ -120,11 +121,15 @@ export const EditTasksAndCategories = () => {
     await getAllCompetitionTask();
   };
 
+  const DuplicationTaskFromDB = async (task) => {
+    await DuplicationTask(user.sub, id, task);
+    await getAllCompetitionTask();
+  };
+
   useEffect(() => {
     const initUseEffect = async () => {
       await getAllCompetitionTask();
       await getallCategories();
-      //Multi Trhed ??
       await setCategoriesOption();
     };
     initUseEffect();
@@ -176,7 +181,6 @@ export const EditTasksAndCategories = () => {
             <table>
               <thead>
                 <tr>
-                  <th></th>
                   <th>Name</th>
                   <th>Category</th>
                   <th>Points</th>
@@ -184,15 +188,22 @@ export const EditTasksAndCategories = () => {
                   <th>BonusTime</th>
                   <th>Bonus Points</th>
                   <th>Description</th>
-                  <th></th>
                 </tr>
               </thead>
               <tbody>
                 {allTask.map((task) => {
                   return (
                     <tr key={task.id}>
+                      <td>{task.name}</td>
+                      <td>{task.categoryID}</td>
+                      <td>{task.points}</td>
+                      <td>{task.timeframe}</td>
+                      <td>{task.bonusTime}</td>
+                      <td>{task.bonusPoints}</td>
+                      <td>{task.description}</td>
                       <td>
                         <button
+                          className="btn btn-primary"
                           onClick={() => {
                             moveToEditTask(
                               allTask.find((c) => {
@@ -204,15 +215,19 @@ export const EditTasksAndCategories = () => {
                           Edit
                         </button>
                       </td>
-                      <td>{task.name}</td>
-                      <td>{task.categoryID}</td>
-                      <td>{task.points}</td>
-                      <td>{task.timeframe}</td>
-                      <td>{task.bonusTime}</td>
-                      <td>{task.bonusPoints}</td>
-                      <td>{task.description}</td>
                       <td>
                         <button
+                          className="btn btn-warning"
+                          onClick={() => {
+                            DuplicationTaskFromDB(task);
+                          }}
+                        >
+                          Duplicate
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          className="btn btn-danger"
                           onClick={() => {
                             deleteTaskFromDB(task.id);
                           }}
@@ -233,31 +248,34 @@ export const EditTasksAndCategories = () => {
             onClick={setCategoriesOption}
           >
             <div className="categoryEdit">
-              <label htmlFor="newCategory">NEW Category</label>
-              <input
-                id="newCategory"
-                type="text"
-                onChange={handlenewCategory}
-              />
-              {/* TO DO OnClick to send new category */}
-              <button onClick={sendNewCategoryToDB}>Add Category</button>
-              <br />
-              <br />
-              <Autocomplete
-                forcePopupIcon={true}
-                freeSolo={true}
-                disablePortal
-                value={V}
-                onChange={(event, value) => {
-                  setV(value.label);
-                }}
-                id="combo-box-demo"
-                options={categoriesOpt}
-                sx={{ width: 300 }}
-                renderInput={(params) => (
-                  <TextField {...params} label="ALL CATEGORIES" />
-                )}
-              />
+              <div>
+                <label htmlFor="newCategory">NEW Category</label>
+                <input
+                  id="newCategory"
+                  type="text"
+                  onChange={handlenewCategory}
+                />
+                {/* TO DO OnClick to send new category */}
+                <button onClick={sendNewCategoryToDB}>Add Category</button>
+              </div>
+              <div>
+                <Autocomplete
+                  className="autocompleteCategories"
+                  forcePopupIcon={true}
+                  freeSolo={true}
+                  disablePortal
+                  value={V}
+                  onChange={(event, value) => {
+                    setV(value.label);
+                  }}
+                  id="combo-box-demo"
+                  options={categoriesOpt}
+                  sx={{ width: 300 }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="ALL CATEGORIES" />
+                  )}
+                />
+              </div>
             </div>
           </TabPanel>
         </SwipeableViews>
