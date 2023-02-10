@@ -65,10 +65,13 @@ export const ManagersCompetitions = () => {
                   <td>{competition.start.replace("T", " ")}</td>
                   <td>{competition.status}</td>
                   <td>
-                    <Link to={"/Management/" + competition.id}>Edit</Link>
+                    <Link to={"/Management/" + competition.id}>
+                      <button className="btn btn-secondary">Edit</button>
+                    </Link>
                   </td>
                   <td>
                     <button
+                      className="btn btn-primary"
                       onClick={() => {
                         startCopmetition(competition.id);
                       }}

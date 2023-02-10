@@ -203,7 +203,7 @@ export const EditTasksAndCategories = () => {
                       <td>{task.description}</td>
                       <td>
                         <button
-                          className="btn btn-primary"
+                          className="btn btn-secondary"
                           onClick={() => {
                             moveToEditTask(
                               allTask.find((c) => {
@@ -217,7 +217,7 @@ export const EditTasksAndCategories = () => {
                       </td>
                       <td>
                         <button
-                          className="btn btn-warning"
+                          className="btn btn-primary"
                           onClick={() => {
                             DuplicationTaskFromDB(task);
                           }}

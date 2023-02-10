@@ -74,7 +74,7 @@ namespace ZCC.Data.Sql
         // --------------------- get all Competitions the user participating\managing at ---------------------
         public static Dictionary<int, Models.Competition> GetUserCompetitionsFromDB(string userID, int admin)
         {
-            string sqlQuery = $"select  id ,Start,[End], numOfTeams, status,Name , hashcode,[max active Tasks] from [Users competitions] us join Competitions com on us.[Competition ID] = com.id where UserID = '{userID}' and [Admin] = {admin}";
+            string sqlQuery = $"select  id ,Start,[End], numOfTeams, status,Name , hashcode,[max active Tasks] from [Users competitions] us join Competitions com on us.[Competition ID] = com.id where UserID = '{userID}' and [Admin] = {admin} and (status = 'In Preparation' or status = 'Running')";
             SqlServerQuery.miisiksFunc func = SetDataToDictionary;
             Dictionary<int, Models.Competition> ret = (Dictionary<int, Models.Competition>)DAL.SqlServerQuery.getValueFromDB(sqlQuery, func);
             return ret;

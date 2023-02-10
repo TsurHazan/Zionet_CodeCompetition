@@ -40,7 +40,7 @@ namespace ZCC.Data.Sql
         public Dictionary<int, Team> GetAllTeamsInCompetition(string competitionID)
         {
             func = _GetAllTeamsInCompetition;
-            query = $"select * from [Teams] where [CompetitionID] = {competitionID}";
+            query = $"select * from [Teams] where [CompetitionID] = {competitionID} ORDER BY Points desc";
             return (Dictionary<int, Team>)SqlServerQuery.getValueFromDB(query, func);
         }
 
