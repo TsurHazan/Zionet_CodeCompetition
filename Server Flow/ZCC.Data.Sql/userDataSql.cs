@@ -26,7 +26,7 @@ namespace ZCC.Data.Sql
         // --------------------- Check if participant is in a team ---------------------
         public bool checkIfParticipantIsInTeam(string UserID, string CompetitionID, string TeamID)
         {
-            query = $"  select userComp.TeamID from [Competitions] as comp\r\n  inner join [Users competitions] as userComp on userComp.[Competition ID] = comp.id\r\n  where userComp.UserID = '{UserID}' and userComp.[Competition ID] = {CompetitionID} and userComp.TeamID = {TeamID}";
+            query = $"exec CheckIfUserIsInTeam @userID = '{UserID}' , @competitionID ={CompetitionID} , @teamID ={TeamID}";
             if ((bool?)SqlServerQuery.getSingleValueFromDB(query) == null) return false;
             return true;
         }

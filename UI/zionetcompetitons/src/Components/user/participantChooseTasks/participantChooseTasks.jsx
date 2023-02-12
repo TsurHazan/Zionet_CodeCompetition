@@ -1,7 +1,10 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { GetAvailableTasks } from "../../../Middlewares/tasks/tasks";
+import {
+  GetAvailableTasks,
+  ChooseTask,
+} from "../../../Middlewares/tasks/tasks";
 
 export const ParticipantChooseTasks = ({ competitionID, teamID }) => {
   const { user } = useAuth0();
@@ -17,8 +20,17 @@ export const ParticipantChooseTasks = ({ competitionID, teamID }) => {
     fetchAvailableTasks();
   }, []);
 
-  const chooseTask = async (taskID) => {
-    console.log(taskID);
+  const participantChooseTask = async (taskID, timeframe) => {
+    const isChoosed = await ChooseTask(
+      user.sub,
+      competitionID,
+      teamID,
+      taskID,
+      timeframe
+    );
+
+    console.log(taskID, timeframe);
+    console.log(isChoosed.data);
   };
 
   return (
@@ -42,7 +54,13 @@ export const ParticipantChooseTasks = ({ competitionID, teamID }) => {
             <div className="singleTask-column">{t.BonusPoints}</div>
             <div className="singleTask-column">{t.BonusTime}</div>
             <div className="singleTask-column">
-              <button onClick={() => chooseTask(t.id)}> Choose Task</button>
+              <button
+                onClick={async () => {
+                  await participantChooseTask(t.id, t.Timeframe);
+                }}
+              >
+                Choose Task
+              </button>
             </div>
           </div>
         );

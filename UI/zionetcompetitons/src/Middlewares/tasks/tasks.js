@@ -5,3 +5,15 @@ export const GetAvailableTasks = async (userID, competitionID, teamID) => {
   const alltasks = await axios.get(reqURL);
   return alltasks;
 };
+
+export const ChooseTask = async (
+  userID,
+  competitionID,
+  teamID,
+  taskID,
+  timeframe
+) => {
+  const reqURL = `http://localhost:7175/api/ParticipantActions/ChooseTask/${userID}/${competitionID}/${teamID}/${taskID}/${timeframe}`;
+  const answer = await axios.get(reqURL);
+  return answer;
+};

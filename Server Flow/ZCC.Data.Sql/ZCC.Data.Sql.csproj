@@ -5,6 +5,9 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{02DC6DED-C973-4700-9D66-974540971780}</ProjectGuid>
+<LangVersion>8.0</LangVersion>
+
+
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ZCC.Data.Sql</RootNamespace>

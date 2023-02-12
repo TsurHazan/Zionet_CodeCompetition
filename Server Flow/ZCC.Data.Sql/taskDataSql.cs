@@ -13,30 +13,12 @@ namespace ZCC.Data.Sql
     public class taskDataSql : BaseDataSql
     {
         // --------------------- Participant choose task ---------------------
-        public static string ChooseTask(string competitionID, string teamID, string taskID, string timeFrame)
+
+        public static object ChooseTask(string competitionID, string teamID, string taskID, string timeFrame)
         {
             string query = $"exec ChooseTask @TEAMID ={teamID} , @COMPETITIONID ={competitionID}, @TASKID ={taskID} ,@TIMEFRAME ={timeFrame}";
 
-            SqlServerQuery.miisiksFunc func = _ChooseTask;
-            if ((Task)DAL.SqlServerQuery.getValueFromDB(query, func) != null) { return "success"; }
-            return "error";
-        }
-
-        private static Models.Task _ChooseTask(SqlDataReader reader)
-        {
-            Task task = new Models.Task();
-
-            reader.Read();
-            task.id = reader.GetInt32(0);
-            task.CompetitionID = reader.GetInt32(1);
-            task.CategoryID = reader.GetString(2);
-            task.Timeframe = reader.GetInt32(3);
-            task.points = reader.GetInt32(4);
-            task.Description = reader.GetString(5);
-            task.BonusPoints = reader.GetInt32(6);
-            task.BonusTime = reader.GetInt32(7);
-            task.name = reader.GetString(8);
-            return task;
+            return SqlServerQuery.getSingleValueFromDB(query);
         }
 
         // --------------------- Get all the tasks left for a team ---------------------

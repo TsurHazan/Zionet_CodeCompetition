@@ -9,6 +9,13 @@ namespace ZCC.Entities
 {
     public class TaskManager : BaseEntity
     {
+        // --------------------- Participant choose task ---------------------
+
+        public object ChooseTask(string competitionID, string teamID, string taskID, string timeFrame)
+        {
+            return taskDataSql.ChooseTask(competitionID, teamID, taskID, timeFrame);
+        }
+
         // --------------------- Get all the tasks left for a team ---------------------
 
         public Dictionary<int, Task> GetAllAvailableTasksForTeam(string teamId, string competitionID)
