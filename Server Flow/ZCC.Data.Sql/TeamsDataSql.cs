@@ -20,7 +20,7 @@ namespace ZCC.Data.Sql
         public Dictionary<string, User> GetTeamMembers(int competitionID, int teamID)
         {
             func = _GetTeamMembers;
-            query = $"select * from [Users]\r\n  inner join [Users competitions] on [Users].id = [Users competitions].UserID\r\n  where [Users competitions].[TeamID] = {teamID}";
+            query = $"select * from [Users]   inner join [Users competitions] on [Users].id = [Users competitions].UserID   where [Users competitions].[TeamID] = {teamID}";
             return (Dictionary<string, User>)SqlServerQuery.getValueFromDB(query, func);
         }
 
@@ -62,6 +62,32 @@ namespace ZCC.Data.Sql
             return teams;
         }
 
+        // --------------------- Get all Live Teams  ---------------------
+
+        public Dictionary<int, TeamLive> GetAllLiveTeams(string competitionID)
+        {
+            func = _GetAllLiveTeams;
+            query = $"select * from [Teams] where [CompetitionID] = {competitionID} ORDER BY Points desc";
+            return (Dictionary<int, TeamLive>)SqlServerQuery.getValueFromDB(query, func);
+        }
+
+        private object _GetAllLiveTeams(SqlDataReader reader)
+        {
+            Dictionary<int, TeamLive> teams = new Dictionary<int, TeamLive>();
+
+            while (reader.Read())
+            {
+                TeamLive team = new TeamLive();
+                team.id = reader.GetInt32(reader.GetOrdinal("id"));
+                team.Name = reader.GetString(reader.GetOrdinal("Name"));
+                team.Points = reader.GetInt32(reader.GetOrdinal("Points"));
+                team.email = reader.GetString(reader.GetOrdinal("email"));
+                team.Icon = reader.GetString(reader.GetOrdinal("Icon (IMAGE)"));
+                team.CompetitionID = reader.GetInt32(reader.GetOrdinal("CompetitionID"));
+                teams.Add(team.id, team);
+            }
+            return teams;
+        }
         // --------------------- Add new Team to a competition ---------------------
 
         public void AddTeamToCompetition(string competitionID)
@@ -83,7 +109,7 @@ namespace ZCC.Data.Sql
 
         public void AddUserToTeam(string teamID, string userId, string competitionID)
         {
-            query = $"DECLARE @CompetitionID INT = {competitionID},\r\n@UserID varchar(max) = '{userId}',\r\n@TeamID int = {teamID};\r\n\t\t\r\n if exists(select * from [Users competitions] where [Competition ID]= @CompetitionID and [UserID] = @UserID)\r\n BEGIN\r\n    update [Users competitions] set [TeamID] = @TeamID\r\n\twhere( [Competition ID] = @CompetitionID) and ([UserID] like @UserID)\r\nEND\r\nELSE\r\nBEGIN\r\n    INSERT INTO [Users competitions] values (@UserID,0, @TeamID, @CompetitionID)\r\nEND";
+            query = $"DECLARE @CompetitionID INT = {competitionID}, @UserID varchar(max) = '{userId}', @TeamID int = {teamID};     if exists(select * from [Users competitions] where [Competition ID]= @CompetitionID and [UserID] = @UserID)  BEGIN     update [Users competitions] set [TeamID] = @TeamID  where( [Competition ID] = @CompetitionID) and ([UserID] like @UserID) END ELSE BEGIN     INSERT INTO [Users competitions] values (@UserID,0, @TeamID, @CompetitionID) END";
             SqlServerQuery.runCommand(query);
         }
 
@@ -105,7 +131,19 @@ namespace ZCC.Data.Sql
             query = $"update [Teams] set Points += {enterPoint} where id = {TeamID}";
             SqlServerQuery.runCommand(query);
         }
-
+        public int GetTeamsCountTasksFinishedFromDB(string TeamID)
+        {
+            query = $"select count(status) from[Active Tasks] where Status = 'Done' and teamID = {TeamID}";
+            int teamTaskCount = (int)SqlServerQuery.getSingleValueFromDB(query);
+            return teamTaskCount;
+        }
+        public int GetPotentialPointFromDB(string TeamID)
+        {
+            query = $"IF EXISTS (SELECT * FROM [Active Tasks] WHERE teamID = {TeamID} and Status = 'Submitted') BEGIN select sum(points)+sum([Bonus points]) from [Active Tasks] as act inner join Tasks as t on act.taskID = t.id where teamID = {TeamID} and Status = 'Submitted' END  ELSE  BEGIN SELECT 0  END";
+            int potentialPoint = (int) SqlServerQuery.getSingleValueFromDB(query);
+            return potentialPoint;
+            
+        }
 
     }
 }

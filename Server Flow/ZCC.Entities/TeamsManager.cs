@@ -28,7 +28,8 @@ namespace ZCC.Entities
 
         public Dictionary<int, Team> GetAllTeamsInCompetition(string competitionId)
         {
-            return teamsDataSql.GetAllTeamsInCompetition(competitionId);
+            Dictionary<int, Team> Dic = teamsDataSql.GetAllTeamsInCompetition(competitionId);
+            return Dic;
         }
 
         public void AddTeamToCompetition(string competitionID)
@@ -44,6 +45,18 @@ namespace ZCC.Entities
         {
             teamsDataSql.UpdateTeamsPoint(TeamID, enterPoint);
         }
-
+        public Dictionary<int, TeamLive> GetAllLiveTeams(string competitionId)
+        {
+            Dictionary<int, TeamLive>  Dic = teamsDataSql.GetAllLiveTeams(competitionId);
+            return Dic;
+        }
+        public int GetTeamsCountTasksFinished(string TeamID)
+        {
+           return teamsDataSql.GetTeamsCountTasksFinishedFromDB(TeamID);
+        }
+        public int GetPotentialPoint(string TeamID)
+        {
+            return teamsDataSql.GetPotentialPointFromDB(TeamID);
+        }
     }
 }

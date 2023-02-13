@@ -11,6 +11,7 @@ import {
 import { GetAllTeamsInCompetition } from "../../../Middlewares/teams/teams";
 import { submitTaskSucceeded } from "../../../Pages/editCompetition/taskContext";
 import { PopSubmittesTask } from "../popSubmittesTask/popSubmittesTask";
+import { TeamsScoreComponent } from "../teamsScoreComponent/teamsScoreComponent";
 
 export const LiveManagerDash = () => {
   const { id } = useParams();
@@ -72,6 +73,7 @@ export const LiveManagerDash = () => {
     initUseEffect();
   }, [submitTaskSuccess]);
   //enterPoint TO useEffect ??
+
   return (
     <div className="liveManagerDash">
       <h4>Live Manager DASH</h4>
@@ -79,29 +81,8 @@ export const LiveManagerDash = () => {
       <p>Status: {competition.status}</p>
       <p>Hash Code is: {competition.hashcode}</p>
       <p>Time Left: {timeLeft}</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Icon</th>
-            <th>Name</th>
-            <th>Points</th>
-          </tr>
-        </thead>
-        <tbody>
-          {teamsInfo.map((team) => {
-            return (
-              <tr key={team.id}>
-                <td>
-                  <img src={team.Icon} alt={team.Name} />
-                </td>
-                <td>{team.Name}</td>
-                {/* <td>{team.email}</td> */}
-                <td>{team.Points}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <TeamsScoreComponent />
+
       {/* Map task Submitted */}
       {/* Map team info to get Team Name for task  */}
       {taskSubmitted.map((task) => {

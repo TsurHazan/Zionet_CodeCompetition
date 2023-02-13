@@ -47,6 +47,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="Team.cs" />
+    <Compile Include="TeamLive.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UsersCompetitions.cs" />
   </ItemGroup>

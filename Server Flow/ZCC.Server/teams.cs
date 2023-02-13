@@ -11,6 +11,7 @@ using ZCC.Entities;
 using ZCC.Models;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using ZCC.Data.Sql;
 
 namespace ZCC.Server
 {
@@ -24,26 +25,44 @@ namespace ZCC.Server
             log.LogInformation("C# HTTP trigger function processed a request.");
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
 
-            if (!MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userID, competitionID)) { return new OkObjectResult("No Permissions"); }
+            
+
 
             switch (action)
             {
+              
                 case "GetAllTeamsInCompetition":
+                    if (!MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userID, competitionID)) { return new BadRequestObjectResult("No Permissions"); }
                     return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(MainManager.Instance.teamsManager.GetAllTeamsInCompetition(competitionID)));
 
                 case "CreateNewTeam":
+                    if (!MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userID, competitionID)) { return new BadRequestObjectResult("No Permissions"); }
                     MainManager.Instance.teamsManager.AddTeamToCompetition(competitionID);
                     return new OkObjectResult(200);
 
                 case "GetTeamMembers":
+                    if (!MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userID, competitionID)) { return new BadRequestObjectResult("No Permissions"); }
                     Team team = System.Text.Json.JsonSerializer.Deserialize<Models.Team>(requestBody);
                     Dictionary<string, User> members = MainManager.Instance.teamsManager.GetTeamMembers(team.CompetitionID, team.id);
                     return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(members));
 
                 case "UpdateTeams":
+                    if (!MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userID, competitionID)) { return new BadRequestObjectResult("No Permissions"); }
                     User[] Usersteam = JsonConvert.DeserializeObject<User[]>(requestBody);
                     MainManager.Instance.teamsManager.UpdateTeam(Usersteam, competitionID, teamID);
-                    break;
+                    return new OkResult();
+                case "GetAllLiveTeams":                    
+                    Dictionary<int, TeamLive> Dic = MainManager.Instance.teamsManager.GetAllLiveTeams(competitionID);
+                    foreach (TeamLive onTteam in Dic.Values)
+                    {
+                        string Tid = onTteam.id.ToString();
+                        int tasksFinished = MainManager.Instance.teamsManager.GetTeamsCountTasksFinished(Tid);
+                        int potentialPoint = MainManager.Instance.teamsManager.GetPotentialPoint(Tid);
+                        onTteam.tasksFinished = tasksFinished;
+                        onTteam.potentialPoint = potentialPoint;
+                    }                    
+                    return new OkObjectResult(Dic);
+
             }
 
             return new NotFoundObjectResult("404 Not Found");
