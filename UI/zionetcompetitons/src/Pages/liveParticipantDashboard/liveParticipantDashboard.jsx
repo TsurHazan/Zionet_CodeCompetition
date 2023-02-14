@@ -16,6 +16,7 @@ import {
   TeamTaskHistoryComponent,
   ParticipantChooseTasks,
 } from "../../Components/user/userExports";
+import { TeamsScoreComponent } from "../../Components/user/teamsScoreComponent/teamsScoreComponent";
 
 export const LiveParticipantDashboard = () => {
   const { user } = useAuth0();
@@ -100,7 +101,7 @@ export const LiveParticipantDashboard = () => {
             />
           </TabPanel>
           <TabPanel value={value} index={2} dir={theme.direction}>
-            Item Three
+            <TeamsScoreComponent />
           </TabPanel>
         </SwipeableViews>
       </Box>

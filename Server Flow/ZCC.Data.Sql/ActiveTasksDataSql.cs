@@ -115,7 +115,7 @@ namespace ZCC.Data.Sql
             try
             {
                 SqlServerQuery.miisiksFunc func = _GetActiveTasksDictionary;
-                query = $"select * from [Active Tasks] where status = 'Submitted' and competitionID = {competitionID}";
+                string query = $"select * from [Active Tasks] where status = 'Submitted' and competitionID = {competitionID}";
                 return (Dictionary<int, ActiveTasks>)SqlServerQuery.getValueFromDB(query, func);
             }
             catch (Exception ex)
@@ -159,7 +159,7 @@ namespace ZCC.Data.Sql
         {
             try
             {
-                query = $"update [Active Tasks] set Status = 'Done ({enterPoint} Points)' where id = {activeTaskID}  select Status from [Active Tasks] where id = {activeTaskID}";
+                string query = $"update [Active Tasks] set Status = 'Done ({enterPoint} Points)' where id = {activeTaskID}  select Status from [Active Tasks] where id = {activeTaskID}";
                 string currentStatus = (string)SqlServerQuery.getSingleValueFromDB(query);
                 return currentStatus;
             }

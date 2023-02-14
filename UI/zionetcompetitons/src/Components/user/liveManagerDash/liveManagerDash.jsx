@@ -110,7 +110,7 @@ export const LiveManagerDash = () => {
 
       <div>
         <Box
-          className={`systemDash tasksDash ${bgState}`}
+          className={`component-container systemDash tasksDash ${bgState}`}
           sx={{
             bgcolor: "background.paper",
             width: 1300,

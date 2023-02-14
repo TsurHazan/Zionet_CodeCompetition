@@ -28,7 +28,7 @@ namespace ZCC.Server
                 switch (action)
                 {
                     case "GetTask":
-                        return new OkObjectResult(MainManager.Instance.taskManager.getAllCompetitiomTask(userid, competitionID));
+                        return new OkObjectResult(MainManager.Instance.taskManager.getAllCompetitionTask(userid, competitionID));
 
                     case "GetCategories":
                         return new OkObjectResult(MainManager.Instance.categoriesManager.allCategories());

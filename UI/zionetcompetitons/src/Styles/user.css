@@ -110,7 +110,7 @@ th {
   display: flex;
   flex-direction: column;
 }
-.liveManagerDash .teamsScoreComponent table tbody tr td img {
+.teamsScoreComponent table tbody tr td img {
   height: 50px;
 }
 
