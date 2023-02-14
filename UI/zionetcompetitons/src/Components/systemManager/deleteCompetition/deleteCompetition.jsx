@@ -24,8 +24,6 @@ export const DeleteCompetition = ({ competitionID, competitionName }) => {
     setOpen(false);
   };
 
-  // await changeCompetitionStatus(competitionStatus, competitionID, user.sub);
-
   return (
     <>
       <button

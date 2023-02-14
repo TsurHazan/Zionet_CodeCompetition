@@ -11,6 +11,7 @@ using ZCC.Entities;
 using RestSharp.Serializers.Json;
 using System.Collections.Generic;
 using ZCC.Models;
+using Newtonsoft.Json.Linq;
 
 namespace ZCC.Server
 {
@@ -63,10 +64,35 @@ namespace ZCC.Server
                             solveActiveTask.teamMembers = MainManager.Instance.teamsManager.GetTeamMembers(int.Parse(competitionID), int.Parse(teamID));
                             solveActiveTask.activeTask = MainManager.Instance.activeTasksManager.GetActiveTask(taskID);
                             solveActiveTask.task = MainManager.Instance.taskManager.GetSingleTask(taskID, teamID);
+                            solveActiveTask.competitionManagersInfo = MainManager.Instance.userEntities.getAllCompetitonManagers(competitionID);
+
+                            foreach (var manager in solveActiveTask.competitionManagersInfo)
+                            {
+                                manager.Value.user_id = "PROTECTED";
+                            }
 
                             return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(solveActiveTask));
                         }
                         return new BadRequestResult();
+
+                    case "SubmitSolvedTask":
+                        if (MainManager.Instance.userEntities.checkIfParticipantIsInTeam(userID, competitionID, teamID))
+                        {
+                            if (req.Body != null)
+                            {
+                                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                                SolveActiveTask solveActiveTask = JsonConvert.DeserializeObject<SolveActiveTask>(requestBody);
+                                if (MainManager.Instance.activeTasksManager.SubmitSolvedTask(solveActiveTask.activeTask) == bool.TrueString)
+                                {
+                                    string ansewr = MainManager.Instance.activeTasksManager.AddMembersAsTaskParticipants(solveActiveTask.teamMembers, solveActiveTask.activeTask.id);
+                                }
+
+                                return new OkObjectResult("");
+                            }
+                            return new BadRequestResult();
+                        }
+
+                        break;
                 }
             }
             catch (Exception)

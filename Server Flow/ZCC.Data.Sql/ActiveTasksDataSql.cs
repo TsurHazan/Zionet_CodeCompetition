@@ -13,6 +13,46 @@ namespace ZCC.Data.Sql
 {
     public class ActiveTasksDataSql
     {
+        // --------------------- Add members as task participants  ---------------------
+
+        public static string AddMembersAsTaskParticipants(Dictionary<string, User> teamMembers, int activetaskID)
+        {
+            try
+            {
+                string query = "";
+                foreach (var member in teamMembers)
+                {
+                    string tempQuery = $"   insert into [Active task Participants] values ('{member.Value.user_id}', {activetaskID})   ";
+                    query += tempQuery;
+                }
+                query += " select 'Success'";
+                return SqlServerQuery.getSingleValueFromDB(query).ToString();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        // --------------------- Submit solved task by participant  ---------------------
+
+        public static string SubmitSolvedTask(ActiveTasks solvedTask)
+        {
+            try
+            {
+                int sqlBit = solvedTask.bonus == true ? sqlBit = 1 : sqlBit = 0;
+
+                string query = $"update [Active Tasks] SET [Active Tasks].[submit time] = GETDATE(),[Active Tasks].Status = 'Submitted', [Active Tasks].bonus = {sqlBit}, [Active Tasks].[git repo] = '{solvedTask.gitRepo}' where teamID = {solvedTask.teamID} and taskID = {solvedTask.taskID} if ( select Status from [Active Tasks] where id = {solvedTask.id}) = 'Submitted' select cast (1 as bit) else select cast (0 as bit) ";
+                object isSubmitted = (bool?)SqlServerQuery.getSingleValueFromDB(query);
+                if (isSubmitted != null) { return isSubmitted.ToString(); }
+                return "ERROR";
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         // --------------------- Get single active task  ---------------------
 
         public static ActiveTasks GetActiveTask(string taskID)

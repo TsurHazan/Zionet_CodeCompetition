@@ -53,14 +53,9 @@ export const TeamCard = ({ allTeams, setAllTeams, thisTeam, indexOfTeam }) => {
   };
 
   const handleRemoveTeamMember = (member) => {
-    console.log("team:", team);
     const newTeam = team.filter((o) => o !== member);
-    console.log("newTeam", newTeam);
     setTeam(newTeam);
-
-    console.log("team:", team, "newTeam", newTeam);
   };
-  console.log("team:", team);
 
   return (
     <div className="card">

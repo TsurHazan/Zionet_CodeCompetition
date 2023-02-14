@@ -29,9 +29,8 @@
 }
 .flex-container-columnn {
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
+  height: 100%;
 }
 .component-container {
   margin: 1.25em auto 0 auto;

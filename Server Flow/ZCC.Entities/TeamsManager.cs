@@ -38,12 +38,12 @@ namespace ZCC.Entities
 
         public int GetTeamsPoint(string TeamID)
         {
-           return teamsDataSql.GetTeamsPoint(TeamID);
+            return teamsDataSql.GetTeamsPoint(TeamID);
         }
-        public void UpdateTeamsPoint(string TeamID,string enterPoint)
+
+        public void UpdateTeamsPoint(string TeamID, string enterPoint)
         {
             teamsDataSql.UpdateTeamsPoint(TeamID, enterPoint);
         }
-
     }
 }

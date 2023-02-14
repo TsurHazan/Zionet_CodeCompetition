@@ -157,7 +157,6 @@ export const EditCompetition_SM = () => {
             <label className="allUsersLabel">
               {allUsers.map((user, index) => {
                 if (!ManagersArr.includes()) {
-                  // console.log(ManagersArr.includes(user), user);
                   return (
                     <button
                       key={user.Email + index.toString()}

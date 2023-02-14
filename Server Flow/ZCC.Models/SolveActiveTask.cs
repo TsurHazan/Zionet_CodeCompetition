@@ -14,5 +14,6 @@ namespace ZCC.Models
         public Task task { get; set; }
         public ActiveTasks activeTask { get; set; }
         public Dictionary<string, User> teamMembers { get; set; }
+        public Dictionary<string, User> competitionManagersInfo { get; set; }
     }
 }

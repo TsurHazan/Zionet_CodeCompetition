@@ -32,10 +32,14 @@ export const TeamTaskHistoryComponent = ({ competitionID, teamID }) => {
       );
       return linkedTask;
     }
+    return t.Status;
   };
 
   const handleSubmittedTime = (t) => {
     if (t === "1990-01-01T00:00:00") return "Not Submitted";
+    else {
+      return t.replace("T", " ");
+    }
   };
 
   const HandleDate = (t) => {
@@ -57,7 +61,7 @@ export const TeamTaskHistoryComponent = ({ competitionID, teamID }) => {
         <div className="singleTask-column headerTask">End time</div>
         <div className="singleTask-column headerTask">Submitted time</div>
         <div className="singleTask-column headerTask">Status</div>
-        <div className="singleTask-column headerTask"></div>
+        {/* <div className="singleTask-column headerTask"></div> */}
       </div>
       {tasks.map((t) => {
         return (
@@ -71,7 +75,6 @@ export const TeamTaskHistoryComponent = ({ competitionID, teamID }) => {
             <div className="singleTask-column">
               {handleSubmittedTime(t.submitTime)}
             </div>
-            <div className="singleTask-column">{}</div>
             <div className="singleTask-column">{linkedTask(t)}</div>
           </div>
         );

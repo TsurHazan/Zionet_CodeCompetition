@@ -65,7 +65,6 @@ export const EditTasksAndCategories = () => {
     const all = await getCompetitionTask(user.sub, id);
     const data = Object.values(all.data);
     setAllTask(data);
-    console.log(data);
   };
 
   // <---------- Get All Categories -------------->
@@ -83,7 +82,6 @@ export const EditTasksAndCategories = () => {
   };
   //sending task editing whit handle object value like in DB
   const moveToEditTask = (task) => {
-    console.log(task);
     settaskToEdit({
       id: task.id,
       CompetitionID: task.competitionID,
