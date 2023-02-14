@@ -109,7 +109,7 @@ th {
   height: 50px;
 }
 
-.chooseTask-table {
+.Task-table {
   display: flex;
   flex-direction: column;
 }
@@ -122,10 +122,34 @@ th {
     calc(100% / 7) calc(100% / 7) calc(100% / 7);
 }
 .singleTask-column {
-  border: 1px solid;
-  margin: 0.4px;
+  border: 1.5px solid;
+  border-collapse: collapse;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
 }
 
 .headerTask {
   background-color: #1976d2;
+}
+
+.solveTask-task-grid-container {
+  display: grid;
+  width: 100%;
+  grid-template-columns: auto auto auto;
+  grid-template-areas: auto auto auto;
+  padding: 1em;
+  gap: 0.3em;
+}
+.solveTask-grid-item {
+  border-collapse: collapse;
+  border: 0.01em solid;
+  font-size: bold;
+}
+.solveTask-grid-footer {
+  margin-top: 1em;
+  border-collapse: collapse;
+  grid-column: 1 / span 3;
+  grid-row: 2;
 }

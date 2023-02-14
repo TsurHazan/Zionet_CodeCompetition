@@ -67,7 +67,7 @@ namespace ZCC.DAL
                         connection.Open();
                         return command.ExecuteScalar();
                     }
-                    catch (Exception) { return "invalid parameters"; }
+                    catch (Exception) { throw; }
                 }
             }
         }

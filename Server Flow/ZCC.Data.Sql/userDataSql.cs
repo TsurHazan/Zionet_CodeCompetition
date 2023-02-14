@@ -27,7 +27,8 @@ namespace ZCC.Data.Sql
         public bool checkIfParticipantIsInTeam(string UserID, string CompetitionID, string TeamID)
         {
             query = $"exec CheckIfUserIsInTeam @userID = '{UserID}' , @competitionID ={CompetitionID} , @teamID ={TeamID}";
-            if ((bool?)SqlServerQuery.getSingleValueFromDB(query) == null) return false;
+            bool? permission = (bool?)SqlServerQuery.getSingleValueFromDB(query);
+            if (permission == null || permission == false) return false;
             return true;
         }
 

@@ -7,20 +7,20 @@
   display: grid;
   grid-template-rows: auto auto auto auto;
   grid-template-columns: auto auto;
-  gap: 5px;
-  padding: 20px;
+  gap: 0.3125em;
+  padding: 1.25em;
   overflow-y: auto;
-  margin-top: 20px;
-  border: 5px solid;
+  margin-top: 1.25em;
+  border: 0.3125em solid;
 }
 
 .allUsersLabel {
-  padding: 20px;
+  padding: 1.25em;
   width: 100%;
   display: grid;
   grid-template-rows: auto auto auto auto;
   grid-template-columns: auto auto auto auto;
-  gap: 5px;
+  gap: 0.3125em;
   overflow-y: auto;
 }
 .allUsersLabel p {
@@ -35,7 +35,7 @@
   overflow: visible;
 }
 .allCompetitions {
-  margin: 20px auto 0 auto;
+  margin: 1.25em auto 0 auto;
   justify-content: center;
 }
 
@@ -48,11 +48,11 @@
 }
 .allCompetitions td,
 th {
-  padding: 10px;
+  padding: 0.625em;
   text-align: center;
 }
 .EditCompetition_SM {
   margin: 0 auto;
   justify-content: center;
-  width: 1400px;
+  width: 87.5em;
 }

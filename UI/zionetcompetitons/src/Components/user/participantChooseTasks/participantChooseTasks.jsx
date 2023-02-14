@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useEffect } from "react";
 import {
   GetAvailableTasks,
@@ -15,7 +15,6 @@ export const ParticipantChooseTasks = ({ competitionID, teamID }) => {
       const tasks = await GetAvailableTasks(user.sub, competitionID, teamID);
       const tasksArray = Object.values(tasks.data);
       setAvailableTasks(tasksArray);
-      console.log(tasksArray);
     };
     fetchAvailableTasks();
   }, []);
@@ -28,13 +27,13 @@ export const ParticipantChooseTasks = ({ competitionID, teamID }) => {
       taskID,
       timeframe
     );
-
-    console.log(taskID, timeframe);
-    console.log(isChoosed.data);
+    if (isChoosed.status === 200) {
+      window.open("https://codingbeautydev.com", "_blank", "noreferrer");
+    }
   };
 
   return (
-    <div className="chooseTask-table">
+    <div className="Task-table">
       <div className="singleTask-table">
         <div className="singleTask-column headerTask">Category</div>
         <div className="singleTask-column headerTask">Name</div>
@@ -55,6 +54,7 @@ export const ParticipantChooseTasks = ({ competitionID, teamID }) => {
             <div className="singleTask-column">{t.BonusTime}</div>
             <div className="singleTask-column">
               <button
+                className="btn btn-primary"
                 onClick={async () => {
                   await participantChooseTask(t.id, t.Timeframe);
                 }}

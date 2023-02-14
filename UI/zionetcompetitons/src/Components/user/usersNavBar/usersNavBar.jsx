@@ -11,10 +11,14 @@ import ModeNightIcon from "@mui/icons-material/ModeNight";
 export const UsersNavBar = () => {
   const { bgState, setBgState } = useContext(bgMode);
   const { logout } = useAuth0();
+
   useEffect(() => {
     const firstTime = async () => {
-      if (bgState === "undefined") await setBgState("light");
-      localStorage.setItem("Theme", bgState);
+      if (bgState === "undefined" || bgState === null) {
+        await setBgState("light");
+      } else {
+        localStorage.setItem("Theme", bgState);
+      }
     };
     firstTime();
   }, [bgState]);

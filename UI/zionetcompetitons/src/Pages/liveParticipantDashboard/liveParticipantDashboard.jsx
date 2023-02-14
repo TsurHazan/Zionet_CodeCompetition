@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
 import { useTheme } from "@mui/material/styles";
@@ -9,10 +10,12 @@ import Box from "@mui/material/Box";
 import { useContext, useState } from "react";
 import { bgMode } from "../../bgModeContext";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useEffect } from "react";
 import { GetCompetition } from "../../Middlewares/users/users";
 import { useParams } from "react-router-dom";
-import { ParticipantChooseTasks } from "../../Components/user/participantChooseTasks/participantChooseTasks";
+import {
+  TeamTaskHistoryComponent,
+  ParticipantChooseTasks,
+} from "../../Components/user/userExports";
 
 export const LiveParticipantDashboard = () => {
   const { user } = useAuth0();
@@ -74,7 +77,7 @@ export const LiveParticipantDashboard = () => {
             variant="fullWidth"
             aria-label="action tabs example"
           >
-            <Tab label="Submitted Tasks" {...a11yProps(0)} />
+            <Tab label="Tasks History" {...a11yProps(0)} />
             <Tab label="Choose Tasks" {...a11yProps(1)} />
             <Tab label="Teams Ranks" {...a11yProps(2)} />
           </Tabs>
@@ -85,7 +88,10 @@ export const LiveParticipantDashboard = () => {
           onChangeIndex={handleChangeIndex}
         >
           <TabPanel value={value} index={0} dir={theme.direction}>
-            item 1
+            <TeamTaskHistoryComponent
+              competitionID={competitionID}
+              teamID={teamID}
+            />
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
             <ParticipantChooseTasks

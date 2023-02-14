@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using ZCC.Entities;
 using RestSharp.Serializers.Json;
 using System.Collections.Generic;
+using ZCC.Models;
 
 namespace ZCC.Server
 {
@@ -22,32 +23,55 @@ namespace ZCC.Server
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            switch (action)
+            try
             {
-                case "FindParticipantTeam":
-                    teamID = MainManager.Instance.userEntities.FindParticipantTeam(userID, competitionID);
-                    if (teamID != null) { return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(teamID)); }
-                    return new BadRequestObjectResult("Bad request");
+                switch (action)
+                {
+                    case "FindParticipantTeam":
+                        teamID = MainManager.Instance.userEntities.FindParticipantTeam(userID, competitionID);
+                        if (teamID != null) { return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(teamID)); }
+                        return new BadRequestResult();
 
-                case "GetAvailableTasks":
+                    case "GetAvailableTasks":
 
-                    Dictionary<int, Models.Task> GetAllAvailableTasksForTeam = MainManager.Instance.taskManager.GetAllAvailableTasksForTeam(teamID, competitionID);
-                    if (GetAllAvailableTasksForTeam != null) { return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(GetAllAvailableTasksForTeam)); }
-                    return new BadRequestObjectResult("Bad request");
+                        Dictionary<int, Models.Task> GetAllAvailableTasksForTeam = MainManager.Instance.taskManager.GetAllAvailableTasksForTeam(teamID, competitionID);
+                        if (GetAllAvailableTasksForTeam != null) { return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(GetAllAvailableTasksForTeam)); }
+                        return new BadRequestResult();
 
-                case "ChooseTask":
-                    if (MainManager.Instance.userEntities.checkIfParticipantIsInTeam(userID, competitionID, teamID))
-                    {
-                        if (MainManager.Instance.taskManager.ChooseTask(competitionID, teamID, taskID, timeframe) != null)
+                    case "ChooseTask":
+                        if (MainManager.Instance.userEntities.checkIfParticipantIsInTeam(userID, competitionID, teamID))
                         {
-                            return new OkObjectResult($"Confirmed");
+                            if (MainManager.Instance.taskManager.ChooseTask(competitionID, teamID, taskID, timeframe) != null)
+                            {
+                                return new OkObjectResult($"Confirmed");
+                            }
+                            else
+                            {
+                                return new BadRequestObjectResult("You cant choose Task");
+                            }
                         }
-                        else
+                        return new BadRequestObjectResult("You cant choose task because you are not in this team");
+
+                    case "TeamTasksHistory":
+                        return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(MainManager.Instance.activeTasksManager.TeamTasksHistory(teamID)));
+
+                    case "GetSolveTaskTabInformation":
+                        if (MainManager.Instance.userEntities.checkIfParticipantIsInTeam(userID, competitionID, teamID) || MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userID, competitionID))
                         {
-                            return new BadRequestObjectResult("You cant choose Task");
+                            SolveActiveTask solveActiveTask = new SolveActiveTask();
+
+                            solveActiveTask.teamMembers = MainManager.Instance.teamsManager.GetTeamMembers(int.Parse(competitionID), int.Parse(teamID));
+                            solveActiveTask.activeTask = MainManager.Instance.activeTasksManager.GetActiveTask(taskID);
+                            solveActiveTask.task = MainManager.Instance.taskManager.GetSingleTask(taskID, teamID);
+
+                            return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(solveActiveTask));
                         }
-                    }
-                    return new BadRequestObjectResult("You cant choose task because you are not in this team");
+                        return new BadRequestResult();
+                }
+            }
+            catch (Exception)
+            {
+                return new BadRequestResult();
             }
 
             return new NotFoundObjectResult("404 Not Found");
