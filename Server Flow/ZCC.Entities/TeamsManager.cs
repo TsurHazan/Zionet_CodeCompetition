@@ -14,49 +14,112 @@ namespace ZCC.Entities
 
         public void UpdateTeam(User[] team, string competitionID, string teamID)
         {
-            teamsDataSql.ResetTeam(teamID);
-            foreach (User user in team)
+            try
             {
-                teamsDataSql.AddUserToTeam(teamID, user.user_id, competitionID);
+                teamsDataSql.ResetTeam(teamID);
+                foreach (User user in team)
+                {
+                    teamsDataSql.AddUserToTeam(teamID, user.user_id, competitionID);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
 
         public Dictionary<string, User> GetTeamMembers(int competitionID, int teamID)
         {
-            return teamsDataSql.GetTeamMembers(competitionID, teamID);
+            try
+            {
+                return teamsDataSql.GetTeamMembers(competitionID, teamID);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public Dictionary<int, Team> GetAllTeamsInCompetition(string competitionId)
         {
-            Dictionary<int, Team> Dteam = teamsDataSql.GetAllTeamsInCompetition(competitionId);
-            return Dteam;
+            try
+            {
+                Dictionary<int, Team> Dteam = teamsDataSql.GetAllTeamsInCompetition(competitionId);
+                return Dteam;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public void AddTeamToCompetition(string competitionID)
         {
-            teamsDataSql.AddTeamToCompetition(competitionID);
+            try
+            {
+                teamsDataSql.AddTeamToCompetition(competitionID);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public int GetTeamsPoint(string TeamID)
         {
-           return teamsDataSql.GetTeamsPoint(TeamID);
+            try
+            {
+                return teamsDataSql.GetTeamsPoint(TeamID);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
         public void UpdateTeamsPoint(string TeamID,string enterPoint)
         {
-            teamsDataSql.UpdateTeamsPoint(TeamID, enterPoint);
+            try
+            {
+                teamsDataSql.UpdateTeamsPoint(TeamID, enterPoint);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
         public Dictionary<int, TeamLive> GetAllLiveTeams(string competitionId)
         {
-            Dictionary<int, TeamLive>  Dteam = teamsDataSql.GetAllLiveTeams(competitionId);
-            return Dteam;
+            try
+            {
+                Dictionary<int, TeamLive>  Dteam = teamsDataSql.GetAllLiveTeams(competitionId);
+                return Dteam;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
         public int GetTeamsCountTasksFinished(string TeamID)
         {
-           return teamsDataSql.GetTeamsCountTasksFinishedFromDB(TeamID);
+            try
+            {
+                return teamsDataSql.GetTeamsCountTasksFinishedFromDB(TeamID);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
         public int GetPotentialPoint(string TeamID)
         {
-            return teamsDataSql.GetPotentialPointFromDB(TeamID);
+            try
+            {
+                return teamsDataSql.GetPotentialPointFromDB(TeamID);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

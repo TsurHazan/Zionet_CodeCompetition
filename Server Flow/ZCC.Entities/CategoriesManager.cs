@@ -12,12 +12,26 @@ namespace ZCC.Entities
     {
         public Dictionary<string, Models.Categories> allCategories()
         {
-            return categoriesDataSql.GetCategoriesFromDB();
+            try
+            {
+                return categoriesDataSql.GetCategoriesFromDB();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public void setNewCategory(string id)
         {
-            categoriesDataSql.setCategoryToDB(id);
+            try
+            {
+                categoriesDataSql.setCategoryToDB(id);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

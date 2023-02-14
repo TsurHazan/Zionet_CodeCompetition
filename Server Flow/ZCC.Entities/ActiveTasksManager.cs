@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ZCC.Data.Sql;
 using ZCC.Models;
 
@@ -9,11 +10,25 @@ namespace ZCC.Entities
 
         public Dictionary<int, Models.ActiveTasks> GetSubmittedTasks(string competitionID)
         {
-            return ActiveTasksDataSql.GetSubmittedActiveTasks(competitionID);
+            try
+            {
+                return ActiveTasksDataSql.GetSubmittedActiveTasks(competitionID);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
         public string UpdateTaskStatusToDone(string activeTaskID,string enterPoint)
         {
-            return ActiveTasksDataSql.UpdateSubmittedTaskStatus(activeTaskID, enterPoint);
+            try
+            {
+                return ActiveTasksDataSql.UpdateSubmittedTaskStatus(activeTaskID, enterPoint);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
 

@@ -19,90 +19,160 @@ namespace ZCC.Data.Sql
 
         public void SetManagers(User[] users, int competitionID)
         {
-            foreach (User user in users)
+            try
             {
-                string query = $"IF exists(select * from [Users competitions] where ([UserID] =  '{user.user_id}' and [Competition ID] = {competitionID}))\r\nbegin\r\nupdate [Users competitions] set [Admin] = 1 where [UserID] = '{user.user_id}' and [Competition ID] = {competitionID}\r\nend\r\nELSE\r\nbegin\r\ninsert into [Users competitions] values ('{user.user_id}',1,1,{competitionID})\r\nend";
-                SqlServerQuery.runCommand(query);
+                foreach (User user in users)
+                {
+                    string query = $"IF exists(select * from [Users competitions] where ([UserID] =  '{user.user_id}' and [Competition ID] = {competitionID}))\r\nbegin\r\nupdate [Users competitions] set [Admin] = 1 where [UserID] = '{user.user_id}' and [Competition ID] = {competitionID}\r\nend\r\nELSE\r\nbegin\r\ninsert into [Users competitions] values ('{user.user_id}',1,1,{competitionID})\r\nend";
+                    SqlServerQuery.runCommand(query);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
 
         // --------------------- Remove user from being manager in a specific Competition and from the competition  ---------------------
         public void RemoveCompetitionManager(string competitionID, string userID)
         {
-            string query = $"update [Users competitions] set [Admin] = 0,[Competition ID]= 1 where [Competition ID] = {competitionID}";
-            SqlServerQuery.runCommand(query);
+            try
+            {
+                string query = $"update [Users competitions] set [Admin] = 0,[Competition ID]= 1 where [Competition ID] = {competitionID}";
+                SqlServerQuery.runCommand(query);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         // --------------------- get all Competitions Managers from the DB ---------------------
         public Dictionary<string, User> getAllCompetitonManagers(string competitionID)
         {
-            func = _getAllCompetitonManagers;
-            query = $"select [Users].* from [dbo].[Users competitions] inner join [Users] on [Users].id = [Users competitions].UserID where [Competition ID] = {competitionID} and [Admin] = 1";
-            return (Dictionary<string, User>)SqlServerQuery.getValueFromDB(query, func);
+            try
+            {
+                func = _getAllCompetitonManagers;
+                query = $"select [Users].* from [dbo].[Users competitions] inner join [Users] on [Users].id = [Users competitions].UserID where [Competition ID] = {competitionID} and [Admin] = 1";
+                return (Dictionary<string, User>)SqlServerQuery.getValueFromDB(query, func);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         private object _getAllCompetitonManagers(SqlDataReader reader)
         {
-            Dictionary<string, User> allUsers = new Dictionary<string, User>();
-            while (reader.Read())
+            try
             {
-                User user = new User(reader.GetString(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), reader.GetString(reader.GetOrdinal("Email")));
-                allUsers.Add(user.user_id, user);
+                Dictionary<string, User> allUsers = new Dictionary<string, User>();
+                while (reader.Read())
+                {
+                    User user = new User(reader.GetString(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), reader.GetString(reader.GetOrdinal("Email")));
+                    allUsers.Add(user.user_id, user);
+                }
+                return allUsers;
             }
-            return allUsers;
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         // --------------------- checking if user is a manager of the competition given ---------------------
         public bool checkIfUserIsCompetitionManager(string UserID, string CompetitionID)
         {
-            query = $"select [admin] from [dbo].[Users competitions] where ([Competition ID] = {CompetitionID} and [UserID] = '{UserID}')";
-            if ((bool?)SqlServerQuery.getSingleValueFromDB(query) == null) return false;
-            return true;
+            try
+            {
+                query = $"select [admin] from [dbo].[Users competitions] where ([Competition ID] = {CompetitionID} and [UserID] = '{UserID}')";
+                if ((bool?)SqlServerQuery.getSingleValueFromDB(query) == null) return false;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         // --------------------- inser a user to the DB  ---------------------
         public void insertUserToDB(User newUser)
         {
-            query = $"insert into Users (id,name,Email) Values('{newUser.user_id}','{newUser.name}','{newUser.email}')";
-            SqlServerQuery.runCommand(query);
+            try
+            {
+                query = $"insert into Users (id,name,Email) Values('{newUser.user_id}','{newUser.name}','{newUser.email}')";
+                SqlServerQuery.runCommand(query);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         // --------------------- check if user exist in the Database or not ---------------------
         private object _checkIfUserInDB(SqlDataReader reader)
         {
-            //if he exist then true, else=false
-            bool state = reader.Read();
-            return state;
+            try
+            {
+                //if he exist then true, else=false
+                bool state = reader.Read();
+                return state;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public bool checkIfUserInDB(string userID)
         {
-            func = _checkIfUserInDB;
-            query = $"select * from Users where Users.id like '{userID}'";
-            bool exist = (bool)SqlServerQuery.getValueFromDB(query, func);
-            if (!exist) { return false; }
-            return true;
+            try
+            {
+                func = _checkIfUserInDB;
+                query = $"select * from Users where Users.id like '{userID}'";
+                bool exist = (bool)SqlServerQuery.getValueFromDB(query, func);
+                if (!exist) { return false; }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         // --------------------- get all users on the DB ---------------------
         private object _getAllUsers(SqlDataReader reader)
         {
-            Dictionary<string, User> allUsers = new Dictionary<string, User>();
-
-            while (reader.Read())
+            try
             {
-                User user = new User(reader.GetString(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), reader.GetString(reader.GetOrdinal("Email")));
-                allUsers.Add(user.user_id, user);
+                Dictionary<string, User> allUsers = new Dictionary<string, User>();
+
+                while (reader.Read())
+                {
+                    User user = new User(reader.GetString(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), reader.GetString(reader.GetOrdinal("Email")));
+                    allUsers.Add(user.user_id, user);
+                }
+                return allUsers;
             }
-            return allUsers;
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public Dictionary<string, User> getAllUsers()
         {
-            func = _getAllUsers;
-            query = "select * from Users";
-            Dictionary<string, User> allUsers = (Dictionary<string, User>)SqlServerQuery.getValueFromDB(query, func);
-            return allUsers;
+            try
+            {
+                func = _getAllUsers;
+                query = "select * from Users";
+                Dictionary<string, User> allUsers = (Dictionary<string, User>)SqlServerQuery.getValueFromDB(query, func);
+                return allUsers;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

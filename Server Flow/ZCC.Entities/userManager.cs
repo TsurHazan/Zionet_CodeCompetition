@@ -15,39 +15,96 @@ namespace ZCC.Entities
         // --------------------- Set users as competition managers in a specific competition ---------------------
         public void setManagers(User[] users, int competitionID)
         {
-            UserDataSQL.SetManagers(users, competitionID);
+            try
+            {
+                UserDataSQL.SetManagers(users, competitionID);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
         // ---------------------  remove all of the current managers from managing this competition ---------------------
         public void RemoveCompetitionManagers(string competitionID, string userID)
         {
-            UserDataSQL.RemoveCompetitionManager(competitionID, userID);
+            try
+            {
+                UserDataSQL.RemoveCompetitionManager(competitionID, userID);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         // --------------------- get all Competitions Managers from the DB ---------------------
         public Dictionary<string, User> getAllCompetitonManagers(string competitionID)
-        { return UserDataSQL.getAllCompetitonManagers(competitionID); }
+        {
+            try
+            {
+               return UserDataSQL.getAllCompetitonManagers(competitionID); 
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
 
         // --------------------- check if user exist in the Database or not ---------------------
         public bool checkIfUserInDB(string userID)
         {
-            return UserDataSQL.checkIfUserInDB(userID);
+            try
+            {
+                return UserDataSQL.checkIfUserInDB(userID);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         // --------------------- checking if user is a manager of the competition given ---------------------
         public bool checkIfUserIsCompetitionManager(string userID, string competitionID)
         {
-            return UserDataSQL.checkIfUserIsCompetitionManager(userID, competitionID);
+            try
+            {
+                return UserDataSQL.checkIfUserIsCompetitionManager(userID, competitionID);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         // --------------------- inser a user to the DB  ---------------------
         public void insertUserToDB(User user)
         {
-            UserDataSQL.insertUserToDB(user);
+            try
+            {
+                UserDataSQL.insertUserToDB(user);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         // --------------------- get all users on the DB ---------------------
         public Dictionary<string, User> allUsers
-        { get { return UserDataSQL.getAllUsers(); } }
+        { get 
+            {
+                try
+                {
+                    return UserDataSQL.getAllUsers(); 
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+            } 
+        }
     }
 }

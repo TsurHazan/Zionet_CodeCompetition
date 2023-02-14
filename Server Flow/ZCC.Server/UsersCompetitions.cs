@@ -27,34 +27,31 @@ namespace ZCC.Server
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
 
-            switch (action)
+            try
             {
-                case "EnableCompetition":
+                switch (action)
+                {
+                    case "EnableCompetition":
 
-                    //check if the request sent by
-                    if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
-                    {
-                        //update competition
-                        return new OkObjectResult(true);
-                    }
+                        //check if the request sent by
+                        if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
+                        {
+                            //update competition
+                            return new OkObjectResult(true);
+                        }
 
-                    break;
+                        break;
 
-                case "GetAllManagerCompetition":
+                    case "GetAllManagerCompetition":
+                        return new OkObjectResult(MainManager.Instance.competitionsManager.allUserCompetitions(userid, 1));
 
-                    return new OkObjectResult(MainManager.Instance.competitionsManager.allUserCompetitions(userid, 1));
+                    case "GetAllParticipantCompetition":
+                        return new OkObjectResult(MainManager.Instance.competitionsManager.allUserCompetitions(userid, 0));
 
-                case "GetAllParticipantCompetition":
+                    case "GetCompetition":
+                        return new OkObjectResult(MainManager.Instance.competitionsManager.UserCompetitionManager(userid, competitionID));
 
-                    return new OkObjectResult(MainManager.Instance.competitionsManager.allUserCompetitions(userid, 0));
-
-                case "GetCompetition":
-
-                    return new OkObjectResult(MainManager.Instance.competitionsManager.UserCompetitionManager(userid, competitionID));
-
-                case "UpdateCompetition":
-                    try
-                    {
+                    case "UpdateCompetition":
                         Competition competition = System.Text.Json.JsonSerializer.Deserialize<Competition>(requestBody);
                         if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competition.id.ToString()))
                         {
@@ -65,15 +62,8 @@ namespace ZCC.Server
                         {
                             return new OkObjectResult(false);
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                        return new OkObjectResult(false);
-                    }
-                case "UpdateCompetitionStatus":
-                    try
-                    {
+
+                    case "UpdateCompetitionStatus":
                         if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
                         {
                             MainManager.Instance.competitionsManager.ChangeCompetitionStatus(competitionID, requestBody);
@@ -83,26 +73,12 @@ namespace ZCC.Server
                         {
                             return new OkObjectResult(false);
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                        return new OkObjectResult(false);
-                    }
-                case "UpdateCategory":
-                    try
-                    {
+
+                    case "UpdateCategory":
                         MainManager.Instance.categoriesManager.setNewCategory(requestBody);
                         return new OkObjectResult(200);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                        return new OkObjectResult(false);
-                    }
-                case "UpdateTask":
-                    try
-                    {
+
+                    case "UpdateTask":
                         if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
                         {
                             Models.Task task = System.Text.Json.JsonSerializer.Deserialize<Models.Task>(requestBody);
@@ -113,16 +89,7 @@ namespace ZCC.Server
                         {
                             return new OkObjectResult(false);
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                        return new OkObjectResult(false);
-                    }
-
-                case "DuplicationTask":
-                    try
-                    {
+                    case "DuplicationTask":
                         if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
                         {
                             Models.Task task = System.Text.Json.JsonSerializer.Deserialize<Models.Task>(requestBody);
@@ -133,40 +100,41 @@ namespace ZCC.Server
                         {
                             return new OkObjectResult(false);
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                        return new OkObjectResult(false);
-                    }
 
-                case "ConfirmSubmittedTask":
+                    case "ConfirmSubmittedTask":
 
-                    if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
-                    {
-                        //get the active task
-                        ActiveTasks activeTasks = System.Text.Json.JsonSerializer.Deserialize<ActiveTasks>(requestBody);
-                        //get Teams Point Before update current Task Point
-                        int teamPointBefore = MainManager.Instance.teamsManager.GetTeamsPoint(activeTasks.teamID.ToString());
-                        //Update Teams Point
-                        MainManager.Instance.teamsManager.UpdateTeamsPoint(activeTasks.teamID.ToString(), enterPoint);
-                        //get Teams Point After update current Task Point
-                        int teamPointAfter = MainManager.Instance.teamsManager.GetTeamsPoint(activeTasks.teamID.ToString());
-                        //check if the teams Point is Update
-                        if (teamPointBefore+ int.Parse(enterPoint) ==teamPointAfter)
+                        if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
                         {
-                            //Update Active Task Status To Done
-                            string currentStatus = MainManager.Instance.activeTasksManager.UpdateTaskStatusToDone(activeTasks.id.ToString(),enterPoint);
-                            return new OkObjectResult(currentStatus);
+                            //get the active task
+                            ActiveTasks activeTasks = System.Text.Json.JsonSerializer.Deserialize<ActiveTasks>(requestBody);
+                            //get Teams Point Before update current Task Point
+                            int teamPointBefore = MainManager.Instance.teamsManager.GetTeamsPoint(activeTasks.teamID.ToString());
+                            //Update Teams Point
+                            MainManager.Instance.teamsManager.UpdateTeamsPoint(activeTasks.teamID.ToString(), enterPoint);
+                            //get Teams Point After update current Task Point
+                            int teamPointAfter = MainManager.Instance.teamsManager.GetTeamsPoint(activeTasks.teamID.ToString());
+                            //check if the teams Point is Update
+                            if (teamPointBefore + int.Parse(enterPoint) == teamPointAfter)
+                            {
+                                //Update Active Task Status To Done
+                                string currentStatus = MainManager.Instance.activeTasksManager.UpdateTaskStatusToDone(activeTasks.id.ToString(), enterPoint);
+                                return new OkObjectResult(currentStatus);
+                            }
+                            return new BadRequestObjectResult(false);
                         }
-                        return new BadRequestObjectResult(false);
-                    }
-                    return new BadRequestObjectResult("NO ACCESS");
+                        return new BadRequestObjectResult("NO ACCESS");
 
 
-                default:
-                    break;
+                    default:
+                        break;
+                }
             }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
             return new NotFoundObjectResult("404 Not Found");
         }
     }

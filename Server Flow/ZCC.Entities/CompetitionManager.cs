@@ -15,34 +15,79 @@ namespace ZCC.Entities
         // --------------------- Change Competition Status ---------------------
         public void ChangeCompetitionStatus(string competitionID, string newStatus)
         {
-            competitionDataSql.ChangeCompetitionStatus(int.Parse(competitionID), newStatus);
+            try
+            {
+                competitionDataSql.ChangeCompetitionStatus(int.Parse(competitionID), newStatus);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         // --------------------- Update specific Competition row ---------------------
         public bool UpdateCompetition(Competition competition)
         {
-            return competitionDataSql.UpdateCompetition(competition);
+            try
+            {
+                return competitionDataSql.UpdateCompetition(competition);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         // --------------------- Create new competition ---------------------
         public int createCompetition(Competition competition)
         {
-            return competitionDataSql.CreateNewCompetitions(competition);
+            try
+            {
+                return competitionDataSql.CreateNewCompetitions(competition);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         // --------------------- Return all competition in the DB ---------------------
         public Dictionary<int, Competition> allSystemCompetitions
-        { get { return competitionDataSql.GetAllCompetitions(); } private set { } }
+        { get 
+            {
+                try
+                {
+                    return competitionDataSql.GetAllCompetitions(); 
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+            } private set { } }
 
         // --------------------- Return all competition in the DB for a specific user ---------------------
         public Dictionary<int, Models.Competition> allUserCompetitions(string id, int admin)
         {
-            return competitionDataSql.GetUserCompetitionsFromDB(id, admin);
+            try
+            {
+                return competitionDataSql.GetUserCompetitionsFromDB(id, admin);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public Models.Competition UserCompetitionManager(string id, string competitionidID)
         {
-            return competitionDataSql.GetCompetitionByIdFromDB(id, competitionidID);
+            try
+            {
+                return competitionDataSql.GetCompetitionByIdFromDB(id, competitionidID);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

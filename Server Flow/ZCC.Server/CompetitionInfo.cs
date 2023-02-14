@@ -23,64 +23,72 @@ namespace ZCC.Server
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
 
-
-            switch (action)
+            try
             {
-              case "GetTask":
-                    return new OkObjectResult(MainManager.Instance.taskManager.getAllCompetitiomTask(userid, competitionID));
+                switch (action)
+                {
+                    case "GetTask":
+                        return new OkObjectResult(MainManager.Instance.taskManager.getAllCompetitiomTask(userid, competitionID));
 
-                case "GetCategories":
-                    return new OkObjectResult(MainManager.Instance.categoriesManager.allCategories());
-                case "UpdateOneTask":
-                    if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
-                    {
-                        Models.Task task = System.Text.Json.JsonSerializer.Deserialize<Models.Task>(requestBody);
-
-                        MainManager.Instance.taskManager.UpdateOneTask(task);
-                        return new OkObjectResult(true);
-
-                    }
-                    else
-                    {
-                       ; return new OkObjectResult(false);
-                    };
-                case "DeleteOneTask":
-                    if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
-                    {
-                     //   string taskID = System.Text.Json.JsonSerializer.Deserialize<string>(requestBody);
-
-                        MainManager.Instance.taskManager.DeleteTaskFromDB(competitionID, requestBody);
-                        return new OkObjectResult(true);
-
-                    }
-                    else
-                    {
-                        return new OkObjectResult(false);
-                    };
-                case "GetSubmittedTasks":
-                    try
-                    {
+                    case "GetCategories":
+                        return new OkObjectResult(MainManager.Instance.categoriesManager.allCategories());
+                    case "UpdateOneTask":
                         if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
                         {
+                            Models.Task task = System.Text.Json.JsonSerializer.Deserialize<Models.Task>(requestBody);
 
-                            return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(MainManager.Instance.activeTasksManager.GetSubmittedTasks(competitionID)));
+                            MainManager.Instance.taskManager.UpdateOneTask(task);
+                            return new OkObjectResult(true);
 
                         }
                         else
                         {
-                             return new OkObjectResult(false);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                        return new OkObjectResult(false);
-                    };
-                    
+                            ; return new OkObjectResult(false);
+                        };
+                    case "DeleteOneTask":
+                        if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
+                        {
+                            //   string taskID = System.Text.Json.JsonSerializer.Deserialize<string>(requestBody);
 
-                default:
-                    break;
+                            MainManager.Instance.taskManager.DeleteTaskFromDB(competitionID, requestBody);
+                            return new OkObjectResult(true);
+
+                        }
+                        else
+                        {
+                            return new OkObjectResult(false);
+                        };
+                    case "GetSubmittedTasks":
+                        try
+                        {
+                            if (MainManager.Instance.userEntities.checkIfUserIsCompetitionManager(userid, competitionID))
+                            {
+
+                                return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(MainManager.Instance.activeTasksManager.GetSubmittedTasks(competitionID)));
+
+                            }
+                            else
+                            {
+                                return new OkObjectResult(false);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                            return new OkObjectResult(false);
+                        };
+
+
+                    default:
+                        break;
+                }
             }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            
             return new NotFoundObjectResult("404 Not Found");
         }
     }

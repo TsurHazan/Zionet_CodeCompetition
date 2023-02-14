@@ -20,11 +20,18 @@ namespace ZCC.DAL
                 // Adapter
                 using (SqlCommand command = new SqlCommand(sqlQuery, connection))
                 {
-                    connection.Open();
-                    //Reader
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    try
                     {
-                        reader.Read();
+                        connection.Open();
+                        //Reader
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            reader.Read();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw;
                     }
                 }
             }
@@ -37,17 +44,22 @@ namespace ZCC.DAL
             {
                 using (SqlCommand command = new SqlCommand(sqlQuery, connection))
                 {
-                    try { 
-                    connection.Open();
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader != null)
+                    try 
+                    { 
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            ret = func(reader);
-                        }
+                            if (reader != null)
+                            {
+                                ret = func(reader);
+                            }
 
+                        }
                     }
-                    } catch(Exception) { return "invalid parameters"; }
+                    catch (Exception ex)
+                    {
+                        throw;
+                    }
                 }
             }
 
@@ -69,7 +81,11 @@ namespace ZCC.DAL
                         connection.Open();
                         return command.ExecuteScalar();
                     }
-                    catch (Exception) { return "invalid parameters"; }
+                    catch (Exception ex)
+                    {
+                        throw;
+                    }
+                    
                 }
             }
         }

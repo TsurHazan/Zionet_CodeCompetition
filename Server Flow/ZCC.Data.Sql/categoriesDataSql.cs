@@ -17,28 +17,49 @@ namespace ZCC.Data.Sql
 
         public static Dictionary<string, Models.Categories> SetDataToDictionary(SqlDataReader reader)
         {
-            catObj.Clear();
-            while (reader.Read())
+            try
             {
-                string id = reader.GetString(0);
-                Models.Categories Category = new Models.Categories(id);
-                catObj.Add(id, Category);
+                catObj.Clear();
+                while (reader.Read())
+                {
+                    string id = reader.GetString(0);
+                    Models.Categories Category = new Models.Categories(id);
+                    catObj.Add(id, Category);
+                }
+                return catObj;
             }
-            return catObj;
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public static Dictionary<string, Models.Categories> GetCategoriesFromDB()
         {
-            string sqlQuery = "SELECT * FROM Categories";
-            func = SetDataToDictionary;
-            Dictionary<string, Models.Categories> ret = (Dictionary<string, Models.Categories>)DAL.SqlServerQuery.getValueFromDB(sqlQuery, func);
-            return ret;
+            try
+            {
+                string sqlQuery = "SELECT * FROM Categories";
+                func = SetDataToDictionary;
+                Dictionary<string, Models.Categories> ret = (Dictionary<string, Models.Categories>)DAL.SqlServerQuery.getValueFromDB(sqlQuery, func);
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public static void setCategoryToDB(string id)
         {
-            string sqlQuery = $"insert into Categories values('{id}')";
-            DAL.SqlServerQuery.runCommand(sqlQuery);
+            try
+            {
+                string sqlQuery = $"insert into Categories values('{id}')";
+                DAL.SqlServerQuery.runCommand(sqlQuery);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

@@ -35,43 +35,51 @@ namespace ZCC.Server
             string response = roleClient.Execute(checkRole).Content;
             if (!response.Contains("System Manager")) return new ObjectResult("no permissions");
 
-            switch (action)
+            try
             {
-                case "getAllUsers":
-                    return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(MainManager.Instance.userEntities.allUsers));
+                switch (action)
+                {
+                    case "getAllUsers":
+                        return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(MainManager.Instance.userEntities.allUsers));
 
-                case "createCompetition":
+                    case "createCompetition":
 
-                    body = await new StreamReader(req.Body).ReadToEndAsync();
-                    JObject data = JsonConvert.DeserializeObject<JObject>(body);
-                    Competition newComp = data["Competition"].ToObject<Competition>();
-                    User[] users = data["UsersArr"].ToObject<User[]>();
-                    MainManager.Instance.userEntities.setManagers(users, MainManager.Instance.competitionsManager.createCompetition(newComp));
+                        body = await new StreamReader(req.Body).ReadToEndAsync();
+                        JObject data = JsonConvert.DeserializeObject<JObject>(body);
+                        Competition newComp = data["Competition"].ToObject<Competition>();
+                        User[] users = data["UsersArr"].ToObject<User[]>();
+                        MainManager.Instance.userEntities.setManagers(users, MainManager.Instance.competitionsManager.createCompetition(newComp));
 
-                    return new OkObjectResult("Created new Competition successfully");
+                        return new OkObjectResult("Created new Competition successfully");
 
-                case "getAllCompetitions":
-                    return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(MainManager.Instance.competitionsManager.allSystemCompetitions));
+                    case "getAllCompetitions":
+                        return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(MainManager.Instance.competitionsManager.allSystemCompetitions));
 
-                case "getAllCompetitonManagers":
-                    return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(MainManager.Instance.userEntities.getAllCompetitonManagers(competitionID)));
+                    case "getAllCompetitonManagers":
+                        return new OkObjectResult(System.Text.Json.JsonSerializer.Serialize(MainManager.Instance.userEntities.getAllCompetitonManagers(competitionID)));
 
-                case "updateCurrentCompetition":
-                    body = await new StreamReader(req.Body).ReadToEndAsync();
-                    data = JsonConvert.DeserializeObject<JObject>(body);
-                    Competition Competition = data["Competition"].ToObject<Competition>();
-                    User[] managers = data["ManagersArr"].ToObject<User[]>();
-                    MainManager.Instance.userEntities.RemoveCompetitionManagers(competitionID, userid);
-                    bool completed = MainManager.Instance.competitionsManager.UpdateCompetition(Competition);
-                    MainManager.Instance.userEntities.setManagers(managers, int.Parse(competitionID));
+                    case "updateCurrentCompetition":
+                        body = await new StreamReader(req.Body).ReadToEndAsync();
+                        data = JsonConvert.DeserializeObject<JObject>(body);
+                        Competition Competition = data["Competition"].ToObject<Competition>();
+                        User[] managers = data["ManagersArr"].ToObject<User[]>();
+                        MainManager.Instance.userEntities.RemoveCompetitionManagers(competitionID, userid);
+                        bool completed = MainManager.Instance.competitionsManager.UpdateCompetition(Competition);
+                        MainManager.Instance.userEntities.setManagers(managers, int.Parse(competitionID));
 
-                    return new OkObjectResult(completed);
+                        return new OkObjectResult(completed);
 
-                case "changeCompetitionStatus":
-                    body = await new StreamReader(req.Body).ReadToEndAsync();
-                    MainManager.Instance.competitionsManager.ChangeCompetitionStatus(competitionID, body);
+                    case "changeCompetitionStatus":
+                        body = await new StreamReader(req.Body).ReadToEndAsync();
+                        MainManager.Instance.competitionsManager.ChangeCompetitionStatus(competitionID, body);
 
-                    return new OkObjectResult(200);
+                        return new OkObjectResult(200);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
             }
             return new NotFoundObjectResult("404 Not Found");
         }
