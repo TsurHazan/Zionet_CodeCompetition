@@ -113,6 +113,10 @@ th {
 .liveManagerDash .teamsScoreComponent table tbody tr td img {
   height: 50px;
 }
-.teamsScoreComponent {
+.teamsScoreComponent table,
+.submittedTaskTable table,
+.teamDashboardTable table {
   margin: auto;
+  /*FONT IS NOT RESPONSIVE */
+  font-size: 20px;
 }

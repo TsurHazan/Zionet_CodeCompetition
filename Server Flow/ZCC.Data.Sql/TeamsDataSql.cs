@@ -133,13 +133,13 @@ namespace ZCC.Data.Sql
         }
         public int GetTeamsCountTasksFinishedFromDB(string TeamID)
         {
-            query = $"select count(status) from[Active Tasks] where Status = 'Done' and teamID = {TeamID}";
+            query = $"select count(status) from[Active Tasks] where Status like 'Done%' and teamID = {TeamID}";
             int teamTaskCount = (int)SqlServerQuery.getSingleValueFromDB(query);
             return teamTaskCount;
         }
         public int GetPotentialPointFromDB(string TeamID)
         {
-            query = $"IF EXISTS (SELECT * FROM [Active Tasks] WHERE teamID = {TeamID} and Status = 'Submitted') BEGIN select sum(points)+sum([Bonus points]) from [Active Tasks] as act inner join Tasks as t on act.taskID = t.id where teamID = {TeamID} and Status = 'Submitted' END  ELSE  BEGIN SELECT 0  END";
+            query = $"IF EXISTS (SELECT * FROM [Active Tasks] WHERE teamID = {TeamID} and (Status = 'Submitted' or Status = 'In Progress')) BEGIN select sum(points)+sum([Bonus points]) from [Active Tasks] as act inner join Tasks as t on act.taskID = t.id where teamID = {TeamID} and (Status = 'Submitted' or Status = 'In Progress') END ELSE BEGIN SELECT 0 END";
             int potentialPoint = (int) SqlServerQuery.getSingleValueFromDB(query);
             return potentialPoint;
             

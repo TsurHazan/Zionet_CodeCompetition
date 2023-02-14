@@ -11,9 +11,9 @@ namespace ZCC.Entities
         {
             return ActiveTasksDataSql.GetSubmittedActiveTasks(competitionID);
         }
-        public string UpdateTaskStatusToDone(string activeTaskID)
+        public string UpdateTaskStatusToDone(string activeTaskID,string enterPoint)
         {
-            return ActiveTasksDataSql.UpdateSubmittedTaskStatus(activeTaskID);
+            return ActiveTasksDataSql.UpdateSubmittedTaskStatus(activeTaskID, enterPoint);
         }
 
 

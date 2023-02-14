@@ -37,7 +37,6 @@ export const PopSubmittesTask = ({ originalTask, submittedTask }) => {
       pointsGiven,
       submittedTask
     );
-    console.log(response);
     handleClose();
   };
   return (

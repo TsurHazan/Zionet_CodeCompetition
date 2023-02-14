@@ -156,7 +156,7 @@ namespace ZCC.Server
                         if (teamPointBefore+ int.Parse(enterPoint) ==teamPointAfter)
                         {
                             //Update Active Task Status To Done
-                            string currentStatus = MainManager.Instance.activeTasksManager.UpdateTaskStatusToDone(activeTasks.id.ToString());
+                            string currentStatus = MainManager.Instance.activeTasksManager.UpdateTaskStatusToDone(activeTasks.id.ToString(),enterPoint);
                             return new OkObjectResult(currentStatus);
                         }
                         return new BadRequestObjectResult(false);

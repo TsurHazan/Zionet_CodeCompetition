@@ -52,8 +52,8 @@ namespace ZCC.Server
                     MainManager.Instance.teamsManager.UpdateTeam(Usersteam, competitionID, teamID);
                     return new OkResult();
                 case "GetAllLiveTeams":                    
-                    Dictionary<int, TeamLive> Dic = MainManager.Instance.teamsManager.GetAllLiveTeams(competitionID);
-                    foreach (TeamLive onTteam in Dic.Values)
+                    Dictionary<int, TeamLive> Dteam = MainManager.Instance.teamsManager.GetAllLiveTeams(competitionID);
+                    foreach (TeamLive onTteam in Dteam.Values)
                     {
                         string Tid = onTteam.id.ToString();
                         int tasksFinished = MainManager.Instance.teamsManager.GetTeamsCountTasksFinished(Tid);
@@ -61,7 +61,7 @@ namespace ZCC.Server
                         onTteam.tasksFinished = tasksFinished;
                         onTteam.potentialPoint = potentialPoint;
                     }                    
-                    return new OkObjectResult(Dic);
+                    return new OkObjectResult(Dteam);
 
             }
 
