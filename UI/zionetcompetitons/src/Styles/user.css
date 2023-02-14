@@ -113,6 +113,89 @@ th {
 .liveManagerDash .teamsScoreComponent table tbody tr td img {
   height: 50px;
 }
+
+.Task-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.singleTask-table {
+  display: grid;
+  width: 100%;
+  grid-template-columns:
+    calc(100% / 7) calc(100% / 7) calc(100% / 7) calc(100% / 7)
+    calc(100% / 7) calc(100% / 7) calc(100% / 7);
+}
+.singleTask-column {
+  border: 1.5px solid;
+  border-collapse: collapse;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.headerTask {
+  background-color: #1976d2;
+}
+
+.solveTask-section-container {
+  margin: 0.5em;
+}
+
+.solveTask-container-header {
+  font-weight: 500;
+  font-size: x-large;
+}
+
+.solveTask-taskInfo-grid-container {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  align-items: center;
+}
+
+.solveTask-task-grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-template-areas: auto auto auto;
+  padding: 1em;
+  gap: 0.3em;
+}
+.solveTask-grid-item {
+  border-collapse: collapse;
+  border: 0.01em solid;
+  font-size: bold;
+}
+.solveTask-grid-footer {
+  margin-top: 1em;
+  border-collapse: collapse;
+  grid-column: 1 / span 3;
+  grid-row: 2;
+}
+
+.solveTask-description {
+  max-height: 20em;
+  overflow-y: auto;
+}
+.solveTask-Submit-container {
+  display: grid;
+  grid-template-columns: calc(100% / 2) calc(100% / 2);
+  align-items: center;
+  justify-items: center;
+}
+
+.solveTask-select-members-container {
+  text-align: start;
+  padding: 0.5em;
+}
+
+.solveTask-submit-button-container {
+  text-align: center;
+}
+
+.solveTask-memberLabel-container {
+  padding: 0.2em;
+}
 .teamsScoreComponent table,
 .submittedTaskTable table,
 .teamDashboardTable table {

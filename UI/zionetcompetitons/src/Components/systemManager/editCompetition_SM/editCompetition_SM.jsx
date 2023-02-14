@@ -8,21 +8,14 @@ import {
   getAllCompetitonManagers,
 } from "../../../Middlewares/systemManager/systemManager.js";
 import { LoadingMagnifyingGlass } from "../../exports.js";
-import {
-  editCompetition,
-  editCompetition_atom,
-} from "../editCompetition_context.js";
+import { editCompetition } from "../editCompetition_context.js";
 import { DeleteCompetition } from "../deleteCompetition/deleteCompetition.jsx";
-import { useRecoilState } from "recoil";
 
 export const EditCompetition_SM = () => {
   const { user } = useAuth0();
   const [loading, setLoading] = useState(true);
   const { competitionToEdit, setcompetitionToEdit } =
     useContext(editCompetition);
-
-  const [atomCompetitionToEdit, setAtomCompetitionToEdit] =
-    useRecoilState(editCompetition_atom);
 
   const [inputs, setInputs] = useState({
     id: competitionToEdit.id,
@@ -65,8 +58,6 @@ export const EditCompetition_SM = () => {
   //load all users and managers from DB
   useEffect(() => {
     const getAllUsersFromDB = async () => {
-      console.log(competitionToEdit, inputs, atomCompetitionToEdit);
-
       const allUsers = await getAllUsers_SM(user.sub);
       const managers = await getAllCompetitonManagers(
         competitionToEdit.id,
@@ -79,7 +70,6 @@ export const EditCompetition_SM = () => {
       setManagersArr(allManagersData);
     };
     getAllUsersFromDB();
-    console.log(competitionToEdit, inputs, atomCompetitionToEdit);
   }, [bgState]);
 
   if (loading) {
@@ -167,7 +157,6 @@ export const EditCompetition_SM = () => {
             <label className="allUsersLabel">
               {allUsers.map((user, index) => {
                 if (!ManagersArr.includes()) {
-                  // console.log(ManagersArr.includes(user), user);
                   return (
                     <button
                       key={user.Email + index.toString()}

@@ -188,7 +188,7 @@ namespace ZCC.Data.Sql
                 throw;
             }
         }
-        
+
         public int GetTeamsPoint(string TeamID)
         {
             try
@@ -202,7 +202,8 @@ namespace ZCC.Data.Sql
                 throw;
             }
         }
-        public void UpdateTeamsPoint(string TeamID,string enterPoint)
+
+        public void UpdateTeamsPoint(string TeamID, string enterPoint)
         {
             try
             {

@@ -45,6 +45,7 @@
     <Compile Include="Categories.cs" />
     <Compile Include="Competition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SolveActiveTask.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="TeamLive.cs" />

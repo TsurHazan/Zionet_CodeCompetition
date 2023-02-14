@@ -44,8 +44,8 @@ namespace ZCC.DAL
             {
                 using (SqlCommand command = new SqlCommand(sqlQuery, connection))
                 {
-                    try 
-                    { 
+                    try
+                    {
                         connection.Open();
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
@@ -53,25 +53,18 @@ namespace ZCC.DAL
                             {
                                 ret = func(reader);
                             }
-
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        throw;
-                    }
+                    catch (Exception) { return "invalid parameters"; }
                 }
             }
 
             return ret;
         }
 
-
-
         //execute scalar to get single value answer from sql query
         public static object getSingleValueFromDB(string sqlQuery)
         {
-
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 using (SqlCommand command = new SqlCommand(sqlQuery, connection))
@@ -81,11 +74,7 @@ namespace ZCC.DAL
                         connection.Open();
                         return command.ExecuteScalar();
                     }
-                    catch (Exception ex)
-                    {
-                        throw;
-                    }
-                    
+                    catch (Exception) { throw; }
                 }
             }
         }

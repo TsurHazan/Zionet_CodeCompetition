@@ -76,7 +76,8 @@ namespace ZCC.Entities
                 throw;
             }
         }
-        public void UpdateTeamsPoint(string TeamID,string enterPoint)
+
+        public void UpdateTeamsPoint(string TeamID, string enterPoint)
         {
             try
             {

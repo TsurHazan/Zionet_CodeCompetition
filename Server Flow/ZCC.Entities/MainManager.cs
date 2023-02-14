@@ -17,7 +17,6 @@ namespace ZCC.Entities
             taskManager = new TaskManager();
             teamsManager = new TeamsManager();
             activeTasksManager = new ActiveTasksManager();
-            participantsManager = new ParticipantManager();
         }
 
         private static readonly MainManager _Instance = new MainManager();
@@ -26,7 +25,6 @@ namespace ZCC.Entities
         { get { return _Instance; } private set { } }
 
         public userManager userEntities;
-        public ParticipantManager participantsManager;
         public CompetitionManager competitionsManager;
         public CategoriesManager categoriesManager;
         public TaskManager taskManager;

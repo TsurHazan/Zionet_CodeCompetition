@@ -156,14 +156,12 @@ export const CreateCompetition = () => {
             <span className="allUsersLabel">
               {allUsers.map((user, index) => {
                 if (user.name.includes(searchText)) {
-                  console.log(searchText);
                   return (
                     <button
                       key={user.Email + index.toString()}
                       onClick={() => {
                         chooseManager(user);
                         toggleItem(index);
-                        console.log(user.name);
                       }}
                       className={`btn ${bgState} ${items[index]}`}
                     >

@@ -3,12 +3,8 @@ import { getAllCompetitions } from "../../../Middlewares/systemManager/systemMan
 import { useAuth0 } from "@auth0/auth0-react";
 import { LoadingMagnifyingGlass } from "../../exports.js";
 import { StatusCompetition } from "../systemManagerExports.js";
-import {
-  editCompetition,
-  editCompetition_atom,
-} from "../editCompetition_context.js";
+import { editCompetition } from "../editCompetition_context.js";
 import { Link } from "react-router-dom";
-import { useRecoilState } from "recoil";
 
 export const ShowAllCompetitions = () => {
   const { user } = useAuth0();
@@ -16,9 +12,6 @@ export const ShowAllCompetitions = () => {
   const [loading, setLoading] = useState(true);
   const { competitionToEdit, setcompetitionToEdit } =
     useContext(editCompetition);
-
-  const [atomCompetitionToEdit, setAtomCompetitionToEdit] =
-    useRecoilState(editCompetition_atom);
 
   useEffect(() => {
     const getCompetitions = async () => {
@@ -67,7 +60,6 @@ export const ShowAllCompetitions = () => {
                     className="btn btn-primary"
                     onClick={() => {
                       setcompetitionToEdit(c);
-                      setAtomCompetitionToEdit(c);
                     }}
                     to={`/EditCompetition/${c.id}`}
                   >

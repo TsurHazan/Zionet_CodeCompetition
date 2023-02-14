@@ -29,7 +29,7 @@ export const SystemAdminDashboard = () => {
 
   return (
     <Box
-      className={`systemDash ${bgState}`}
+      className={`component-container ${bgState}`}
       sx={{
         bgcolor: "background.paper",
         position: "relative",

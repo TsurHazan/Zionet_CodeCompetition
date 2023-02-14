@@ -35,7 +35,6 @@ export const EditTeams = () => {
         };
         arr.push(element);
       }
-      console.log(teamsInfo);
       await UpdateTeams(user.sub, id, arr, teamsInfo[i].id);
     }
   };
@@ -47,7 +46,7 @@ export const EditTeams = () => {
   };
 
   return (
-    <div className="systemDash">
+    <div className="component-container">
       <button className="btn btn-success teamCard" onClick={handleAddTeam}>
         New Team
       </button>

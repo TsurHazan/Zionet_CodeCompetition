@@ -15,6 +15,23 @@ namespace ZCC.Data.Sql
         private SqlServerQuery.miisiksFunc func { get; set; }
         private string query { get; set; }
 
+        // --------------------- Search for user team in Running competition ---------------------
+        public string FindParticipantTeam(string participantId, string competitionID)
+        {
+            query = $"select T.id from Teams as T\r\ninner join [Users competitions] as Uc on Uc.[TeamID] = T.id\r\ninner join [Competitions] as C on C.id = Uc.[Competition ID]\r\nwhere uc.UserID = '{participantId}' and C.status like 'Running' and C.id = {competitionID}";
+            object answer = SqlServerQuery.getSingleValueFromDB(query);
+            return answer.ToString();
+        }
+
+        // --------------------- Check if participant is in a team ---------------------
+        public bool checkIfParticipantIsInTeam(string UserID, string CompetitionID, string TeamID)
+        {
+            query = $"exec CheckIfUserIsInTeam @userID = '{UserID}' , @competitionID ={CompetitionID} , @teamID ={TeamID}";
+            bool? permission = (bool?)SqlServerQuery.getSingleValueFromDB(query);
+            if (permission == null || permission == false) return false;
+            return true;
+        }
+
         // --------------------- set a competition managers ,if user is not related to the competition then insert him as manager ---------------------
 
         public void SetManagers(User[] users, int competitionID)
