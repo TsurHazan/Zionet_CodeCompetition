@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZCC.Entities", "..\ZCC.Enti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZCC.Data.Sql", "..\ZCC.Data.Sql\ZCC.Data.Sql.csproj", "{02DC6DED-C973-4700-9D66-974540971780}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZCC.Entities.Test", "Entities.Test\ZCC.Entities.Test.csproj", "{B112213D-B40B-4BF5-9F25-0E4C3D93F527}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{02DC6DED-C973-4700-9D66-974540971780}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02DC6DED-C973-4700-9D66-974540971780}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02DC6DED-C973-4700-9D66-974540971780}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B112213D-B40B-4BF5-9F25-0E4C3D93F527}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B112213D-B40B-4BF5-9F25-0E4C3D93F527}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B112213D-B40B-4BF5-9F25-0E4C3D93F527}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B112213D-B40B-4BF5-9F25-0E4C3D93F527}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
