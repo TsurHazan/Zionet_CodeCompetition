@@ -5,7 +5,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { bgMode } from "../../../bgModeContext.js";
 import { createNewCompetition } from "../../../Middlewares/systemManager/systemManager.js";
 import { LoadingMagnifyingGlass } from "../../exports.js";
-import { WindowSharp } from "@mui/icons-material";
 
 export const CreateCompetition = () => {
   const { user } = useAuth0();
@@ -90,20 +89,14 @@ export const CreateCompetition = () => {
           >
             Create
           </button>
-          <Grid
-            container
-            rowSpacing={1}
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          >
+          <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
             <Grid xs={6}>
               <span>
                 Start Date:
                 <input
                   type="datetime-local"
                   name="Start"
-                  value={
-                    inputs.Start || currentDate.toISOString().substring(0, 16)
-                  }
+                  value={inputs.Start || currentDate.toISOString().substring(0, 16)}
                   onChange={handleChange}
                 />
               </span>
@@ -111,12 +104,7 @@ export const CreateCompetition = () => {
             <Grid xs={6}>
               <span>
                 Competition name:
-                <input
-                  type="text"
-                  name="Name"
-                  value={inputs.Name || "new competition"}
-                  onChange={handleChange}
-                />
+                <input type="text" name="Name" value={inputs.Name || "new competition"} onChange={handleChange} />
               </span>
             </Grid>
 
@@ -135,12 +123,7 @@ export const CreateCompetition = () => {
             <Grid xs={6}>
               <span>
                 hashcode:
-                <input
-                  type="text"
-                  name="hashcode"
-                  value={inputs.hashcode || "twitter code"}
-                  onChange={handleChange}
-                />
+                <input type="text" name="hashcode" value={inputs.hashcode || "twitter code"} onChange={handleChange} />
               </span>
             </Grid>
           </Grid>
