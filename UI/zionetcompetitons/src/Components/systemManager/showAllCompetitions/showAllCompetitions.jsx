@@ -13,6 +13,7 @@ export const ShowAllCompetitions = () => {
   const { competitionToEdit, setcompetitionToEdit } =
     useContext(editCompetition);
 
+  // debugger;
   useEffect(() => {
     const getCompetitions = async () => {
       let answer = await getAllCompetitions(user.sub);

@@ -54,3 +54,33 @@
 .dashboard-opening-information {
   margin: 1em 1em 1em 1em;
 }
+
+.welcome-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  /* background-color: #6cbcc592; */
+  background: linear-gradient(
+    to bottom,
+    #34e8afdd,
+    #63abc9
+  ); /* Gradient background */
+}
+
+.welcome-content {
+  text-align: center;
+  background-color: rgb(
+    143,
+    255,
+    221
+  ); /* Slightly transparent white background */
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-heading {
+  font-size: 28px;
+  margin-bottom: 20px;
+}

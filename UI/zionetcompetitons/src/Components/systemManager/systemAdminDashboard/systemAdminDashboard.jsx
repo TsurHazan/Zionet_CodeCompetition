@@ -47,7 +47,7 @@ export const SystemAdminDashboard = () => {
         >
           <Tab label="Create new Competition" {...a11yProps(0)} />
           <Tab label="Show all competitions" {...a11yProps(1)} />
-          <Tab label="Live competitions" {...a11yProps(2)} />
+          {/* <Tab label="Live competitions" {...a11yProps(2)} /> */}
         </Tabs>
       </AppBar>
       <SwipeableViews

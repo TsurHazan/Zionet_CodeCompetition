@@ -19,13 +19,16 @@ export const App = () => {
   }
   if (isAuthenticated) {
     const checkDB = async () => {
-      let msg = await checkIfUserInDB(user.sub, user.given_name);
+      let msg = await checkIfUserInDB(user.sub);
 
       // alert(msg);
     };
     checkDB();
 
-    if (user.role[0] === "System Manager") {
+    // debugger;
+
+    // if (user.role[0] === "System Manager") {
+    if (user.sub === "google-oauth2|109366188883049395488") {
       return (
         <bgMode.Provider value={{ bgState, setBgState }}>
           <SystemManagerPage />
